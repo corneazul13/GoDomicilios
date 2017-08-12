@@ -58,7 +58,6 @@ public class productm extends AppCompatActivity
     Integer countFinal=0;
     public float init_x;
     TextView numberCar;
-    private ViewFlipper vf;
     Integer ingredientSize=settings.ingredients.ingredientses.size();
     Integer additionSize = settings.addition.additions.size();
     Integer drinkSize = settings.drink.drinks.size();
@@ -89,8 +88,6 @@ public class productm extends AppCompatActivity
         imageViewAddition = (ImageView) findViewById(R.id.imageViewAddition);
         imgAddition= (LinearLayout) findViewById(R.id.imgAddition);
         imageViewObsrv = (ImageView) findViewById(R.id.imageViewObsrv);
-        vf=(ViewFlipper) findViewById(R.id.viewFlipper);
-        vf.setOnTouchListener(new productm.ListenerTouchViewFlipper());
         setImage("http://godomicilios.co/admin/img/productos/"+settings.subtotal.getPicture(), profile_image);
         setImage("http://godomicilios.co/admin/img/productos/"+settings.subtotal.getPicture(), secondImg);
         productName.setText(settings.subtotal.getName());
@@ -99,7 +96,6 @@ public class productm extends AppCompatActivity
         confirmeFirstImage(settings.stablishment.getId());
         showExists();
         View child = View.inflate(productm.this, R.layout.observation, null);
-        vf.addView(child);
         move();
 
 
@@ -1595,7 +1591,6 @@ public class productm extends AppCompatActivity
         if (sizeDrink> 0){
             imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_bebida_lleno));
             View child = View.inflate(productm.this, R.layout.drink, null);
-            vf.addView(child);
         }
         else{
             imgDrink.setVisibility(View.GONE);
@@ -1641,95 +1636,17 @@ public class productm extends AppCompatActivity
             imgIngredient.setVisibility(View.GONE);
             ingreConfirm=0;
             View child = View.inflate(productm.this, R.layout.ingradients, null);
-            vf.addView(child);
         }
         if (sizeAddi<1&&imgAddition.getVisibility() ==View.VISIBLE){
             imgAddition.setVisibility(View.GONE);
             additiConfirm=0;
             View child = View.inflate(productm.this, R.layout.additionss, null);
-            vf.addView(child);
         }
     }
 
-    private class ListenerTouchViewFlipper implements View.OnTouchListener{
 
-        @Override
-        public boolean onTouch(View v, MotionEvent event) {
 
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN: //Cuando el usuario toca la pantalla por primera vez
-                    init_x=event.getX();
-                    return true;
-                case MotionEvent.ACTION_UP: //Cuando el usuario deja de presionar
-                    float distance =init_x-event.getX();
-
-                    if(distance>0)
-                    {
-                        vf.setInAnimation(inFromRightAnimation());
-                        vf.setOutAnimation(outToLeftAnimation());
-                        vf.showPrevious();
-                    }
-
-                    if(distance<0)
-                    {
-                        vf.setInAnimation(inFromLeftAnimation());
-                        //vf.setOutAnimation(outToRightAnimation());
-                        vf.showNext();
-                    }
-
-                default:
-                    break;
-            }
-
-            return false;
-        }
-
-    }
-
-    private Animation inFromRightAnimation() {
-
-        Animation inFromRight = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT,  +1.0f, Animation.RELATIVE_TO_PARENT,  0.0f,
-                Animation.RELATIVE_TO_PARENT,  0.0f, Animation.RELATIVE_TO_PARENT,   0.0f );
-
-        inFromRight.setDuration(500);
-        inFromRight.setInterpolator(new AccelerateInterpolator());
-        return inFromRight;
-
-    }
-
-    private Animation outToLeftAnimation() {
-        Animation outtoLeft = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, -1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
-        outtoLeft.setDuration(100);
-        outtoLeft.setInterpolator(new AccelerateInterpolator());
-        return outtoLeft;
-    }
-
-    private Animation inFromLeftAnimation() {
-        Animation inFromLeft = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, -1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
-        inFromLeft.setDuration(100);
-        inFromLeft.setInterpolator(new AccelerateInterpolator());
-        return inFromLeft;
-    }
-
-    private Animation outToRightAnimation() {
-        Animation outtoRight = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, +1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
-        outtoRight.setDuration(100);
-        outtoRight.setInterpolator(new AccelerateInterpolator());
-        return outtoRight;
-    }
+  
 
     /*public void ingredients () throws Exception{
         String url="https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId=1";
