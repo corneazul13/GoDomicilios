@@ -3,22 +3,17 @@ package godomicilios.mdcc.godomiciliosc;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.ActionBar;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -30,24 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HurlStack;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.addition;
 import godomicilios.mdcc.godomiciliosc.settings.additionCar;
 import godomicilios.mdcc.godomiciliosc.settings.allChecks;
@@ -58,7 +42,7 @@ import godomicilios.mdcc.godomiciliosc.settings.productCar;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 
 public class productm extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+         {
 
     Context context;
     ImageView profile_image, secondImg, imageViewDrink, imageViewIngredient, imageViewAddition, imageViewObsrv;
@@ -524,52 +508,6 @@ public class productm extends AppCompatActivity
         }
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.porfile) {
-            Intent go = new Intent(productm.this,porfile.class);
-            startActivity(go);
-
-        } else if (id == R.id.referred) {
-            Intent go = new Intent(productm.this,refer.class);
-            startActivity(go);
-
-        } else if (id == R.id.coupons) {
-            Intent go = new Intent(productm.this,coupons.class);
-            startActivity(go);
-
-
-        } else if (id == R.id.logout) {
-            Auth.GoogleSignInApi.signOut(settings.user.getGoogleApiClient()).setResultCallback(new ResultCallback<Status>() {
-                @Override
-                public void onResult(@NonNull Status status) {
-
-                    logOut();
-                    settings.user.logouts();
-                    goLoginScreen();
-                }
-            });
-
-        } else if (id == R.id.method) {
-            Intent go = new Intent(productm.this,payM.class);
-            startActivity(go);
-
-
-        } else if (id == R.id.car) {
-
-            Intent go = new Intent(productm.this, car.class);
-            startActivity(go);
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
     public String subtotal (){
         return "a";
     }
@@ -614,8 +552,6 @@ public class productm extends AppCompatActivity
                         }
 
                         catch (Exception e){
-
-
                                                 String mensajee ="No hay productos disponibles";
 
                                                 Toast toast1 =
@@ -937,7 +873,7 @@ public class productm extends AppCompatActivity
 
                 settings.ingredientsCar.ingredientsCars = new ArrayList<>();
 
-                final View childIn = View.inflate(productm.this, R.layout.products_elements, null);
+                final View childIn = View.inflate(productm.this, R.layout.drink, null);
                 TextView name = (TextView) childIn.findViewById(R.id.text);
                 name.setText(settings.ingredients.ingredientses.get(k).name);
                 LinearLayout p = (LinearLayout) childIn.findViewById(R.id.p);
@@ -1022,7 +958,7 @@ public class productm extends AppCompatActivity
                 settings.drinkCar.setPicture(settings.drink.drinks.get(x).getPicture());
                 settings.drinkCar.setLength(settings.drink.drinks.get(x).getLenght());
 
-                final View childa = View.inflate(productm.this, R.layout.products_elements, null);
+                final View childa = View.inflate(productm.this, R.layout.drink, null);
 
                 TextView name = (TextView) childa.findViewById(R.id.text);
                 ImageView picture = (ImageView) childa.findViewById(R.id.image);
@@ -1363,7 +1299,7 @@ public class productm extends AppCompatActivity
             if (settings.drink.drinks.size() >0){
 
                 for (int j= 0;j<settings.drink.drinks.size();j++){
-                    final View childa = View.inflate(productm.this, R.layout.products_elements, null);
+                    final View childa = View.inflate(productm.this, R.layout.drink, null);
 
                     TextView name = (TextView) child.findViewById(R.id.text);
                     ImageView picture = (ImageView) child.findViewById(R.id.image);
@@ -1435,7 +1371,7 @@ public class productm extends AppCompatActivity
                     /*if(validatorb ==0){
                         for(int i =0;i<settings.ingredients.ingredientses.size();i++){
 
-                            final View child = View.inflate(productm.this, R.layout.products_elements, null);
+                            final View child = View.inflate(productm.this, R.layout.drink, null);
 
                             TextView name = (TextView) child.findViewById(R.id.text);
                             ImageView picture = (ImageView) child.findViewById(R.id.image);
@@ -1480,7 +1416,7 @@ public class productm extends AppCompatActivity
                     /*if(validatora ==0){
                         for(int i =0;i<settings.drink.drinks.size();i++){
 
-                            final View child = View.inflate(productm.this, R.layout.products_elements, null);
+                            final View child = View.inflate(productm.this, R.layout.drink, null);
 
                             TextView name = (TextView) child.findViewById(R.id.text);
                             ImageView picture = (ImageView) child.findViewById(R.id.image);

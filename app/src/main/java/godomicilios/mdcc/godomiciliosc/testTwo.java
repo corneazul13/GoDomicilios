@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.ingredients;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
+import me.omidh.liquidradiobutton.LiquidRadioButton;
 
 
 public class testTwo extends AppCompatActivity
@@ -36,10 +37,28 @@ public class testTwo extends AppCompatActivity
             SeekBar seekBar;
             public float init_x;
             private ViewFlipper vf;
+            Integer as=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flipper);
+        setContentView(R.layout.drink);
+        final LiquidRadioButton appCompatCheckBox = (LiquidRadioButton) findViewById(R.id.appCompatCheckBox);
+
+
+        appCompatCheckBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (as==1){
+                    appCompatCheckBox.setChecked(false);
+                    as=0;
+                }
+                else{
+                    appCompatCheckBox.setChecked(true);
+                    as=1;
+                }
+            }
+        });
        /* vf=(ViewFlipper) findViewById(R.id.viewFlipper);
         vf.setOnTouchListener(new testTwo.ListenerTouchViewFlipper());
         DiscreteSeekBar discreteSeekBar1 = (DiscreteSeekBar) findViewById(R.id.seekBar);
