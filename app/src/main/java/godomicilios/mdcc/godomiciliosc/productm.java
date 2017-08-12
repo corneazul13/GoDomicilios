@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CompoundButtonCompat;
+import android.support.v7.app.ActionBar;
 import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
@@ -83,13 +84,14 @@ public class productm extends AppCompatActivity
     android.support.v7.widget.AppCompatCheckBox[] checkAddition2 = new android.support.v7.widget.AppCompatCheckBox[additionSize];
     android.support.v7.widget.AppCompatCheckBox[] checks2 = new android.support.v7.widget.AppCompatCheckBox[ingredientSize];
     Integer ingreConfirm = 1, additiConfirm=1, drinkConfirm=1;
+    ArrayList<ingredients> countIngreNormal, countIngreOptio, countIngreObli;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_productm);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        sethomeToolbar(toolbar);
         context = this;
         profile_image = (ImageView) findViewById(R.id.profile_image);
         secondImg  = (ImageView) findViewById(R.id.secondImg);
@@ -114,6 +116,8 @@ public class productm extends AppCompatActivity
         showExists();
         View child = View.inflate(productm.this, R.layout.observation, null);
         vf.addView(child);
+        move();
+
 
         /*secondImg = (ImageView) findViewById(R.id.secondImg);
         productPicture = (ImageView) findViewById(R.id.profile_image);
@@ -981,6 +985,9 @@ public class productm extends AppCompatActivity
                             settings.ingredients.ingredientses.get(ing).id,
                             settings.ingredients.ingredientses.get(ing).name
                     ));
+                }
+                for (int obli=0;obli<countIngreObli.size();obli++){
+
                 }
 
                 settings.productCar.productCars.set(daa,new productCar(
@@ -1894,6 +1901,45 @@ public class productm extends AppCompatActivity
 
 
     }*/
+
+    public void move (){
+        countIngreObli = new ArrayList<>();
+        countIngreNormal = new ArrayList<>();
+        countIngreOptio = new ArrayList<>();
+        ArrayList<ingredients> in = settings.ingredients.ingredientses;
+        for(int i = 0;i<in.size();i++){
+            ingredients inOnly = new ingredients(in.get(i).id, in.get(i).name, in.get(i).status, in.get(i).type,in.get(i).ingId, in.get(i).max);
+            switch (in.get(i).type){
+                case 1:
+                    countIngreObli.add(inOnly);
+                    break;
+                case 2:
+                    countIngreNormal.add(inOnly);
+                    break;
+                case 3:
+                    countIngreOptio.add(inOnly);
+                    break;
+            }
+        }
+    }
+
+    public void sethomeToolbar (Toolbar toolbar){
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar !=null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            toolbar.setContentInsetStartWithNavigation(0);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
+    }
 
 
 }

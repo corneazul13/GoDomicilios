@@ -1030,7 +1030,7 @@ public class stablishm extends AppCompatActivity
                                 for (int n=0;n<normal.length();n++){
                                     final JSONObject norma = normal.getJSONObject(n);
                                     settings.ingredients.ingredientses.add(new ingredients(
-                                            norma.getInt("id"),norma.getString("nombre"),norma.getString("tipo_txt"),3,norma.getInt("ingrediente_id"),0
+                                            norma.getInt("id"),norma.getString("nombre"),norma.getString("tipo_txt"),2,norma.getInt("ingrediente_id"),0
                                     ));
                                 }
                                 JSONObject optional = response.getJSONObject("OPCIONAL");
