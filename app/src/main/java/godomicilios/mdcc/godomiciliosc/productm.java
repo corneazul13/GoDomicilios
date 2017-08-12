@@ -523,39 +523,6 @@ public class productm extends AppCompatActivity
             super.onBackPressed();
         }
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-
-        getMenuInflater().inflate(R.menu.head, menu);
-        return true;
-
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.car:
-
-                if(settings.shoppingCar.carFinal.size()>0){
-                    Intent go = new Intent(productm.this, car.class);
-                    startActivity(go);
-                }
-                else{
-                    String mensajee ="Lo sentimos!\n" +
-                            "Aun no has agregado productos a la canasta";
-
-                    Toast toast1 =
-                            Toast.makeText(getApplicationContext(),
-                                    mensajee, Toast.LENGTH_SHORT);
-
-                    toast1.show();
-                }
-
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -987,6 +954,12 @@ public class productm extends AppCompatActivity
                     ));
                 }
                 for (int obli=0;obli<countIngreObli.size();obli++){
+
+                }
+                for (int norma=0;norma<countIngreObli.size();norma++){
+
+                }
+                for (int opti=0;opti<countIngreObli.size();opti++){
 
                 }
 
