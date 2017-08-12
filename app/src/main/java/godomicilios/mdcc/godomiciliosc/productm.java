@@ -1925,7 +1925,6 @@ public class productm extends AppCompatActivity
 
     public void sethomeToolbar (Toolbar toolbar){
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar !=null){
