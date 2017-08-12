@@ -13,10 +13,11 @@ public class ingredients {
     public Integer type;
     public Integer ingId;
     public Integer max;
+    public String categor;
     public ArrayList<ingredients> ingredientses;
 
 
-    public ingredients(Integer id, String name,  String status, Integer type, Integer ingId, Integer max){
+    public ingredients(Integer id, String name,  String status, Integer type, Integer ingId, Integer max, String categor){
 
         this.id =id;
         this.name = name;
@@ -24,7 +25,7 @@ public class ingredients {
         this.type = type;
         this.ingId = ingId;
         this.max=max;
-
+        this.categor=categor;
     }
     public ingredients(){}
 }

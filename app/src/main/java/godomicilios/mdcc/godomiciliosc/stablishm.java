@@ -1020,7 +1020,7 @@ public class stablishm extends AppCompatActivity
                                 for (int o=0;o<obligatory.length();o++){
                                     final JSONObject obligator = obligatory.getJSONObject(o);
                                     settings.ingredients.ingredientses.add(new ingredients(
-                                            obligator.getInt("id"),obligator.getString("nombre"),obligator.getString("tipo_txt"),1,obligator.getInt("ingrediente_id"),0
+                                            obligator.getInt("id"),obligator.getString("nombre"),obligator.getString("tipo_txt"),1,obligator.getInt("ingrediente_id"),0,"none"
                                     ));
                                 }
 
@@ -1030,7 +1030,7 @@ public class stablishm extends AppCompatActivity
                                 for (int n=0;n<normal.length();n++){
                                     final JSONObject norma = normal.getJSONObject(n);
                                     settings.ingredients.ingredientses.add(new ingredients(
-                                            norma.getInt("id"),norma.getString("nombre"),norma.getString("tipo_txt"),2,norma.getInt("ingrediente_id"),0
+                                            norma.getInt("id"),norma.getString("nombre"),norma.getString("tipo_txt"),2,norma.getInt("ingrediente_id"),0,"none"
                                     ));
                                 }
                                 JSONObject optional = response.getJSONObject("OPCIONAL");
@@ -1046,7 +1046,7 @@ public class stablishm extends AppCompatActivity
                                     for(int cou =0;cou<array.length();cou++){
                                         final JSONObject opti = array.getJSONObject(cou);
                                         settings.ingredients.ingredientses.add(new ingredients(
-                                                opti.getInt("id"), opti.getString("nombre"), opti.getString("tipo_txt"),3, opti.getInt("ingrediente_id"),maxi
+                                                opti.getInt("id"), opti.getString("nombre"), opti.getString("tipo_txt"),3, opti.getInt("ingrediente_id"),maxi,s
                                         ));
                                     }
                                     objectArray.add(j);

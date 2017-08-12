@@ -228,4 +228,12 @@ public class testTwo extends AppCompatActivity
 
 
             }*/
+    public void nothing (){
+       /* for(int namess=0;namess<names.size();namess++){
+            //add names categor
+            for(int opt=0;opt<countIngreOptio.size();opt++){
+                //add optionals
+            }
+        }*/
+    }
 }

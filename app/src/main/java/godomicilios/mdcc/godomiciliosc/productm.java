@@ -888,13 +888,18 @@ public class productm extends AppCompatActivity
                 for (int obli=0;obli<countIngreObli.size();obli++){
 
                 }
-                for (int norma=0;norma<countIngreObli.size();norma++){
+                for (int norma=0;norma<countIngreNormal.size();norma++){
+
 
                 }
-                for (int opti=0;opti<countIngreObli.size();opti++){
+                ArrayList<String>names = getNamesOptional();
+                for(int namess=0;namess<names.size();namess++){
+                    //add names categor
+                    for(int opt=0;opt<countIngreOptio.size();opt++){
 
+                        //add optionals
+                    }
                 }
-
                 settings.productCar.productCars.set(daa,new productCar(
                         settings.productCar.productCars.get(daa).getIdProduct(),
                         settings.productCar.productCars.get(daa).getName(),
@@ -1644,10 +1649,6 @@ public class productm extends AppCompatActivity
         }
     }
 
-
-
-  
-
     /*public void ingredients () throws Exception{
         String url="https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId=1";
 
@@ -1734,7 +1735,7 @@ public class productm extends AppCompatActivity
         countIngreOptio = new ArrayList<>();
         ArrayList<ingredients> in = settings.ingredients.ingredientses;
         for(int i = 0;i<in.size();i++){
-            ingredients inOnly = new ingredients(in.get(i).id, in.get(i).name, in.get(i).status, in.get(i).type,in.get(i).ingId, in.get(i).max);
+            ingredients inOnly = new ingredients(in.get(i).id, in.get(i).name, in.get(i).status, in.get(i).type,in.get(i).ingId, in.get(i).max,in.get(i).categor);
             switch (in.get(i).type){
                 case 1:
                     countIngreObli.add(inOnly);
@@ -1764,6 +1765,23 @@ public class productm extends AppCompatActivity
                 }
             });
         }
+    }
+
+    public ArrayList<String>getNamesOptional(){
+        ArrayList<String> names =new ArrayList<>();
+        for (int opti=0;opti<countIngreOptio.size();opti++){
+
+            String cate =countIngreOptio.get(opti).categor;
+            if(opti==0){
+                names.add(cate);
+            }
+            for(int nam=0;nam<names.size();nam++){
+                if(!countIngreOptio.get(opti).categor.equals(cate)){
+                    names.add(cate);
+                }
+            }
+        }
+        return names;
     }
 
 
