@@ -8,30 +8,28 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.ActionBar;
-import android.view.MotionEvent;
 import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import godomicilios.mdcc.godomiciliosc.settings.addition;
 import godomicilios.mdcc.godomiciliosc.settings.additionCar;
 import godomicilios.mdcc.godomiciliosc.settings.allChecks;
@@ -41,11 +39,10 @@ import godomicilios.mdcc.godomiciliosc.settings.ingredientsCar;
 import godomicilios.mdcc.godomiciliosc.settings.productCar;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 
-public class productm extends AppCompatActivity
-         {
+public class productm extends AppCompatActivity {
 
     Context context;
-    ImageView profile_image, secondImg, imageViewDrink, imageViewIngredient, imageViewAddition, imageViewObsrv;
+    ImageView profile_image, secondImg, imageViewDrink, imageViewIngredient, imageViewAddition, imageViewObsrv, img_banner_options;
     TextView name, address, price, description, priceProduct, subtotal, back, number,productName,textxvi,priceMinimum;
     LinearLayout  li, imgDrink,imgIngredient, imgAddition;
     Button addProduct;
@@ -77,7 +74,6 @@ public class productm extends AppCompatActivity
         sethomeToolbar(toolbar);
         context = this;
         profile_image = (ImageView) findViewById(R.id.profile_image);
-        secondImg  = (ImageView) findViewById(R.id.secondImg);
         productName = (TextView) findViewById(R.id.productName);
         priceProduct = (TextView) findViewById(R.id.priceProduct);
         description = (TextView) findViewById(R.id.description);
@@ -86,10 +82,10 @@ public class productm extends AppCompatActivity
         imageViewIngredient = (ImageView) findViewById(R.id.imageViewIngredient);
         imgIngredient = (LinearLayout) findViewById(R.id.imgIngredient);
         imageViewAddition = (ImageView) findViewById(R.id.imageViewAddition);
+        img_banner_options = (ImageView) findViewById(R.id.img_banner_options);
         imgAddition= (LinearLayout) findViewById(R.id.imgAddition);
         imageViewObsrv = (ImageView) findViewById(R.id.imageViewObsrv);
         setImage("http://godomicilios.co/admin/img/productos/"+settings.subtotal.getPicture(), profile_image);
-        setImage("http://godomicilios.co/admin/img/productos/"+settings.subtotal.getPicture(), secondImg);
         productName.setText(settings.subtotal.getName());
         description.setText(settings.subtotal.getDescription());
         priceProduct.setText("$" +settings.subtotal.getPrice());
@@ -97,6 +93,7 @@ public class productm extends AppCompatActivity
         showExists();
         View child = View.inflate(productm.this, R.layout.observation, null);
         move();
+        clicksDetails();
 
 
         /*secondImg = (ImageView) findViewById(R.id.secondImg);
@@ -1783,6 +1780,77 @@ public class productm extends AppCompatActivity
         }
         return names;
     }
+
+    public void clicksDetails() {
+        clickDrinks();
+        clickIngredients();
+        clickAdditions();
+        clickObservations();
+    }
+
+    public void clickDrinks() {
+        imageViewDrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                YoYo.with(Techniques.Swing).duration(300).playOn(view);
+                Picasso.with(context).load(R.drawable.option_drink).centerInside().fit().into(img_banner_options);
+                YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                //Changes
+                Picasso.with(context).load(R.drawable.icon_bebida_lleno).centerInside().fit().into(imageViewDrink);
+                Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+                Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+            }
+        });
+    }
+
+    public void clickIngredients() {
+         imageViewIngredient.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 YoYo.with(Techniques.Swing).duration(300).playOn(view);
+                 Picasso.with(context).load(R.drawable.option_ingredients).centerInside().fit().into(img_banner_options);
+                 YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                 //Changes
+                 Picasso.with(context).load(R.drawable.icon_ingredientes_lleno).centerInside().fit().into(imageViewIngredient);
+                 Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                 Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+                 Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+             }
+         });
+     }
+
+     public void clickAdditions() {
+         imageViewAddition.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 YoYo.with(Techniques.Swing).duration(300).playOn(view);
+                 Picasso.with(context).load(R.drawable.option_additions).centerInside().fit().into(img_banner_options);
+                 YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                 //Changes
+                 Picasso.with(context).load(R.drawable.icon_adiciones_lleno).centerInside().fit().into(imageViewAddition);
+                 Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                 Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                 Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+             }
+         });
+     }
+
+     public void clickObservations() {
+         imageViewObsrv.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 YoYo.with(Techniques.Swing).duration(300).playOn(view);
+                 Picasso.with(context).load(R.drawable.option_observations).centerInside().fit().into(img_banner_options);
+                 YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                 //Changes
+                 Picasso.with(context).load(R.drawable.icon_observaciones_lleno).centerInside().fit().into(imageViewObsrv);
+                 Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                 Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                 Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+             }
+         });
+     }
 
 
 }
