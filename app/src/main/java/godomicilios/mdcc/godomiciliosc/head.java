@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -65,17 +66,20 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.product;
 import godomicilios.mdcc.godomiciliosc.settings.rank;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 import godomicilios.mdcc.godomiciliosc.settings.stablishment;
+import godomicilios.mdcc.godomiciliosc.settings.user;
 
 public class head extends AppCompatActivity
 
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
 
+   private Context context;
     private LinearLayout layout;
     private ScrollView scrollView;
     public float init_x;
@@ -98,6 +102,7 @@ public class head extends AppCompatActivity
         setContentView(R.layout.activity_head);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context=this;
         layout = (LinearLayout)findViewById(R.id.li);
         vf = (ViewFlipper) findViewById(R.id.viewFlipper);
         LinearLayout beer = (LinearLayout) findViewById(R.id.beer);
@@ -119,21 +124,22 @@ public class head extends AppCompatActivity
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
 
-        settings.user.analytics = GoogleAnalytics.getInstance(this);
-        settings.user.analytics.setLocalDispatchPeriod(1800);
-        settings.user.tracker = settings.user.analytics.newTracker("UA-101326412-1");
-        settings.user.tracker.enableExceptionReporting(true);
-        settings.user.tracker.enableAdvertisingIdCollection(true);
-        settings.user.tracker.enableAutoActivityTracking(true);
+
+        user.analytics = GoogleAnalytics.getInstance(this);
+        user.analytics.setLocalDispatchPeriod(1800);
+        user.tracker = user.analytics.newTracker("UA-101326412-1");
+        user.tracker.enableExceptionReporting(true);
+        user.tracker.enableAdvertisingIdCollection(true);
+        user.tracker.enableAutoActivityTracking(true);
 
 
         time.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                time.setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_select));
-                prices.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                methodPay.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                promotions.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
+                time.setBackground(ContextCompat.getDrawable(context, R.drawable.corner_select));
+                prices.setBackground(ContextCompat.getDrawable(context,R.drawable.corners));
+                methodPay.setBackground(ContextCompat.getDrawable(context,R.drawable.corners));
+                promotions.setBackground(ContextCompat.getDrawable(context,R.drawable.corners));
                 try {
                     httpC("https://godomicilios.co/webService/servicios.php?svice=FILTRO_MEJOR_TIEMPO&metodo=json&lat="
                             +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1");
@@ -146,10 +152,10 @@ public class head extends AppCompatActivity
         prices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                time.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                prices.setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_select));
-                methodPay.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                promotions.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
+                time.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
+                prices.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corner_select));
+                methodPay.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
+                promotions.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
                 try {
                     httpC("https://godomicilios.co/webService/servicios.php?svice=FILTRO_PRECIOS&metodo=json&lat="
                             +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1");
@@ -162,10 +168,10 @@ public class head extends AppCompatActivity
         methodPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                time.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                prices.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                methodPay.setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_select));
-                promotions.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
+                time.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
+                prices.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
+                methodPay.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corner_select));
+                promotions.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
 
             }
         });
@@ -173,10 +179,10 @@ public class head extends AppCompatActivity
         promotions.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                time.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                prices.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                methodPay.setBackgroundDrawable(getResources().getDrawable(R.drawable.corners));
-                promotions.setBackgroundDrawable(getResources().getDrawable(R.drawable.corner_select));
+                time.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
+                prices.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
+                methodPay.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corners));
+                promotions.setBackgroundDrawable(ContextCompat.getDrawable(context,R.drawable.corner_select));
                 try {
                     httpC("https://godomicilios.co/webService/servicios.php?svice=POSICIONAMIENTO_EMPRESAS&metodo=json&lat="
                             +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1");
@@ -256,7 +262,7 @@ public class head extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        if(settings.user.getaBoolean()==false){
+        if(!settings.user.getaBoolean()){
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_stablishm_drawer);
         }
@@ -305,7 +311,7 @@ public class head extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -341,7 +347,7 @@ public class head extends AppCompatActivity
                     String ph  = settings.user.getPassword();
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString(Status, n);
-                    editor.commit();
+                    editor.apply();
                     logOut();
                     settings.user.logouts();
                     goLoginScreen();
@@ -388,7 +394,7 @@ public class head extends AppCompatActivity
 
                             for(int i =0;i<response.length();i++) {
 
-                                final JSONObject address = (JSONObject) response.getJSONObject(i);
+                                final JSONObject address = response.getJSONObject(i);
 
                                 settings.stablishment.stablishments.add(new stablishment(1,
                                         address.getInt("id_sucursal"),
@@ -435,7 +441,7 @@ public class head extends AppCompatActivity
                                 if (address.getString("estadoEstablecimiento").equals("ABIERTO")) {
 
                                 } else{
-                                    buttons.setBackgroundColor(getResources().getColor(R.color.redGo));
+                                    buttons.setBackgroundColor(ContextCompat.getColor(context,R.color.redGo));
                                     buttons.setText("CERRADO");
                                     main.setEnabled(false);
                                 }
@@ -493,19 +499,19 @@ public class head extends AppCompatActivity
                                             public void onSuccess() {
                                                 //do smth when picture is loaded successfully
                                                 String h="";
-                                                if(h==""){}
+                                                if(Objects.equals(h, "")){}
                                             }
 
                                             @Override
                                             public void onError() {
                                                 //do smth when there is picture loading error
                                                 String h="";
-                                                if(h==""){}
+                                                if(Objects.equals(h, "")){}
                                             }
                                         });
 
                                 if(i%2==0){
-                                    child.setBackgroundColor(getResources().getColor(R.color.gray));
+                                    child.setBackgroundColor(ContextCompat.getColor(context,R.color.gray));
                                 }
                                 else{
                                     child.setBackgroundColor(Color.WHITE);
@@ -566,9 +572,7 @@ public class head extends AppCompatActivity
         Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
                 + " Meter   " + meterInDec);
 
-        double total= Radius * c;
-
-        double valor = total;
+        double valor = Radius * c;
         String val = valor+"";
         BigDecimal big = new BigDecimal(val);
         big = big.setScale(2, RoundingMode.HALF_UP);
@@ -578,7 +582,7 @@ public class head extends AppCompatActivity
 
     public String duration (){
 
-        Integer h = ((Integer.valueOf(distanced.intValue())*60)/10)+1;
+        Integer h = ((distanced.intValue() *60)/10)+1;
         return "Duración: "+h.toString()+" mins Aprox.";
     }
 
@@ -644,7 +648,7 @@ public class head extends AppCompatActivity
                                 TextView nameaa = (TextView) childaa.findViewById(R.id.name);
                                 LinearLayout visibilityaa = (LinearLayout) childaa.findViewById(R.id.lii);
 
-                                final JSONObject ranks = (JSONObject) response.getJSONObject(i);
+                                final JSONObject ranks = response.getJSONObject(i);
 
                                 settings.rank.ranks.add(new rank(ranks.getInt("id_categoria"),
                                         ranks.getInt("empresa_id"),
@@ -660,7 +664,7 @@ public class head extends AppCompatActivity
                                                 try{
                                                 for(int i = 0; i<response.length(); i++) {
 
-                                                    final JSONObject product = (JSONObject) response.getJSONObject(i);
+                                                    final JSONObject product = response.getJSONObject(i);
 
                                                         settings.product.products.add(new product(
                                                                 product.getInt("id_producto"),
@@ -708,7 +712,6 @@ public class head extends AppCompatActivity
                             );
                             queue.add(jsonArrayRequests);
 
-
                         }
                         catch (Exception e){
 
@@ -751,54 +754,54 @@ public class head extends AppCompatActivity
                        ImageView four, ImageView five){
         switch (i){
             case 1:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarijamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarijamitad));
                 break;
             case 2:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
                 break;
             case 3:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianarijamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarijamitad));
                 break;
             case 4:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
                 break;
             case 5:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianarijamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarijamitad));
                 break;
             case 6:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
                 break;
             case 7:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianarijamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarijamitad));
                 break;
             case 8:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
                 break;
             case 9:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                five.setImageDrawable(getResources().getDrawable(R.drawable.medianarijamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                five.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarijamitad));
                 break;
             case 10:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
-                five.setImageDrawable(getResources().getDrawable(R.drawable.medianarojacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
+                five.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianarojacompleta));
                 break;
         }
     }
@@ -814,7 +817,7 @@ public class head extends AppCompatActivity
                     @Override
                     public void onResponse(final JSONArray response) {
                         try{
-                            settings.categories = new ArrayList<String>();
+                            settings.categories = new ArrayList<>();
                             settings.categories.add("CATEGORIA");
                             if(response.length()<1){
 
@@ -822,11 +825,9 @@ public class head extends AppCompatActivity
                             else{
                                 for(int i = 0; i<response.length(); i++) {
 
-                                    final JSONObject product = (JSONObject) response.getJSONObject(i);
+                                    final JSONObject product = response.getJSONObject(i);
 
-                                    settings.categories.add(new String(
-                                            product.getString("nombre_categoria")
-                                    ));
+                                    settings.categories.add(product.getString("nombre_categoria"));
                                 }
                             }
 
@@ -834,7 +835,7 @@ public class head extends AppCompatActivity
                             startActivity(go);
                             head.this.finish();
                         }
-                        catch (Exception e){
+                        catch (Exception ignored){
                         }
 
                     }
@@ -858,17 +859,17 @@ public class head extends AppCompatActivity
 
         catego = (Spinner) findViewById(R.id.catego);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 R.layout.spinner_item, settings.categories);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         catego.setAdapter(dataAdapter);
         catego.setOnItemSelectedListener(new head.addressSpinnerClassOne());
     }
-    class addressSpinnerClassOne implements AdapterView.OnItemSelectedListener
+    private class addressSpinnerClassOne implements AdapterView.OnItemSelectedListener
     {
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
         {
-            if (settings.categories.get(position)=="CATEGORIA")
+            if (Objects.equals(settings.categories.get(position), "CATEGORIA"))
             {
                 try {
                     httpC("https://godomicilios.co/webService/servicios.php?svice=EMPRESAS&metodo=json&lat="
@@ -921,7 +922,7 @@ public class head extends AppCompatActivity
 
                             for(int i =0;i<response.length();i++) {
 
-                                final JSONObject address = (JSONObject) response.getJSONObject(i);
+                                final JSONObject address = response.getJSONObject(i);
 
                                 settings.stablishment.stablishments.add(new stablishment(1,
                                         address.getInt("id_sucursal"),
@@ -935,10 +936,10 @@ public class head extends AppCompatActivity
                                         CalculationByDistance(address.getDouble("latitud"),
                                                 settings.order.getLatitude(),
                                                 address.getDouble("longitud"),
+
                                                 settings.order.getLongitude()),
                                         duration(),address.getInt("empresa_id"),
                                         Math.round(address.getInt("estrellas_sucursal")*2)));
-
 
                                 View child = View.inflate(head.this, R.layout.li, null);
 
@@ -968,7 +969,7 @@ public class head extends AppCompatActivity
                                 if (address.getString("estadoEstablecimiento").equals("ABIERTO")) {
 
                                 } else{
-                                    buttons.setBackgroundColor(getResources().getColor(R.color.redGo));
+                                    buttons.setBackgroundColor(ContextCompat.getColor(context,R.color.redGo));
                                     buttons.setText("CERRADO");
                                     main.setEnabled(false);
 
@@ -1023,7 +1024,7 @@ public class head extends AppCompatActivity
                                         });
 
                                 if(i%2==0){
-                                    child.setBackgroundColor(getResources().getColor(R.color.gray));
+                                    child.setBackgroundColor(ContextCompat.getColor(context,R.color.gray));
                                 }
                                 else{
                                     child.setBackgroundColor(Color.WHITE);
@@ -1037,7 +1038,7 @@ public class head extends AppCompatActivity
 
                             dialog.dismiss();
                         }
-                        catch (Exception e){
+                        catch (Exception ignored){
                         }
                             dialog.dismiss();
 
@@ -1054,7 +1055,7 @@ public class head extends AppCompatActivity
     }
 
     private static Target getTarget(final String url){
-        Target target = new Target(){
+        return new Target(){
 
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
@@ -1088,13 +1089,12 @@ public class head extends AppCompatActivity
 
             }
         };
-        return target;
     }
     public  void logout2(){
         SharedPreferences sharedpreferences = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
     }
 

@@ -1,11 +1,13 @@
 package godomicilios.mdcc.godomiciliosc;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.view.Menu;
 import android.view.MotionEvent;
@@ -57,6 +59,7 @@ import godomicilios.mdcc.godomiciliosc.settings.settings;
 public class productm extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    Context context;
     ImageView profile_image, secondImg, imageViewDrink, imageViewIngredient, imageViewAddition, imageViewObsrv;
     TextView name, address, price, description, priceProduct, subtotal, back, number,productName,textxvi,priceMinimum;
     LinearLayout  li, imgDrink,imgIngredient, imgAddition;
@@ -75,7 +78,7 @@ public class productm extends AppCompatActivity
     Integer additionSize = settings.addition.additions.size();
     Integer drinkSize = settings.drink.drinks.size();
     Integer cantii = settings.subtotal.getCant();
-    ArrayList<EditText>ed2 = new ArrayList<EditText>();
+    ArrayList<EditText>ed2 = new ArrayList<>();
     android.support.v7.widget.AppCompatCheckBox[] checksDrink2 = new android.support.v7.widget.AppCompatCheckBox[drinkSize];
     android.support.v7.widget.AppCompatCheckBox[] checkAddition2 = new android.support.v7.widget.AppCompatCheckBox[additionSize];
     android.support.v7.widget.AppCompatCheckBox[] checks2 = new android.support.v7.widget.AppCompatCheckBox[ingredientSize];
@@ -87,6 +90,7 @@ public class productm extends AppCompatActivity
         setContentView(R.layout.activity_productm);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = this;
         profile_image = (ImageView) findViewById(R.id.profile_image);
         secondImg  = (ImageView) findViewById(R.id.secondImg);
         productName = (TextView) findViewById(R.id.productName);
@@ -551,7 +555,7 @@ public class productm extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -906,7 +910,7 @@ public class productm extends AppCompatActivity
         final android.support.v7.widget.AppCompatCheckBox[] checksDrink = new android.support.v7.widget.AppCompatCheckBox[drinkSize];
         android.support.v7.widget.AppCompatCheckBox[] checkAddition = new android.support.v7.widget.AppCompatCheckBox[additionSize];
         android.support.v7.widget.AppCompatCheckBox[] checks = new android.support.v7.widget.AppCompatCheckBox[ingredientSize];
-        ArrayList<EditText> ed = new ArrayList<EditText>();
+        ArrayList<EditText> ed = new ArrayList<>();
 
         countFinal= countFinal+1;
         View child = View.inflate(productm.this, R.layout.components, null);
@@ -921,7 +925,6 @@ public class productm extends AppCompatActivity
         final EditText text = (EditText) child.findViewById(R.id.text);
         final LinearLayout coments = (LinearLayout) child.findViewById(R.id.linear);
         final LinearLayout d = (LinearLayout) child.findViewById(R.id.d);
-        final Integer[] Cant = {0};
 
         settings.ingredientsCar.ingredientsCars = new ArrayList<>();
         settings.additionCar.additionCars = new ArrayList<>();
@@ -1092,14 +1095,14 @@ public class productm extends AppCompatActivity
                 length.setText(settings.drink.drinks.get(x).getLenght());
                 if(x==0){
                     int states[][] = {{android.R.attr.state_checked}, {}};
-                    int colors[] = {getResources().getColor(R.color.redGo),getResources().getColor(R.color.redGo)};
+                    int colors[] = {ContextCompat.getColor(this,R.color.redGo),ContextCompat.getColor(this,R.color.redGo)};
                     CompoundButtonCompat.setButtonTintList(nuevo_checkbox, new ColorStateList(states, colors));
                     nuevo_checkbox.isChecked();
-                    nuevo_checkbox.setChecked(seleccionado);
+                    nuevo_checkbox.setChecked(true);
                 }
                 else{
                     int states[][] = {{android.R.attr.state_checked}, {}};
-                    int colors[] = {getResources().getColor(R.color.redGo),getResources().getColor(R.color.redGo)};
+                    int colors[] = {ContextCompat.getColor(this,R.color.redGo),ContextCompat.getColor(this,R.color.redGo)};
                     CompoundButtonCompat.setButtonTintList(nuevo_checkbox, new ColorStateList(states, colors));
                     nuevo_checkbox.setEnabled(true);
                     nuevo_checkbox.setChecked(false);
@@ -1117,7 +1120,7 @@ public class productm extends AppCompatActivity
                         for (int vv=0;vv<settings.drink.drinks.size();vv++){
                             if(idCheck==vv){
                                 Boolean booleen =checksDrink[vv].isSelected();
-                                if(booleen==false){
+                                if(!booleen){
                                     checksDrink[vv].setChecked(true);
                                     settings.productCar.productCars.set(daa ,new productCar(
                                                     settings.productCar.productCars.get(daa).getIdProduct(),
@@ -1241,9 +1244,8 @@ public class productm extends AppCompatActivity
                                 more.setEnabled(true);
 
 
-
                                 int states[][] = {{android.R.attr.state_checked}, {}};
-                                int colors[] = {getResources().getColor(R.color.redGo),getResources().getColor(R.color.black)};
+                                int colors[] = {ContextCompat.getColor(context,R.color.redGo),ContextCompat.getColor(context,R.color.black)};
                                 CompoundButtonCompat.setButtonTintList(appCompatCheckBox, new ColorStateList(states, colors));
                                 appCompatCheckBox.isChecked();
                                 appCompatCheckBox.setChecked(true);
@@ -1580,54 +1582,54 @@ public class productm extends AppCompatActivity
                        ImageView four, ImageView five){
         switch (i){
             case 1:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.medianablancamitad));
                 break;
             case 2:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
             case 3:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 4:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
             case 5:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 6:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
             case 7:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 8:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
             case 9:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                five.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                five.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 10:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                five.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                five.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
         }
     }
@@ -1675,7 +1677,7 @@ public class productm extends AppCompatActivity
     public void confirmeFirstImage(Integer integer){
         Integer sizeDrink =settings.drink.drinks.size();
         if (sizeDrink> 0){
-            imageViewDrink.setImageDrawable(getResources().getDrawable(R.drawable.icon_bebida_lleno));
+            imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_bebida_lleno));
             View child = View.inflate(productm.this, R.layout.drink, null);
             vf.addView(child);
         }
@@ -1683,30 +1685,30 @@ public class productm extends AppCompatActivity
             imgDrink.setVisibility(View.GONE);
             drinkConfirm=0;
             if (settings.ingredients.ingredientses.size()> 0){
-                imageViewIngredient.setImageDrawable(getResources().getDrawable(R.drawable.icon_ingredientes_lleno));
+                imageViewIngredient.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_ingredientes_lleno));
             }
             else{
                 ingreConfirm=0;
                 imgIngredient.setVisibility(View.GONE);
                 if (settings.addition.additions.size()>0){
-                    imageViewAddition.setImageDrawable(getResources().getDrawable(R.drawable.icon_adiciones_lleno));
+                    imageViewAddition.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_adiciones_lleno));
                 }
                 else{
                     additiConfirm=0;
                     imgAddition.setVisibility(View.GONE);
                     switch (integer){
                         case 1:
-                            imageViewObsrv.setImageDrawable(getResources().getDrawable(R.drawable.icon_adiciones_lleno));
+                            imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_adiciones_lleno));
                             break;
                         case 2:
-                            imageViewObsrv.setImageDrawable(getResources().getDrawable(R.drawable.icon_observaciones_lleno_beer));
+                            imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno_beer));
                             break;
                         case 3:
-                            imageViewObsrv.setImageDrawable(getResources().getDrawable(R.drawable.icon_observaciones_lleno_farmacia));
+                            imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno_farmacia));
                             break;
-                        case 4:imageViewObsrv.setImageDrawable(getResources().getDrawable(R.drawable.icon_observaciones_lleno_mascotas));
+                        case 4:imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno_mascotas));
                             break;
-                        case 5:imageViewObsrv.setImageDrawable(getResources().getDrawable(R.drawable.icon_observaciones_lleno_mercado));
+                        case 5:imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno_mercado));
                     }
 
                 }
@@ -1813,7 +1815,7 @@ public class productm extends AppCompatActivity
         return outtoRight;
     }
 
-    public void ingredients () throws Exception{
+    /*public void ingredients () throws Exception{
         String url="https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId=1";
 
 
@@ -1891,7 +1893,7 @@ public class productm extends AppCompatActivity
         queue.add(jsonObjectRequest);
 
 
-    }
+    }*/
 
 
 }

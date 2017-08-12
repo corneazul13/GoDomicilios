@@ -73,6 +73,7 @@ public class testTwo extends AppCompatActivity
                 public boolean onTouch(View v, MotionEvent event) {
 
                     switch (event.getAction()) {
+
                         case MotionEvent.ACTION_DOWN: //Cuando el usuario toca la pantalla por primera vez
                             init_x=event.getX();
                             return true;

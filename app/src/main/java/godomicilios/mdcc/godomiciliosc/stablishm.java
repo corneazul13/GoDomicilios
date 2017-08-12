@@ -1,6 +1,7 @@
 package godomicilios.mdcc.godomiciliosc;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -44,6 +46,8 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Objects;
 
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.addition;
@@ -53,9 +57,11 @@ import godomicilios.mdcc.godomiciliosc.settings.methodPay;
 import godomicilios.mdcc.godomiciliosc.settings.product;
 import godomicilios.mdcc.godomiciliosc.settings.rank;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
+import godomicilios.mdcc.godomiciliosc.settings.user;
 
 public class stablishm extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Context context;
 
     ImageView image, ones, twos, threes, fours, fives;
     TextView name, address, price, three, priceMinimum;
@@ -73,6 +79,7 @@ public class stablishm extends AppCompatActivity
         setContentView(R.layout.activity_stablishm);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = this;
         image = (ImageView) findViewById(R.id.image);
         name = (TextView) findViewById(R.id.name);
         address = (TextView) findViewById(R.id.address);
@@ -94,13 +101,13 @@ public class stablishm extends AppCompatActivity
         numberCar = (TextView) findViewById(R.id.numberCar);
         Integer car= settings.shoppingCar.carFinal.size();
         numberCar.setText(settings.user.getCarCant());
-        settings.user.analytics = GoogleAnalytics.getInstance(this);
-        settings.user.analytics.setLocalDispatchPeriod(1800);
-        settings.user.tracker = settings.user.analytics.newTracker("UA-101326412-1");
-        settings.user.tracker.enableExceptionReporting(true);
-        settings.user.tracker.enableAdvertisingIdCollection(true);
-        settings.user.tracker.enableAutoActivityTracking(true);
-        include = (View) findViewById(R.id.include);
+        user.analytics = GoogleAnalytics.getInstance(this);
+        user.analytics.setLocalDispatchPeriod(1800);
+        user.tracker = user.analytics.newTracker("UA-101326412-1");
+        user.tracker.enableExceptionReporting(true);
+        user.tracker.enableAdvertisingIdCollection(true);
+        user.tracker.enableAutoActivityTracking(true);
+        include = findViewById(R.id.include);
 
         settings.ingredients.ingredientses = null;
         settings.addition.additions = null;
@@ -120,27 +127,27 @@ public class stablishm extends AppCompatActivity
                 com.setVisibility(View.VISIBLE);
                 break;
             case 2:
-                one.setBackgroundColor(getResources().getColor(R.color.blacBeer));
-                two.setBackgroundColor(getResources().getColor(R.color.blacBeer));
-                image.setImageDrawable(getResources().getDrawable(R.drawable.logonegro));
+                one.setBackgroundColor(ContextCompat.getColor(context,R.color.blacBeer));
+                two.setBackgroundColor(ContextCompat.getColor(context,R.color.blacBeer));
+                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logonegro));
                 lic.setVisibility(View.VISIBLE);
                 break;
             case 3:
-                one.setBackgroundColor(getResources().getColor(R.color.blueFarmacy));
-                two.setBackgroundColor(getResources().getColor(R.color.blueFarmacy));
-                image.setImageDrawable(getResources().getDrawable(R.drawable.logoverde));
+                one.setBackgroundColor(ContextCompat.getColor(context,R.color.blueFarmacy));
+                two.setBackgroundColor(ContextCompat.getColor(context,R.color.blueFarmacy));
+                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoverde));
                 far.setVisibility(View.VISIBLE);
                 break;
             case 4:
-                one.setBackgroundColor(getResources().getColor(R.color.bluePet));
-                two.setBackgroundColor(getResources().getColor(R.color.bluePet));
-                image.setImageDrawable(getResources().getDrawable(R.drawable.logoazul));
+                one.setBackgroundColor(ContextCompat.getColor(context,R.color.bluePet));
+                two.setBackgroundColor(ContextCompat.getColor(context,R.color.bluePet));
+                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoazul));
                 mas.setVisibility(View.VISIBLE);
                 break;
             case 5:
-                one.setBackgroundColor(getResources().getColor(R.color.yellowmarket));
-                two.setBackgroundColor(getResources().getColor(R.color.yellowmarket));
-                image.setImageDrawable(getResources().getDrawable(R.drawable.logoamarillo));
+                one.setBackgroundColor(ContextCompat.getColor(context,R.color.yellowmarket));
+                two.setBackgroundColor(ContextCompat.getColor(context,R.color.yellowmarket));
+                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoamarillo));
                 mer.setVisibility(View.VISIBLE);
                 break;
 
@@ -180,7 +187,7 @@ public class stablishm extends AppCompatActivity
             putView();
         //dialog.dismiss();
 
-        if(settings.user.getaBoolean()==false){
+        if(!settings.user.getaBoolean()){
             navigationView.getMenu().clear();
             navigationView.inflateMenu(R.menu.activity_stablishm_drawer);
         }
@@ -234,7 +241,7 @@ public class stablishm extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -321,7 +328,7 @@ public class stablishm extends AppCompatActivity
             final TextView nameshowd = (TextView) child.findViewById(R.id.name);
             final LinearLayout lll = (LinearLayout) child.findViewById(R.id.lii);
             lll.setVisibility(View.GONE);
-            lll.setBackgroundColor(getResources().getColor(R.color.white));
+            lll.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
             final LinearLayout click = (LinearLayout) child.findViewById(R.id.click);
             final ScrollView scroll = (ScrollView) child.findViewById(R.id.scroll);
             final ImageView image = (ImageView) child.findViewById(R.id.image);
@@ -335,29 +342,27 @@ public class stablishm extends AppCompatActivity
                     animationsFalse(lll);
                     break;
                 case 2:
-                    image.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rlic));
+                    image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rlic));
                     animationsFalse(lll);
                     break;
                 case 3:
-                    image.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rfarm));
+                    image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rfarm));
                     animationsFalse(lll);
                     break;
                 case 4:
-                    image.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rmas));
+                    image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rmas));
                     animationsFalse(lll);
                     break;
                 case 5:
-                    image.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rmer));
+                    image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rmer));
                     animationsFalse(lll);
                     break;
 
             }
                 linear.addView(child);
 
-            final View chlid = child; //attach to your item
-
             if(k%2==0){
-                click.setBackgroundColor(getResources().getColor(R.color.gray));
+                click.setBackgroundColor(ContextCompat.getColor(context,R.color.gray));
 
                 }
             else{
@@ -396,7 +401,7 @@ public class stablishm extends AppCompatActivity
             for(int l =0;l<settings.product.products.size();l++){
                 click.setId(k);
 
-                if(settings.product.products.get(l).idRank == settings.rank.ranks.get(k).getId()){
+                if(Objects.equals(settings.product.products.get(l).idRank, settings.rank.ranks.get(k).getId())){
 
 
                     final View childs = View.inflate(stablishm.this, R.layout.products, null);
@@ -424,20 +429,20 @@ public class stablishm extends AppCompatActivity
 
                     switch (settings.stablishment.getId()){
                         case 2:
-                            im.setImageDrawable(getResources().getDrawable(R.drawable.logonegro));
-                            img.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rlic));
+                            im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logonegro));
+                            img.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rlic));
                             break;
                         case 3:
-                            im.setImageDrawable(getResources().getDrawable(R.drawable.logoverde));
-                            img.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rfarm));
+                            im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoverde));
+                            img.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rfarm));
                             break;
                         case 4:
-                            im.setImageDrawable(getResources().getDrawable(R.drawable.logoazul));
-                            img.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rmas));
+                            im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoazul));
+                            img.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rmas));
                             break;
                         case 5:
-                            im.setImageDrawable(getResources().getDrawable(R.drawable.logoamarillo));
-                            img.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rmer));
+                            im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoamarillo));
+                            img.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rmer));
                             break;
 
                     }
@@ -484,7 +489,6 @@ public class stablishm extends AppCompatActivity
                             settings.product.products.get(l).drinkEdit));
                     lll.addView(childs);
                     final int finalI = settings.rank.ranks.size();
-                    final TextView finalNameshow = nameshow;
                     click.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -505,10 +509,10 @@ public class stablishm extends AppCompatActivity
                                         //nameshowd.setTextColor(getResources().getColor(R.color.tertary));
                                         switch (settings.stablishment.getId()){
                                             case 1:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flechadr));
-                                                click.setBackgroundColor(getResources().getColor(R.color.white));
-                                                nameshowd.setTextColor(getResources().getColor(R.color.tertary));
-                                                lll.setBackgroundColor(getResources().getColor(R.color.white));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechadr));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
+                                                nameshowd.setTextColor(ContextCompat.getColor(context,R.color.tertary));
+                                                lll.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                                                 if(settings.product.products.size()>1){
                                                     animationsFalse(lll);
                                                 }
@@ -533,15 +537,15 @@ public class stablishm extends AppCompatActivity
                                                 }
                                                 break;
                                             case 2:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rlic));
-                                                click.setBackgroundColor(getResources().getColor(R.color.blacBeerSelec));
-                                                nameshowd.setTextColor(getResources().getColor(R.color.tertary));
-                                                lll.setBackgroundColor(getResources().getColor(R.color.white));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rlic));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.blacBeerSelec));
+                                                nameshowd.setTextColor(ContextCompat.getColor(context,R.color.tertary));
+                                                lll.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                                                 animationsFalse(lll);
                                                 if(click.getId()%2==0){
 
                                                     click.setBackgroundColor(
-                                                            getResources().getColor(R.color.gray));
+                                                            ContextCompat.getColor(context,R.color.gray));
 
 //                                            childs.setBackgroundColor(getResources().getColor(R.color.gray));
                                                 }
@@ -553,10 +557,10 @@ public class stablishm extends AppCompatActivity
                                                 }
                                                 break;
                                             case 3:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rfarm));
-                                                click.setBackgroundColor(getResources().getColor(R.color.blueFarmacySelect));
-                                                nameshowd.setTextColor(getResources().getColor(R.color.tertary));
-                                                lll.setBackgroundColor(getResources().getColor(R.color.white));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rfarm));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.blueFarmacySelect));
+                                                nameshowd.setTextColor(ContextCompat.getColor(context,R.color.tertary));
+                                                lll.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                                                 animationsFalse(lll);
                                                 if(click.getId()%2==0){
 
@@ -574,10 +578,10 @@ public class stablishm extends AppCompatActivity
 
                                                 break;
                                             case 4:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rmas));
-                                                click.setBackgroundColor(getResources().getColor(R.color.bluePetSelect));
-                                                nameshowd.setTextColor(getResources().getColor(R.color.tertary));
-                                                lll.setBackgroundColor(getResources().getColor(R.color.white));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rmas));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.bluePetSelect));
+                                                nameshowd.setTextColor(ContextCompat.getColor(context,R.color.tertary));
+                                                lll.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                                                 animationsFalse(lll);
                                                 if(click.getId()%2==0){
 
@@ -595,10 +599,10 @@ public class stablishm extends AppCompatActivity
 
                                                 break;
                                             case 5:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flecha_d_rmer));
-                                                click.setBackgroundColor(getResources().getColor(R.color.yellowmarketSelect));
-                                                nameshowd.setTextColor(getResources().getColor(R.color.tertary));
-                                                lll.setBackgroundColor(getResources().getColor(R.color.white));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flecha_d_rmer));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.yellowmarketSelect));
+                                                nameshowd.setTextColor(ContextCompat.getColor(context,R.color.tertary));
+                                                lll.setBackgroundColor(ContextCompat.getColor(context,R.color.white));
                                                 animationsFalse(lll);
                                                 if(click.getId()%2==0){
 
@@ -630,32 +634,32 @@ public class stablishm extends AppCompatActivity
 
                                         switch (settings.stablishment.getId()){
                                             case 1:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                                click.setBackgroundColor(getResources().getColor(R.color.redGoSelect));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.redGoSelect));
                                                 nameshowd.setTextColor(Color.WHITE);
                                                 lll.setVisibility(View.VISIBLE);
                                                 break;
                                             case 2:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                                click.setBackgroundColor(getResources().getColor(R.color.blacBeerSelec));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.blacBeerSelec));
                                                 nameshowd.setTextColor(Color.WHITE);
                                                 lll.setVisibility(View.VISIBLE);
                                                 break;
                                             case 3:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                                click.setBackgroundColor(getResources().getColor(R.color.blueFarmacySelect));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.blueFarmacySelect));
                                                 nameshowd.setTextColor(Color.WHITE);
                                                 lll.setVisibility(View.VISIBLE);
                                                 break;
                                             case 4:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                                click.setBackgroundColor(getResources().getColor(R.color.bluePetSelect));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.bluePetSelect));
                                                 nameshowd.setTextColor(Color.WHITE);
                                                 lll.setVisibility(View.VISIBLE);
                                                 break;
                                             case 5:
-                                                image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                                click.setBackgroundColor(getResources().getColor(R.color.yellowmarketSelect));
+                                                image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                                click.setBackgroundColor(ContextCompat.getColor(context,R.color.yellowmarketSelect));
                                                 nameshowd.setTextColor(Color.WHITE);
                                                 lll.setVisibility(View.VISIBLE);
                                                 break;
@@ -679,7 +683,7 @@ public class stablishm extends AppCompatActivity
                                     if(click.getId()%2==0){
 
                                         click.setBackgroundColor(
-                                                getResources().getColor(R.color.gray));
+                                                ContextCompat.getColor(context,R.color.gray));
 
 //                                            childs.setBackgroundColor(getResources().getColor(R.color.gray));
                                     }
@@ -689,36 +693,36 @@ public class stablishm extends AppCompatActivity
                                         );
 //                                            childs.setBackgroundColor(Color.WHITE);
                                     }
-                                    nameshowd.setTextColor(getResources().getColor(R.color.tertary));
+                                    nameshowd.setTextColor(ContextCompat.getColor(context,R.color.tertary));
                                     switch (settings.stablishment.getId()){
                                         case 1:
-                                            image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
+                                            image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
 
-                                            click.setBackgroundColor(getResources().getColor(R.color.redGoSelect));
+                                            click.setBackgroundColor(ContextCompat.getColor(context,R.color.redGoSelect));
                                             nameshowd.setTextColor(Color.WHITE);
                                             animationsTrue(lll);
                                             break;
                                         case 2:
-                                            image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                            click.setBackgroundColor(getResources().getColor(R.color.blacBeerSelec));
+                                            image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                            click.setBackgroundColor(ContextCompat.getColor(context,R.color.blacBeerSelec));
                                             nameshowd.setTextColor(Color.WHITE);
                                             animationsTrue(lll);
                                             break;
                                         case 3:
-                                            image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                            click.setBackgroundColor(getResources().getColor(R.color.blueFarmacySelect));
+                                            image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                            click.setBackgroundColor(ContextCompat.getColor(context,R.color.blueFarmacySelect));
                                             nameshowd.setTextColor(Color.WHITE);
                                             animationsTrue(lll);
                                             break;
                                         case 4:
-                                            image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                            click.setBackgroundColor(getResources().getColor(R.color.bluePetSelect));
+                                            image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                            click.setBackgroundColor(ContextCompat.getColor(context,R.color.bluePetSelect));
                                             nameshowd.setTextColor(Color.WHITE);
                                             animationsTrue(lll);
                                             break;
                                         case 5:
-                                            image.setImageDrawable(getResources().getDrawable(R.drawable.flechaarb));
-                                            click.setBackgroundColor(getResources().getColor(R.color.yellowmarketSelect));
+                                            image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.flechaarb));
+                                            click.setBackgroundColor(ContextCompat.getColor(context,R.color.yellowmarketSelect));
                                             nameshowd.setTextColor(Color.WHITE);
                                             animationsTrue(lll);
                                             break;
@@ -765,19 +769,19 @@ public class stablishm extends AppCompatActivity
                     if(settings.product.products.get(l).getPicture().equals("a")){
                         switch (settings.stablishment.getId()){
                             case 1:
-                                im.setImageDrawable(getResources().getDrawable(R.drawable.logorojo));
+                                im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logorojo));
                                 break;
                             case 2:
-                                im.setImageDrawable(getResources().getDrawable(R.drawable.logonegro));
+                                im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logonegro));
                                 break;
                             case 3:
-                                im.setImageDrawable(getResources().getDrawable(R.drawable.logoverde));
+                                im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoverde));
                                 break;
                             case 4:
-                                im.setImageDrawable(getResources().getDrawable(R.drawable.logoazul));
+                                im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoazul));
                                 break;
                             case 5:
-                                im.setImageDrawable(getResources().getDrawable(R.drawable.logoamarillo));
+                                im.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoamarillo));
                                 break;
 
                         }
@@ -857,7 +861,7 @@ public class stablishm extends AppCompatActivity
                                     for (int i = 0; i < response.length(); i++) {
                                         settings.drink.drinks = new ArrayList<>();
 
-                                        final JSONObject drink = (JSONObject) response.getJSONObject(i);
+                                        final JSONObject drink = response.getJSONObject(i);
 
                                         settings.drink.drinks.add(new drink(drink.getInt("id_bebida"),
                                                 drink.getInt("valor"),
@@ -952,7 +956,7 @@ public class stablishm extends AppCompatActivity
                             settings.elementsToProducts.elementsToProductses = new ArrayList<>();
 
                             for(int i =0;i<response.length();i++){
-                                final JSONObject drink = (JSONObject) response.getJSONObject(i);
+                                final JSONObject drink = response.getJSONObject(i);
 
                                 settings.drink.drinks.add( new drink(drink.getInt("id_bebida"),
                                         drink.getInt("valor"),
@@ -1012,21 +1016,43 @@ public class stablishm extends AppCompatActivity
 
                             if(response.length()>0){
                                 settings.ingredients.ingredientses= new ArrayList<>();
-                                Integer count = response.length();
-
-                                    //JSONArray normal = response.getJSONArray("NORMAL");
-                                    //JSONArray obligatory = response.getJSONArray("OBLIGATOIRO");
-                                    //JSONArray optional = response.getJSONArray("OPCIONAL");
-
-                                    /*settings.ingredients.ingredientses.add( new ingredients(
-                                            ingredients.getInt("id_ingrediente"),
-                                            ingredients.getString("nombre_ingrediente"),
-                                            ingredients.getInt("estado_ingrediente"),
-                                            ingredients.getInt("obligatorio")
+                                JSONArray obligatory = response.getJSONArray("OBLIGATORIO");
+                                for (int o=0;o<obligatory.length();o++){
+                                    final JSONObject obligator = obligatory.getJSONObject(o);
+                                    settings.ingredients.ingredientses.add(new ingredients(
+                                            obligator.getInt("id"),obligator.getString("nombre"),obligator.getString("tipo_txt"),1,obligator.getInt("ingrediente_id"),0
                                     ));
+                                }
 
-                                    settings.ingredients.idProduct=ingredients.getInt("producto_id");*/
 
+                                JSONArray normal = response.getJSONArray("NORMAL");
+
+                                for (int n=0;n<normal.length();n++){
+                                    final JSONObject norma = normal.getJSONObject(n);
+                                    settings.ingredients.ingredientses.add(new ingredients(
+                                            norma.getInt("id"),norma.getString("nombre"),norma.getString("tipo_txt"),3,norma.getInt("ingrediente_id"),0
+                                    ));
+                                }
+                                JSONObject optional = response.getJSONObject("OPCIONAL");
+                                Iterator<String> iterator;
+                                optional.keys();
+                                ArrayList<JSONObject> objectArray=new ArrayList<>();
+                                int i = 0;
+                                for (iterator= optional.keys(); iterator.hasNext(); i++) {
+                                    String s = iterator.next();
+                                    JSONObject j =optional.getJSONObject(s);
+                                    JSONArray array = j.getJSONArray("opciones");
+                                    Integer maxi = j.getInt("cantidad_max");
+                                    for(int cou =0;cou<array.length();cou++){
+                                        final JSONObject opti = array.getJSONObject(cou);
+                                        settings.ingredients.ingredientses.add(new ingredients(
+                                                opti.getInt("id"), opti.getString("nombre"), opti.getString("tipo_txt"),3, opti.getInt("ingrediente_id"),maxi
+                                        ));
+                                    }
+                                    objectArray.add(j);
+                                }
+
+                                Integer drink=settings.ingredients.ingredientses.size();
                             }
                             else {
                                 settings.ingredients.ingredientses= new ArrayList<>();
@@ -1088,7 +1114,7 @@ public class stablishm extends AppCompatActivity
                             else{
                                 settings.addition.additions= new ArrayList<>();
                                 for(int i =0;i<response.length();i++){
-                                    final JSONObject addition = (JSONObject) response.getJSONObject(i);
+                                    final JSONObject addition = response.getJSONObject(i);
 
                                     settings.addition.additions.add( new addition(
                                             addition.getInt("id"),
@@ -1164,54 +1190,54 @@ public class stablishm extends AppCompatActivity
                        ImageView four, ImageView five){
         switch (i){
             case 1:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 2:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
             case 3:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 4:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
             case 5:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 6:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
             case 7:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 8:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
             case 9:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                five.setImageDrawable(getResources().getDrawable(R.drawable.medianablancamitad));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                five.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancamitad));
                 break;
             case 10:
-                one.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                two.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                three.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                four.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
-                five.setImageDrawable(getResources().getDrawable(R.drawable.medianablancacompleta));
+                one.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                two.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                three.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                four.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
+                five.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.medianablancacompleta));
                 break;
         }
     }
