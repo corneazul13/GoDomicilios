@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "119241601547",
+    "firebase_url": "https://go-domicilios-cac7f.firebaseio.com",
+    "project_id": "go-domicilios-cac7f",
+    "storage_bucket": "go-domicilios-cac7f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119241601547:android:7970120c9112da6b",
+        "android_client_info": {
+          "package_name": "godomicilios.mdcc.godomiciliosc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "119241601547-hvobn8sskdu5i4cudc3tupq95uppreg3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "godomicilios.mdcc.godomiciliosc",
+            "certificate_hash": "0602c234f14e0eddcb4a9768a636ab33b2d085d6"
+          }
+        },
+        {
+          "client_id": "119241601547-1j6la1911ai6pr187nmrjfq51foul2mp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR-oVK5ybar_nNOLR4bqgt5r3urp_qtX4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "119241601547-1j6la1911ai6pr187nmrjfq51foul2mp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

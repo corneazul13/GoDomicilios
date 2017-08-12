@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/food"
+            android:icon="@drawable/comidamxdos"
+            android:title="COMIDA" />
+        <item
+            android:id="@+id/beer"
+            android:icon="@drawable/licormxdos"
+            android:title="LICORES" />
+        <item
+            android:id="@+id/pharmacy"
+            android:icon="@drawable/medicinamxdos"
+            android:title="FARMACIA" />
+        <item
+            android:id="@+id/pet"
+            android:icon="@drawable/mascotamxdos"
+            android:title="MASCOTAS" />
+        <item
+            android:id="@+id/market"
+            android:icon="@drawable/mercadomxdos"
+            android:title="MERCADO" />
+        <item
+            android:id="@+id/pets"
+            android:title="" />
+
+        <item
+            android:id="@+id/porfile"
+            android:icon="@drawable/perfilxdos"
+            android:title="PERFIL" />
+        <item
+            android:id="@+id/referred"
+            android:icon="@drawable/referidoxdos"
+            android:title="REFERIDO" />
+        <item
+            android:id="@+id/coupons"
+            android:icon="@drawable/cuponesmxdos"
+            android:title="CUPONES" />
+        <item
+            android:id="@+id/points"
+            android:icon="@drawable/puntosmxdos"
+            android:title="PUNTOS" />
+        <item
+            android:id="@+id/method"
+            android:icon="@drawable/metodosmxdos"
+            android:title="MÉTODOS DE PAGO" />
+        <item
+            android:id="@+id/order"
+            android:icon="@drawable/mipedidomxdos"
+            android:title="MIS PEDIDOS" />
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/acercamxdos"
+            android:title="ACERCA DE GO" />
+
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/cerrarmxdos"
+            android:title="CERRAR SESIÓN" />
+
+    </group>
+
+
+
+</menu>

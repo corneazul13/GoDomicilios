@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Go Domicilios</string>
+    <string name="action_settings">Settings</string>
+    <string name="facebook_app_id">646209828882688</string>
+    <string name="fb_login_protocol_scheme">fb646209828882688</string>
+
+    <string name="error_facebook">Error al loguease</string>
+    <string name="title_activity_show_address">showAddress</string>
+    <string name="title_activity_choose">choose</string>
+    <string name="title_activity_head">head</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_test">test</string>
+    <string name="title_activity_flipper">flipper</string>
+    <string name="title_activity_stablishm">stablishm</string>
+    <string name="title_activity_form_signin">formSignin</string>
+    <string name="title_activity_porfile">porfile</string>
+    <string name="large_text">
+
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus. Nullam quis ante. Etiam sit amet orci eget eros faucibus tincidunt. Duis leo. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna. Sed consequat, leo eget bibendum sodales, augue velit cursus nunc,
+
+    </string>
+    <string name="qua">
+        ESPERAMOS HAYAS DISFRUTADO DE NUESTRO SERVICIO Y DE TU PEDIDO. CUÉNTANOS.¿QUE TAL TE PARECIÓ?
+    </string>
+    <string name="text_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consectetur diam id aliquam scelerisque. Donec ultrices lacus vel </string>
+
+    <string name="user_name">Delaroy</string>
+    <string name="title_activity_productm">productm</string>
+    <string name="cancel_login">Se canceló el login con Facebook</string>
+    <string name="error_login">Oops ha ocurrido un error, vuelve a intentarlo</string>
+    <string name="refOne">¿Quieres tener puntos extras? Recomienda GO a todos tus amigos
+        y dales tu numero de referencia para recibir puntos extras.\n
+    Tu código de referencia es tu mismo número de celular.</string>
+    <string name="refTwo">ESTE ES TU CÓDIGO DE REFERENCIA </string>
+    <string name="refThree">ALGÚN AMIGO TE RECOMENDÓ GO</string>
+    <string name="refFour">introduce a continuación su código de referencia y comparte puntos con el.</string>
+    <string name="title_activity_qualify">qualify</string>
+    <string name="title_activity_chat">chat</string>
+
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name = "transpareciaNegra">#8b000000</color>
+    <color name = "redGo">#00cdbd</color>
+    <color name = "redGoSelect">#b3270e</color>
+    <color name = "rojoGoTransparente">#bbe43212</color>
+    <color name = "retransparente">#00ffffff</color>
+    <color name="blue">#4a72b2</color>
+    <color name="gray">#e7e7e8</color>
+    <color name ="black">#434249</color>
+    <color name="graydark">#a8a9ad</color>
+    <color name="graymenu">#f1f1f1</color>
+    <color name="tertary">#808080</color>
+    <color name="textlateralmenu">#6f7179</color>
+    <color name="desabled">#fafafa</color>
+    <color name="white">#ffffff</color>
+    <color name="redNameProduct">#b54447</color>
+    <color name="greenCar">#37b44a</color>
+    <color name="blacBeer">#474046</color>
+    <color name="blacBeerSelec">#1a181a</color>
+    <color name="blueFarmacy">#57ad9e</color>
+    <color name="blueFarmacySelect">#3c7a6e</color>
+    <color name="bluePet">#428fac</color>
+    <color name="bluePetSelect">#2f6378</color>
+    <color name="yellowmarket">#ce9410</color>
+    <color name="yellowmarketSelect">#9c700e</color>
+    <color name="cancel">#e43414</color>
+    <color name="confirm">#5db85d</color>
+    <color name="detailProduct">#eeeeee</color>
+    <color name="grayCircle">#7f7f7f</color>
+    <color name="rouderChatIn">#cccccc</color>
+    <color name="redLast">#e43212</color>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- End current session if app sleeps for a period of time -->
+    <String name="ga_appName">GoDomicilios</String>
+    <!--  The property id associated with this analytics tracker -->
+    <string name="ga_appVersion">10.0</string>
+
+    <string name="ga_dispatchPeriod">1800</string>
+
+    <bool name="ga_dryRun">false</bool>
+
+    <!--
+      See Project Structure -> Analytics -> Google Analytics -> Learn More
+      to learn more about configuring this file.
+    -->
+</resources>
