@@ -21,7 +21,7 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
-                android:background="#e6e6e6"
+                android:background="#ffffff"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
                 app:layout_collapseMode="pin"
                 android:layout_width="match_parent"
@@ -29,7 +29,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#e6e6e6"
+                    android:background="#ffffff"
                     android:orientation="vertical">
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -49,81 +49,55 @@
                                 android:src="@drawable/bannercomida"
                                 app:civ_border_color="@color/graydark"
                                 app:civ_border_width="2dp" />
-                            <LinearLayout
+                            <RelativeLayout
+                                android:layout_marginStart="10dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginTop="8dp"
-                                android:layout_weight="0.45"
                                 android:orientation="vertical">
-                                <LinearLayout
+                                <TextView
+                                    android:id="@+id/productName"
+                                    android:text="@string/lbl_title_product"
+                                    android:textColor="@color/black"
+                                    android:textAllCaps="true"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:id="@+id/productName"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_margin="1dp"
-                                        android:layout_marginStart="10dp"
-                                        android:textStyle="bold" />
-                                </LinearLayout>
+                                    android:layout_margin="1dp"
+                                    android:layout_marginStart="10dp"
+                                    android:textStyle="bold" />
                                 <ScrollView
+                                    android:layout_below="@+id/productName"
+                                    android:layout_above="@+id/priceProduct"
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="match_parent">
                                     <LinearLayout
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:orientation="horizontal">
                                         <TextView
                                             android:id="@+id/description"
+                                            android:text="@string/lbl_description_product"
+                                            android:textColor="@color/black"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_margin="1dp" />
                                     </LinearLayout>
                                 </ScrollView>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
+                                <TextView
+                                    android:id="@+id/priceProduct"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginBottom="1dp"
-                                    android:layout_weight="1"
-                                    android:orientation="horizontal">
-
-                                    <TextView
-                                        android:id="@+id/priceProduct"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:gravity="right"
-                                        android:text="TextView" />
-                                </LinearLayout>
-
-
-                            </LinearLayout>
-                            <LinearLayout
-                                android:visibility="gone"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.9"
-                                android:orientation="horizontal">
-                                <ImageView
-                                    android:id="@+id/imageView8"
-                                    android:contentDescription="@string/app_name"
-                                    android:layout_width="30sp"
-                                    android:layout_height="30sp"
-                                    android:scaleType="fitStart"
-                                    app:srcCompat="@drawable/cerrarmasxtres" />
-                            </LinearLayout>
+                                    android:layout_alignEnd="@+id/productName"
+                                    android:layout_alignParentBottom="true"
+                                    android:textColor="@color/confirm"
+                                    android:text="@string/lbl_price_product" />
+                            </RelativeLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
     <include layout="@layout/content_productm" />
 
 </android.support.design.widget.CoordinatorLayout>

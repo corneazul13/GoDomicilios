@@ -8,7 +8,7 @@
         android:right="8dp"
         android:bottom="3dp"/>
     <solid
-        android:color="@color/graydark" />
+        android:color="@color/gray" />
     <corners
         android:bottomLeftRadius="62dp"
         android:bottomRightRadius="4dp"

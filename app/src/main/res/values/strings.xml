@@ -27,7 +27,6 @@
     <string name="text_content">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin consectetur diam id aliquam scelerisque. Donec ultrices lacus vel </string>
 
     <string name="user_name">Delaroy</string>
-    <string name="title_activity_productm">productm</string>
     <string name="cancel_login">Se canceló el login con Facebook</string>
     <string name="error_login">Oops ha ocurrido un error, vuelve a intentarlo</string>
     <string name="refOne">¿Quieres tener puntos extras? Recomienda GO a todos tus amigos
@@ -38,5 +37,12 @@
     <string name="refFour">introduce a continuación su código de referencia y comparte puntos con el.</string>
     <string name="title_activity_qualify">qualify</string>
     <string name="title_activity_chat">chat</string>
+
+
+    <string name="title_activity_productm">Producto</string>
+    <string name="lbl_title_product">Nombre Producto</string>
+    <string name="lbl_description_product">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</string>
+    <string name="lbl_price_product">$15.000</string>
+    <string name="separed">-</string>
 
 </resources>
