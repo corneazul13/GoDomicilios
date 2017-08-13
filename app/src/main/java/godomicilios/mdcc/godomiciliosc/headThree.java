@@ -411,7 +411,7 @@ public class headThree extends AppCompatActivity
                                 if (address.getString("estadoEstablecimiento").equals("ABIERTO")) {
 
                                 } else{
-                                    buttons.setBackgroundColor(getResources().getColor(R.color.redGo));
+                                    buttons.setBackgroundColor(getResources().getColor(R.color.redLast));
                                     buttons.setText("CERRADO");
                                     main.setEnabled(false);
 

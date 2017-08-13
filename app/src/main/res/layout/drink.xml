@@ -35,8 +35,8 @@
                 app:lrb_strokeRadius="10dp"
                 app:lrb_inAnimDuration="500"
                 app:lrb_outAnimDuration="500"
-                app:lrb_checkedColor="@android:color/holo_red_light"
-                app:lrb_unCheckedColor="@android:color/holo_red_light"
+                app:lrb_checkedColor="@color/redGo"
+                app:lrb_unCheckedColor="@color/redGo"
                 android:text="Liquid Radio Button"
                 />
         </LinearLayout>

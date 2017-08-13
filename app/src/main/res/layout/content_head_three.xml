@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.9"
-        android:background="@color/blueFarmacy"
+        android:background="@color/redGo"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -186,8 +186,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/grandienblack">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/textView10"

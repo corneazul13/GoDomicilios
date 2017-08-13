@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -51,7 +52,9 @@ import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.address;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 
-    public class showAddress extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+import static android.R.attr.path;
+
+public class showAddress extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
         SharedPreferences sharedpreferences;
         String[] listO = settings.spinner.spinnerCities();
@@ -72,7 +75,7 @@ import godomicilios.mdcc.godomiciliosc.settings.settings;
         List<String> listOne =
                 new ArrayList<String>(Arrays.asList(listO));
         Integer as =0;
-
+        private static final String ALLOWED_URI_CHARS = "@#&=*+-_.,:!?()/~'%";
         private static final int MY_ACCESS_FINE_LOCATION = 1 ;
 
 
@@ -265,8 +268,9 @@ import godomicilios.mdcc.godomiciliosc.settings.settings;
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                finish();
+
                                 startActivity(getIntent());
+                                finish();
                                 dialog.dismiss();
                             }
                         }
@@ -434,8 +438,9 @@ import godomicilios.mdcc.godomiciliosc.settings.settings;
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
-                    finish();
+
                     startActivity(getIntent());
+                    finish();
                 }
             }
             );
@@ -725,21 +730,24 @@ import godomicilios.mdcc.godomiciliosc.settings.settings;
 
 
 
-        public void sendLocation (String url) throws IOException, GeneralSecurityException {
+        public void sendLocation (final String url) throws IOException, GeneralSecurityException {
+
+            final String urlEncoded = Uri.encode(url, ALLOWED_URI_CHARS);
 
 
             final RequestQueue queue = Volley.newRequestQueue(this, new HurlStack(
                     null, CustomSSLSocketFactory.getSSLSocketFactory(showAddress.this)));
 
 
-            final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
+            final JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, urlEncoded, null,
                     new Response.Listener<JSONArray>() {
                         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
                         @Override
                         public void onResponse(JSONArray response) {
                             try{
-                                finish();
+
                                 startActivity(getIntent());
+                                finish();
 
                             }
                             catch (Exception e){
@@ -751,6 +759,13 @@ import godomicilios.mdcc.godomiciliosc.settings.settings;
                 @Override
                 public void onErrorResponse(VolleyError error) {
 
+                    try {
+                        sendLocation(urlEncoded);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (GeneralSecurityException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             );

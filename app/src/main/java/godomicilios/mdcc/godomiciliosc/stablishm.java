@@ -127,25 +127,21 @@ public class stablishm extends AppCompatActivity
                 com.setVisibility(View.VISIBLE);
                 break;
             case 2:
-                one.setBackgroundColor(ContextCompat.getColor(context,R.color.blacBeer));
                 two.setBackgroundColor(ContextCompat.getColor(context,R.color.blacBeer));
                 image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logonegro));
                 lic.setVisibility(View.VISIBLE);
                 break;
             case 3:
-                one.setBackgroundColor(ContextCompat.getColor(context,R.color.blueFarmacy));
                 two.setBackgroundColor(ContextCompat.getColor(context,R.color.blueFarmacy));
                 image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoverde));
                 far.setVisibility(View.VISIBLE);
                 break;
             case 4:
-                one.setBackgroundColor(ContextCompat.getColor(context,R.color.bluePet));
                 two.setBackgroundColor(ContextCompat.getColor(context,R.color.bluePet));
                 image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoazul));
                 mas.setVisibility(View.VISIBLE);
                 break;
             case 5:
-                one.setBackgroundColor(ContextCompat.getColor(context,R.color.yellowmarket));
                 two.setBackgroundColor(ContextCompat.getColor(context,R.color.yellowmarket));
                 image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.logoamarillo));
                 mer.setVisibility(View.VISIBLE);
@@ -1023,7 +1019,6 @@ public class stablishm extends AppCompatActivity
                                             obligator.getInt("id"),obligator.getString("nombre"),obligator.getString("tipo_txt"),1,obligator.getInt("ingrediente_id"),0,"none"
                                     ));
                                 }
-
 
                                 JSONArray normal = response.getJSONArray("NORMAL");
 

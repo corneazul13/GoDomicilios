@@ -54,7 +54,7 @@
                         android:layout_marginLeft="7dp"
                         android:layout_weight="1"
                         android:text="Nombre Restaurante"
-                        android:textColor="@color/redGo" />
+                        android:textColor="@color/redLast" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -144,7 +144,7 @@
                 android:layout_marginLeft="7dp"
                 android:layout_marginRight="7dp"
                 android:layout_weight="0.9"
-                android:background="@color/redGo"
+                android:background="@color/redLast"
                 android:orientation="horizontal">
 
             </LinearLayout>

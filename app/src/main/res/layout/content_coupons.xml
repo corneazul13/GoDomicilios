@@ -288,7 +288,7 @@
                     android:layout_weight="0.8"
                     android:gravity="center"
                     android:text="CANCELAR"
-                    android:textColor="@color/redGo" />
+                    android:textColor="@color/redLast" />
 
             </LinearLayout>
 

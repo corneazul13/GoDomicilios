@@ -42,6 +42,7 @@ public class settings {
     public static allChecks allChecks = new allChecks();
     public static  answerOrder answerOrder = new answerOrder();
     public static chats chats = new chats();
+    public static optionalIngredients optionalIngredients = new optionalIngredients();
 
     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;

@@ -441,7 +441,7 @@ public class head extends AppCompatActivity
                                 if (address.getString("estadoEstablecimiento").equals("ABIERTO")) {
 
                                 } else{
-                                    buttons.setBackgroundColor(ContextCompat.getColor(context,R.color.redGo));
+                                    buttons.setBackgroundColor(ContextCompat.getColor(context,R.color.redLast));
                                     buttons.setText("CERRADO");
                                     main.setEnabled(false);
                                 }
