@@ -44,7 +44,7 @@ public class productm extends AppCompatActivity {
 
     Context context;
     ImageView profile_image, secondImg, imageViewDrink, imageViewIngredient, imageViewAddition, imageViewObsrv, img_banner_options;
-    TextView name, address, price, description, priceProduct, subtotal, back, number,productName,textxvi,priceMinimum;
+    TextView name, address, price, description, priceProduct, subtotal, back, number,productName,textxvi,priceMinimum, lbl_title_layout;
     LinearLayout  li, imgDrink,imgIngredient, imgAddition;
     Button addProduct;
     int dd=0, aa=0, validatora =0, bb=0, validatorb=0, validatorc=0,cc=0,
@@ -78,6 +78,7 @@ public class productm extends AppCompatActivity {
         context = this;
         profile_image = (ImageView) findViewById(R.id.profile_image);
         productName = (TextView) findViewById(R.id.productName);
+        lbl_title_layout = (TextView)findViewById(R.id.lbl_title_layout);
         priceProduct = (TextView) findViewById(R.id.priceProduct);
         description = (TextView) findViewById(R.id.description);
         imageViewDrink = (ImageView) findViewById(R.id.imageViewDrink);
@@ -1708,6 +1709,7 @@ public class productm extends AppCompatActivity {
                 Picasso.with(context).load(R.drawable.option_drink).centerInside().fit().into(img_banner_options);
                 YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
                 //Changes
+                lbl_title_layout.setText("Bebidas");
                 Picasso.with(context).load(R.drawable.icon_bebida_lleno).centerInside().fit().into(imageViewDrink);
                 Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
                 Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
@@ -1724,6 +1726,7 @@ public class productm extends AppCompatActivity {
                  Picasso.with(context).load(R.drawable.option_ingredients).centerInside().fit().into(img_banner_options);
                  YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
                  //Changes
+                 lbl_title_layout.setText("Ingredientes");
                  Picasso.with(context).load(R.drawable.icon_ingredientes_lleno).centerInside().fit().into(imageViewIngredient);
                  Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
                  Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
@@ -1740,6 +1743,7 @@ public class productm extends AppCompatActivity {
                  Picasso.with(context).load(R.drawable.option_additions).centerInside().fit().into(img_banner_options);
                  YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
                  //Changes
+                 lbl_title_layout.setText("Adiciones");
                  Picasso.with(context).load(R.drawable.icon_adiciones_lleno).centerInside().fit().into(imageViewAddition);
                  Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
                  Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
@@ -1756,6 +1760,7 @@ public class productm extends AppCompatActivity {
                  Picasso.with(context).load(R.drawable.option_observations).centerInside().fit().into(img_banner_options);
                  YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
                  //Changes
+                 lbl_title_layout.setText("Observaciones");
                  Picasso.with(context).load(R.drawable.icon_observaciones_lleno).centerInside().fit().into(imageViewObsrv);
                  Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
                  Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
