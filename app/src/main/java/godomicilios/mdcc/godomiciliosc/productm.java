@@ -93,11 +93,11 @@ public class productm extends AppCompatActivity {
         productName.setText(settings.subtotal.getName());
         description.setText(settings.subtotal.getDescription());
         priceProduct.setText("$" +settings.subtotal.getPrice());
-        confirmeFirstImage(settings.stablishment.getId());
         showadditions = (LinearLayout) findViewById(R.id.showAdditions);
         showDrink = (LinearLayout) findViewById(R.id.showDrink);
         showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
         showObservations = (LinearLayout) findViewById(R.id.showObservation);
+        confirmeFirstImage(settings.stablishment.getId());
         settings.productCar.productCars = new ArrayList<>();
         settings.productCar.productCars.add(new productCar(
 
@@ -1506,7 +1506,7 @@ public class productm extends AppCompatActivity {
             if (settings.ingredients.ingredientses.size()> 0){
                 lbl_title_layout.setText("Ingredientes");
                 clickIngredients();
-                putIngredients();
+                //putIngredients();
                 if (showIngredients.getVisibility()==View.GONE){showIngredients.setVisibility(View.VISIBLE);}
                 showadditions.setVisibility(View.GONE);
                 showObservations.setVisibility(View.GONE);
@@ -1943,7 +1943,6 @@ public class productm extends AppCompatActivity {
                     TextView text = (TextView) childOb.findViewById(R.id.text);
                     text.setText(t);
                     liObli.addView(childOb);
-
                 }
 
 
