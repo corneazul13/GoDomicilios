@@ -54,6 +54,7 @@ import godomicilios.mdcc.godomiciliosc.settings.addition;
 import godomicilios.mdcc.godomiciliosc.settings.drink;
 import godomicilios.mdcc.godomiciliosc.settings.ingredients;
 import godomicilios.mdcc.godomiciliosc.settings.methodPay;
+import godomicilios.mdcc.godomiciliosc.settings.optionalIngredients;
 import godomicilios.mdcc.godomiciliosc.settings.product;
 import godomicilios.mdcc.godomiciliosc.settings.rank;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
@@ -72,6 +73,8 @@ public class stablishm extends AppCompatActivity
     TextView numberCar;
     View include;
     DecimalFormat formatea = new DecimalFormat("###.###");
+    ArrayList<ingredients> ingr;
+    ArrayList<String> names;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1056,6 +1059,7 @@ public class stablishm extends AppCompatActivity
                                     }
 
                                 }
+                                //organize();
                                 try {
                                     settings.addition.additions= new ArrayList<>();
                                     aditions("https://godomicilios.co/webService/servicios.php?svice=ADICIONES&metodo=json&proId="+ productId, productId);
@@ -1278,5 +1282,40 @@ public class stablishm extends AppCompatActivity
             settings.drink.drinks= new ArrayList<>();
         }
     }
+    public void organizeCategor(){
+         ingr= new ArrayList<>();
+         names = new ArrayList<>();
+        settings.optionalIngredients.optionalIngredientses = new ArrayList<>();
+        for (int i =0;i<settings.ingredients.ingredientses.size();i++){
+            String category = settings.ingredients.ingredientses.get(i).categor;
+            ArrayList<ingredients> ingre = settings.ingredients.ingredientses;
+            if(i==0&&!category.equals("")){
+                names.add(category);
+                settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category, ingr));
+            }
+            for(int j=0; j<names.size();j++){
+                if(!names.get(j).equals(category)&&!category.equals("")){
+                    names.add(category);
+                    settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category, ingr));
+                }
+            }
+        }
+
+
+    }
+    public void organizeIngredients(){
+        ArrayList<ingredients> finalIngre=new ArrayList<>();
+        for (int i =0;i<settings.ingredients.ingredientses.size();i++){
+            ArrayList<ingredients> temporal = settings.ingredients.ingredientses;
+            String categor = settings.ingredients.ingredientses.get(i).categor;
+            ingredients ingredien= new ingredients(temporal.get(i).id, temporal.get(i).name, temporal.get(i).status, temporal.get(i).type,temporal.get(i).ingId,temporal.get(i).max,temporal.get(i).categor);
+            for (int j =0; j<names.size();j++){
+                if(categor.equals(names.get(j))){
+                    finalIngre.add(ingredien);
+                }
+            }
+        }
+    }
+
 }
 
