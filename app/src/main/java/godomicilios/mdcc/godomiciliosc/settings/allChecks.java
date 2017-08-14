@@ -9,15 +9,15 @@ import java.util.ArrayList;
  */
 
 public class allChecks {
-    private android.support.v7.widget.AppCompatCheckBox[] checksDrink;
-    private android.support.v7.widget.AppCompatCheckBox[] checkAddition;
-    private android.support.v7.widget.AppCompatCheckBox[] checks;
+    private me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink;
+    private me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition;
+    private me.omidh.liquidradiobutton.LiquidRadioButton[] checks;
     public ArrayList<EditText>ed;
     public ArrayList<allChecks> allCheckses;
 
-    public allChecks (android.support.v7.widget.AppCompatCheckBox[] checksDrink,
-                      android.support.v7.widget.AppCompatCheckBox[] checkAddition,
-                      android.support.v7.widget.AppCompatCheckBox[] checks){
+    public allChecks (me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink,
+                      me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition,
+                      me.omidh.liquidradiobutton.LiquidRadioButton[] checks){
         this.setChecksDrink(checksDrink);
         this.setCheckAddition(checkAddition);
         this.setChecks(checks);
@@ -25,27 +25,27 @@ public class allChecks {
     public allChecks(){}
 
 
-    public android.support.v7.widget.AppCompatCheckBox[] getChecksDrink() {
+    public me.omidh.liquidradiobutton.LiquidRadioButton[] getChecksDrink() {
         return checksDrink;
     }
 
-    public void setChecksDrink(android.support.v7.widget.AppCompatCheckBox[] checksDrink) {
+    public void setChecksDrink(me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink) {
         this.checksDrink = checksDrink;
     }
 
-    public android.support.v7.widget.AppCompatCheckBox[] getCheckAddition() {
+    public me.omidh.liquidradiobutton.LiquidRadioButton[] getCheckAddition() {
         return checkAddition;
     }
 
-    public void setCheckAddition(android.support.v7.widget.AppCompatCheckBox[] checkAddition) {
+    public void setCheckAddition(me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition) {
         this.checkAddition = checkAddition;
     }
 
-    public android.support.v7.widget.AppCompatCheckBox[] getChecks() {
+    public me.omidh.liquidradiobutton.LiquidRadioButton[] getChecks() {
         return checks;
     }
 
-    public void setChecks(android.support.v7.widget.AppCompatCheckBox[] checks) {
+    public void setChecks(me.omidh.liquidradiobutton.LiquidRadioButton[] checks) {
         this.checks = checks;
     }
 

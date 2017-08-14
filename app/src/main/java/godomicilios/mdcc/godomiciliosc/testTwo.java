@@ -229,30 +229,5 @@ public class testTwo extends AppCompatActivity
 
 
             }*/
-    public void nothing (){
-        ArrayList<String> names = new ArrayList<>();
-        ArrayList<ingredients> countIngreOptio = new ArrayList<>();
-        for(int namess=0;namess<names.size();namess++){
-            //add names categor
-            String absoluteName=names.get(namess);
-            ArrayList<ingredients> absoluteIngredients=new ArrayList<>();
 
-            for(int opt=0;opt<countIngreOptio.size();opt++){
-                //add optionals
-                ingredients ingg = new ingredients(
-                        countIngreOptio.get(opt).id,countIngreOptio.get(opt).name,
-                        countIngreOptio.get(opt).status,countIngreOptio.get(opt).type,
-                        countIngreOptio.get(opt).ingId,countIngreOptio.get(opt).max,
-                        countIngreOptio.get(opt).categor
-                );
-                if(countIngreOptio.get(opt).categor.equals(absoluteName)){
-                    absoluteIngredients.add(ingg);
-                }
-
-            }
-            settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(
-                    absoluteName,0, absoluteIngredients
-            ));
-        }
-    }
 }

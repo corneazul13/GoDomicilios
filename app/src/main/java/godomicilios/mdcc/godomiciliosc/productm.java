@@ -36,6 +36,7 @@ import godomicilios.mdcc.godomiciliosc.settings.allChecks;
 import godomicilios.mdcc.godomiciliosc.settings.drinkCar;
 import godomicilios.mdcc.godomiciliosc.settings.ingredients;
 import godomicilios.mdcc.godomiciliosc.settings.ingredientsCar;
+import godomicilios.mdcc.godomiciliosc.settings.optionalIngredients;
 import godomicilios.mdcc.godomiciliosc.settings.productCar;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 
@@ -60,11 +61,13 @@ public class productm extends AppCompatActivity {
     Integer drinkSize = settings.drink.drinks.size();
     Integer cantii = settings.subtotal.getCant();
     ArrayList<EditText>ed2 = new ArrayList<>();
-    android.support.v7.widget.AppCompatCheckBox[] checksDrink2 = new android.support.v7.widget.AppCompatCheckBox[drinkSize];
-    android.support.v7.widget.AppCompatCheckBox[] checkAddition2 = new android.support.v7.widget.AppCompatCheckBox[additionSize];
-    android.support.v7.widget.AppCompatCheckBox[] checks2 = new android.support.v7.widget.AppCompatCheckBox[ingredientSize];
+    me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink2 = new me.omidh.liquidradiobutton.LiquidRadioButton[drinkSize];
+    me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition2 = new me.omidh.liquidradiobutton.LiquidRadioButton[additionSize];
+    me.omidh.liquidradiobutton.LiquidRadioButton[] checks2 = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
     Integer ingreConfirm = 1, additiConfirm=1, drinkConfirm=1;
     ArrayList<ingredients> countIngreNormal, countIngreOptio, countIngreObli;
+    LinearLayout showDrink, showIngredients, showadditions,showObservations;
+    Integer daa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +93,34 @@ public class productm extends AppCompatActivity {
         description.setText(settings.subtotal.getDescription());
         priceProduct.setText("$" +settings.subtotal.getPrice());
         confirmeFirstImage(settings.stablishment.getId());
+        showadditions = (LinearLayout) findViewById(R.id.showAdditions);
+        showDrink = (LinearLayout) findViewById(R.id.showDrink);
+        showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
+        showObservations = (LinearLayout) findViewById(R.id.showObservation);
+        settings.productCar.productCars = new ArrayList<>();
+
         showExists();
+
+
         View child = View.inflate(productm.this, R.layout.observation, null);
+        settings.ingredients.ingredientses = new ArrayList<>();
+        settings.addition.additions = new ArrayList<>();
+        showObservations.setVisibility(View.GONE);
+        settings.productCar.productCars.add(new productCar(
+
+                settings.subtotal.getProductId(),
+                settings.subtotal.getName(),
+                settings.subtotal.getPrice(),
+                settings.subtotal.getPicture(),
+                "",
+                0,
+                settings.additionCar.additionCars,
+                settings.ingredientsCar.ingredientsCars,
+                settings.drinkCar
+        ));
         move();
         clicksDetails();
-
+        putDrink();
 
         /*secondImg = (ImageView) findViewById(R.id.secondImg);
         productPicture = (ImageView) findViewById(R.id.profile_image);
@@ -118,7 +144,7 @@ public class productm extends AppCompatActivity {
         numberCar.setText(settings.user.getCarCant());
         final productCar pCar = new productCar();
         settings.subtotal.setFinalPrice(settings.subtotal.getPrice());
-        settings.productCar.productCars = new ArrayList<>();
+
         settings.stablishmentCar.stablishmentCars = new ArrayList<>();
         settings.allChecks.ed = new ArrayList<>();
 
@@ -807,9 +833,9 @@ public class productm extends AppCompatActivity {
 
     public void More (Integer g){
 
-        final android.support.v7.widget.AppCompatCheckBox[] checksDrink = new android.support.v7.widget.AppCompatCheckBox[drinkSize];
-        android.support.v7.widget.AppCompatCheckBox[] checkAddition = new android.support.v7.widget.AppCompatCheckBox[additionSize];
-        android.support.v7.widget.AppCompatCheckBox[] checks = new android.support.v7.widget.AppCompatCheckBox[ingredientSize];
+
+        me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition = new me.omidh.liquidradiobutton.LiquidRadioButton[additionSize];
+        me.omidh.liquidradiobutton.LiquidRadioButton[] checks = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
         ArrayList<EditText> ed = new ArrayList<>();
 
         countFinal= countFinal+1;
@@ -847,19 +873,10 @@ public class productm extends AppCompatActivity {
                 settings.allChecks.allCheckses.get(g).getCheckAddition(),
                 settings.allChecks.allCheckses.get(g).getChecks()));
 
-        settings.productCar.productCars.add(new productCar(
 
-                settings.subtotal.getProductId(),
-                settings.subtotal.getName(),
-                settings.subtotal.getPrice(),
-                settings.subtotal.getPicture(),
-                "",0,
-                settings.additionCar.additionCars,
-                settings.ingredientsCar.ingredientsCars,
-                settings.drinkCar
-        ));
 
-        final Integer daa= settings.productCar.productCars.size()-1;
+
+        settings.ingredients.ingredientses = new ArrayList<>();
 
         if (settings.ingredients.ingredientses.size()>0){
             for (int k =0; k<settings.ingredients.ingredientses.size();k++){
@@ -909,7 +926,7 @@ public class productm extends AppCompatActivity {
                         )
                 );
 
-                final android.support.v7.widget.AppCompatCheckBox nuevo_checkbox = (android.support.v7.widget.AppCompatCheckBox) childIn.findViewById(R.id.appCompatCheckBox);
+                final me.omidh.liquidradiobutton.LiquidRadioButton nuevo_checkbox = (me.omidh.liquidradiobutton.LiquidRadioButton) childIn.findViewById(R.id.appCompatCheckBox);
 
                 checks[k] = nuevo_checkbox;
                 checks[k].setId(k);
@@ -945,128 +962,8 @@ public class productm extends AppCompatActivity {
 
         }
 
-        if (settings.drink.drinks.size()> 0){
-
-            for(int x=0;x<settings.drink.drinks.size();x++){
-
-                settings.drinkCar.drinkCars = new ArrayList<>();
-
-                settings.drinkCar.setId(settings.drink.drinks.get(x).getId());
-                settings.drinkCar.setName(settings.drink.drinks.get(x).getName());
-                settings.drinkCar.setPicture(settings.drink.drinks.get(x).getPicture());
-                settings.drinkCar.setLength(settings.drink.drinks.get(x).getLenght());
-
-                final View childa = View.inflate(productm.this, R.layout.drink, null);
-
-                TextView name = (TextView) childa.findViewById(R.id.text);
-                ImageView picture = (ImageView) childa.findViewById(R.id.image);
-                TextView length = (TextView) childa.findViewById(R.id.length);
-                LinearLayout allAll = (LinearLayout) childa.findViewById(R.id.allAll);
-                final android.support.v7.widget.AppCompatCheckBox nuevo_checkbox = (android.support.v7.widget.AppCompatCheckBox) childa.findViewById(R.id.appCompatCheckBox);
-                nuevo_checkbox.setId(x);
-                checksDrink[x] = nuevo_checkbox;
-                checksDrink[x].setId(x);
-                settings.allChecks.allCheckses.set(g, new allChecks(
-                        checksDrink,
-                        settings.allChecks.allCheckses.get(g).getCheckAddition(),
-                        settings.allChecks.allCheckses.get(g).getChecks()));
-
-                boolean seleccionado = true;
-                Picasso.with(productm.this)
-                        .load("http://godomicilios.co/admin/img/bebidas/"+settings.drink.drinks.get(x).getPicture())
-                        .into(picture, new com.squareup.picasso.Callback() {
-                            @Override
-                            public void onSuccess() {
-                                //do smth when picture is loaded successfully
-                            }
-
-                            @Override
-                            public void onError() {
-                                //do smth when there is picture loading error
-                            }
-                        });
-                if(x==0){
-                    settings.productCar.productCars.set(daa ,new productCar(
-                                    settings.productCar.productCars.get(daa).getIdProduct(),
-                                    settings.productCar.productCars.get(daa).getName(),
-                                    settings.productCar.productCars.get(daa).getPrice(),
-                                    settings.productCar.productCars.get(daa).getPicture(),
-                                    settings.productCar.productCars.get(daa).getObser(),0,
-                                    settings.productCar.productCars.get(daa).getAdditionCars(),
-                                    settings.productCar.productCars.get(daa).getIngredientsCars(),
-                                    new drinkCar(
-                                            settings.drinkCar.getId(),
-                                            settings.drinkCar.getName(),
-                                            settings.drinkCar.getPicture(),
-                                            settings.drinkCar.getLength()
-                                    )
-                            )
-                    );
-                }
 
 
-                name.setText(settings.drink.drinks.get(x).getName());
-                length.setText(settings.drink.drinks.get(x).getLenght());
-                if(x==0){
-                    int states[][] = {{android.R.attr.state_checked}, {}};
-                    int colors[] = {ContextCompat.getColor(this,R.color.redGo),ContextCompat.getColor(this,R.color.redGo)};
-                    CompoundButtonCompat.setButtonTintList(nuevo_checkbox, new ColorStateList(states, colors));
-                    nuevo_checkbox.isChecked();
-                    nuevo_checkbox.setChecked(true);
-                }
-                else{
-                    int states[][] = {{android.R.attr.state_checked}, {}};
-                    int colors[] = {ContextCompat.getColor(this,R.color.redGo),ContextCompat.getColor(this,R.color.redGo)};
-                    CompoundButtonCompat.setButtonTintList(nuevo_checkbox, new ColorStateList(states, colors));
-                    nuevo_checkbox.setEnabled(true);
-                    nuevo_checkbox.setChecked(false);
-                }
-                allAll.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                    }
-                });
-                nuevo_checkbox.setOnClickListener(new View.OnClickListener() {
-                    Integer idCheck =nuevo_checkbox.getId();
-                    @Override
-                    public void onClick(View v) {
-                        for (int vv=0;vv<settings.drink.drinks.size();vv++){
-                            if(idCheck==vv){
-                                Boolean booleen =checksDrink[vv].isSelected();
-                                if(!booleen){
-                                    checksDrink[vv].setChecked(true);
-                                    settings.productCar.productCars.set(daa ,new productCar(
-                                                    settings.productCar.productCars.get(daa).getIdProduct(),
-                                                    settings.productCar.productCars.get(daa).getName(),
-                                                    settings.productCar.productCars.get(daa).getPrice(),
-                                                    settings.productCar.productCars.get(daa).getPicture(),
-                                                    settings.productCar.productCars.get(daa).getObser(),0,
-                                                    settings.productCar.productCars.get(daa).getAdditionCars(),
-                                                    settings.productCar.productCars.get(daa).getIngredientsCars(),
-                                                    new drinkCar(
-                                                            settings.drink.drinks.get(idCheck).getId(),
-                                                            settings.drink.drinks.get(idCheck).getName(),
-                                                            settings.drink.drinks.get(idCheck).getPicture(),
-                                                            settings.drink.drinks.get(idCheck).getLenght()
-                                                    )
-                                            )
-                                    );
-                                }
-                            }
-                            else{
-                                checksDrink[vv].setChecked(false);
-                            }
-                        }
-                    }
-                });
-
-                //length.setText(settings.drink.drinks.get(i).getLenght());
-                a.addView(childa);
-            }
-
-            drinks.setVisibility(View.VISIBLE);
-        }
         if(settings.addition.additions.size()> 0){
             if(settings.addition.additions.size()>0){
 
@@ -1075,7 +972,7 @@ public class productm extends AppCompatActivity {
                     settings.additionCar.additionCars = new ArrayList<>();
 
                     final View childAdd = View.inflate(productm.this, R.layout.additionss, null);
-                    final android.support.v7.widget.AppCompatCheckBox appCompatCheckBox = (android.support.v7.widget.AppCompatCheckBox) childAdd.findViewById(R.id.appCompatCheckBox);
+                    final me.omidh.liquidradiobutton.LiquidRadioButton appCompatCheckBox = (me.omidh.liquidradiobutton.LiquidRadioButton) childAdd.findViewById(R.id.appCompatCheckBox);
                     final ImageView image = (ImageView) childAdd.findViewById(R.id.image);
                     TextView name = (TextView) childAdd.findViewById(R.id.textOne);
                     TextView price = (TextView) childAdd.findViewById(R.id.textTwo);
@@ -1591,27 +1488,40 @@ public class productm extends AppCompatActivity {
     public void confirmeFirstImage(Integer integer){
         Integer sizeDrink =settings.drink.drinks.size();
         if (sizeDrink> 0){
-            imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_bebida_lleno));
-            View child = View.inflate(productm.this, R.layout.drink, null);
+            imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_bebida_lleno));
+
+           /* showadditions.setVisibility(View.GONE);
+            showIngredients.setVisibility(View.GONE);
+            showObservations.setVisibility(View.GONE);
+            View child = View.inflate(productm.this, R.layout.drink, null);*/
         }
         else{
             imgDrink.setVisibility(View.GONE);
+            showDrink.setVisibility(View.GONE);
             drinkConfirm=0;
             if (settings.ingredients.ingredientses.size()> 0){
-                imageViewIngredient.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_ingredientes_lleno));
+                clickIngredients();
+                if (showIngredients.getVisibility()==View.GONE){showIngredients.setVisibility(View.VISIBLE);}
+                showadditions.setVisibility(View.GONE);
+                showObservations.setVisibility(View.GONE);
             }
             else{
                 ingreConfirm=0;
                 imgIngredient.setVisibility(View.GONE);
+                showIngredients.setVisibility(View.GONE);
                 if (settings.addition.additions.size()>0){
-                    imageViewAddition.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_adiciones_lleno));
+                    clickAdditions();
+                    if (showadditions.getVisibility()==View.GONE){showadditions.setVisibility(View.VISIBLE);}
+                    showObservations.setVisibility(View.GONE);
                 }
                 else{
                     additiConfirm=0;
+                    if (showObservations.getVisibility()==View.GONE){showObservations.setVisibility(View.VISIBLE);}
                     imgAddition.setVisibility(View.GONE);
+                    showadditions.setVisibility(View.GONE);
                     switch (integer){
                         case 1:
-                            imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_adiciones_lleno));
+                            clickObservations();
                             break;
                         case 2:
                             imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno_beer));
@@ -1636,12 +1546,14 @@ public class productm extends AppCompatActivity {
 
         if (sizeIngre<1&&imgIngredient.getVisibility() ==View.VISIBLE){
             imgIngredient.setVisibility(View.GONE);
+            if (showIngredients.getVisibility()==View.VISIBLE){showIngredients.setVisibility(View.GONE);}
             ingreConfirm=0;
             View child = View.inflate(productm.this, R.layout.ingradients, null);
         }
         if (sizeAddi<1&&imgAddition.getVisibility() ==View.VISIBLE){
             imgAddition.setVisibility(View.GONE);
             additiConfirm=0;
+            if (showadditions.getVisibility()==View.VISIBLE){showadditions.setVisibility(View.GONE);}
             View child = View.inflate(productm.this, R.layout.additionss, null);
         }
     }
@@ -1852,5 +1764,155 @@ public class productm extends AppCompatActivity {
          });
      }
 
+    public void nothing () {
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<ingredients> countIngreOptio = new ArrayList<>();
+        for (int namess = 0; namess < names.size(); namess++) {
+            //add names categor
+            String absoluteName = names.get(namess);
+            ArrayList<ingredients> absoluteIngredients = new ArrayList<>();
+
+            for (int opt = 0; opt < countIngreOptio.size(); opt++) {
+                //add optionals
+                ingredients ingg = new ingredients(
+                        countIngreOptio.get(opt).id, countIngreOptio.get(opt).name,
+                        countIngreOptio.get(opt).status, countIngreOptio.get(opt).type,
+                        countIngreOptio.get(opt).ingId, countIngreOptio.get(opt).max,
+                        countIngreOptio.get(opt).categor
+                );
+                if (countIngreOptio.get(opt).categor.equals(absoluteName)) {
+                    absoluteIngredients.add(ingg);
+                }
+
+            }
+            settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(
+                    absoluteName, 0, absoluteIngredients
+            ));
+        }
+    }
+    public void putDrink(){
+        daa=settings.productCar.productCars.size()-1;
+        settings.allChecks.allCheckses = new ArrayList<>();
+        settings.allChecks.allCheckses.add(new allChecks(checksDrink2, checkAddition2, checks2)
+        );
+
+
+        settings.allChecks.allCheckses.add(new allChecks(
+                checksDrink2, checkAddition2, checks2
+        ));
+        final me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink = new me.omidh.liquidradiobutton.LiquidRadioButton[drinkSize];
+        if (settings.drink.drinks.size()> 0){
+
+            for(int x=0;x<settings.drink.drinks.size();x++){
+
+                settings.drinkCar.drinkCars = new ArrayList<>();
+
+                settings.drinkCar.setId(settings.drink.drinks.get(x).getId());
+                settings.drinkCar.setName(settings.drink.drinks.get(x).getName());
+                settings.drinkCar.setPicture(settings.drink.drinks.get(x).getPicture());
+                settings.drinkCar.setLength(settings.drink.drinks.get(x).getLenght());
+
+                final View childa = View.inflate(productm.this, R.layout.drink, null);
+
+                TextView name = (TextView) childa.findViewById(R.id.text);
+                ImageView picture = (ImageView) childa.findViewById(R.id.image);
+                TextView length = (TextView) childa.findViewById(R.id.length);
+                LinearLayout allAll = (LinearLayout) childa.findViewById(R.id.allAll);
+                final me.omidh.liquidradiobutton.LiquidRadioButton nuevo_checkbox = (me.omidh.liquidradiobutton.LiquidRadioButton) childa.findViewById(R.id.appCompatCheckBox);
+                nuevo_checkbox.setId(x);
+                checksDrink[x] = nuevo_checkbox;
+                checksDrink[x].setId(x);
+                settings.allChecks.allCheckses.set(0, new allChecks(
+                        checksDrink,
+                        settings.allChecks.allCheckses.get(0).getCheckAddition(),
+                        settings.allChecks.allCheckses.get(0).getChecks()));
+
+                boolean seleccionado = true;
+                Picasso.with(productm.this)
+                        .load("http://godomicilios.co/admin/img/bebidas/"+settings.drink.drinks.get(x).getPicture())
+                        .into(picture, new com.squareup.picasso.Callback() {
+                            @Override
+                            public void onSuccess() {
+                                //do smth when picture is loaded successfully
+                            }
+
+                            @Override
+                            public void onError() {
+                                //do smth when there is picture loading error
+                            }
+                        });
+                if(x==0){
+                    settings.productCar.productCars.set(daa ,new productCar(
+                                    settings.productCar.productCars.get(daa).getIdProduct(),
+                                    settings.productCar.productCars.get(daa).getName(),
+                                    settings.productCar.productCars.get(daa).getPrice(),
+                                    settings.productCar.productCars.get(daa).getPicture(),
+                                    settings.productCar.productCars.get(daa).getObser(),0,
+                                    settings.productCar.productCars.get(daa).getAdditionCars(),
+                                    settings.productCar.productCars.get(daa).getIngredientsCars(),
+                                    new drinkCar(
+                                            settings.drinkCar.getId(),
+                                            settings.drinkCar.getName(),
+                                            settings.drinkCar.getPicture(),
+                                            settings.drinkCar.getLength()
+                                    )
+                            )
+                    );
+                }
+
+                name.setText(settings.drink.drinks.get(x).getName());
+                length.setText(settings.drink.drinks.get(x).getLenght());
+                if(x==0){
+                    nuevo_checkbox.setChecked(true);
+                }
+                else{
+                    nuevo_checkbox.setEnabled(true);
+                    nuevo_checkbox.setChecked(false);
+                }
+                allAll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                nuevo_checkbox.setOnClickListener(new View.OnClickListener() {
+                    Integer idCheck =nuevo_checkbox.getId();
+                    @Override
+                    public void onClick(View v) {
+                        for (int vv=0;vv<settings.drink.drinks.size();vv++){
+                            if(idCheck==vv){
+                                Boolean booleen =checksDrink[vv].isSelected();
+                                if(!booleen){
+                                    checksDrink[vv].setChecked(true);
+                                    settings.productCar.productCars.set(daa ,new productCar(
+                                                    settings.productCar.productCars.get(daa).getIdProduct(),
+                                                    settings.productCar.productCars.get(daa).getName(),
+                                                    settings.productCar.productCars.get(daa).getPrice(),
+                                                    settings.productCar.productCars.get(daa).getPicture(),
+                                                    settings.productCar.productCars.get(daa).getObser(),0,
+                                                    settings.productCar.productCars.get(daa).getAdditionCars(),
+                                                    settings.productCar.productCars.get(daa).getIngredientsCars(),
+                                                    new drinkCar(
+                                                            settings.drink.drinks.get(idCheck).getId(),
+                                                            settings.drink.drinks.get(idCheck).getName(),
+                                                            settings.drink.drinks.get(idCheck).getPicture(),
+                                                            settings.drink.drinks.get(idCheck).getLenght()
+                                                    )
+                                            )
+                                    );
+                                }
+                            }
+                            else{
+                                checksDrink[vv].setChecked(false);
+                            }
+                        }
+                    }
+                });
+
+                //length.setText(settings.drink.drinks.get(i).getLenght());
+                showDrink.addView(childa);
+            }
+        }
+    }
 
 }
