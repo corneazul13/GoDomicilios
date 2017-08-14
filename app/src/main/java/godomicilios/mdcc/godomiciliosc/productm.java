@@ -1914,5 +1914,90 @@ public class productm extends AppCompatActivity {
             }
         }
     }
+    public void putIngredients(){
+        settings.ingredientsCar.ingredientsCars = new ArrayList<>();
+        me.omidh.liquidradiobutton.LiquidRadioButton[] checks = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
+        if (settings.ingredients.ingredientses.size()>0){
+            for (int k =0; k<settings.ingredients.ingredientses.size();k++){
+
+                settings.ingredientsCar.ingredientsCars = new ArrayList<>();
+
+                final View childIn = View.inflate(productm.this, R.layout.drink, null);
+                TextView name = (TextView) childIn.findViewById(R.id.text);
+                name.setText(settings.ingredients.ingredientses.get(k).name);
+                LinearLayout p = (LinearLayout) childIn.findViewById(R.id.p);
+                LinearLayout allAll = (LinearLayout) childIn.findViewById(R.id.allAll);
+                boolean seleccionado = true;
+
+                settings.additionCar.additionCars = new ArrayList<>();
+
+                for(int ing=0;ing<settings.ingredients.ingredientses.size();ing++){
+
+                    settings.ingredientsCar.ingredientsCars.add(new ingredientsCar(
+                            settings.ingredients.ingredientses.get(ing).id,
+                            settings.ingredients.ingredientses.get(ing).name
+                    ));
+                }
+                for (int obli=0;obli<countIngreObli.size();obli++){
+
+                }
+                for (int norma=0;norma<countIngreNormal.size();norma++){
+
+
+                }
+                ArrayList<String>names = getNamesOptional();
+                for(int namess=0;namess<names.size();namess++){
+                    //add names categor
+                    for(int opt=0;opt<countIngreOptio.size();opt++){
+
+                        //add optionals
+                    }
+                }
+                settings.productCar.productCars.set(daa,new productCar(
+                                settings.productCar.productCars.get(daa).getIdProduct(),
+                                settings.productCar.productCars.get(daa).getName(),
+                                settings.productCar.productCars.get(daa).getPrice(),
+                                settings.productCar.productCars.get(daa).getPicture(),
+                                settings.productCar.productCars.get(daa).getObser(),0,
+                                settings.productCar.productCars.get(daa).getAdditionCars(),
+                                settings.ingredientsCar.ingredientsCars,
+                                settings.productCar.productCars.get(daa).getDrinkCar()
+                        )
+                );
+
+                final me.omidh.liquidradiobutton.LiquidRadioButton nuevo_checkbox = (me.omidh.liquidradiobutton.LiquidRadioButton) childIn.findViewById(R.id.appCompatCheckBox);
+
+                checks[k] = nuevo_checkbox;
+                checks[k].setId(k);
+                settings.allChecks.allCheckses.set(0, new allChecks(
+                        settings.allChecks.allCheckses.get(0).getChecksDrink(),
+                        settings.allChecks.allCheckses.get(0).getCheckAddition(),
+                        checks));
+
+                /*if(settings.ingredients.ingredientses.get(k).obligatory == 1){
+                    nuevo_checkbox.isChecked();
+                    nuevo_checkbox.setChecked(seleccionado);
+                    int states[][] = {{android.R.attr.state_checked}, {}};
+                    int colors[] = {getResources().getColor(R.color.greenCar),getResources().getColor(R.color.greenCar)};
+                    CompoundButtonCompat.setButtonTintList(nuevo_checkbox, new ColorStateList(states, colors));
+                    nuevo_checkbox.setEnabled(false);
+                }
+                else{
+                    nuevo_checkbox.isChecked();
+                    nuevo_checkbox.setChecked(seleccionado);
+                }*/
+
+                allAll.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                    }
+                });
+                p.setVisibility(View.GONE);
+                showIngredients.addView(childIn);
+            }
+
+        }
+    }
 
 }
