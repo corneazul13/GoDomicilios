@@ -99,14 +99,6 @@ public class productm extends AppCompatActivity {
         showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
         showObservations = (LinearLayout) findViewById(R.id.showObservation);
         settings.productCar.productCars = new ArrayList<>();
-
-        showExists();
-
-
-        View child = View.inflate(productm.this, R.layout.observation, null);
-        settings.ingredients.ingredientses = new ArrayList<>();
-        settings.addition.additions = new ArrayList<>();
-        showObservations.setVisibility(View.GONE);
         settings.productCar.productCars.add(new productCar(
 
                 settings.subtotal.getProductId(),
@@ -119,6 +111,15 @@ public class productm extends AppCompatActivity {
                 settings.ingredientsCar.ingredientsCars,
                 settings.drinkCar
         ));
+
+        showExists();
+
+
+        View child = View.inflate(productm.this, R.layout.observation, null);
+        settings.ingredients.ingredientses = new ArrayList<>();
+        settings.addition.additions = new ArrayList<>();
+        showObservations.setVisibility(View.GONE);
+
         move();
         clicksDetails();
         //putDrink();
@@ -1488,7 +1489,7 @@ public class productm extends AppCompatActivity {
 
     public void confirmeFirstImage(Integer integer){
         Integer sizeDrink =settings.drink.drinks.size();
-        if (sizeDrink> 0){
+        if (0> 0){
             imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_bebida_lleno));
             lbl_title_layout.setText("Bebidas");
             putDrink();
@@ -1505,6 +1506,7 @@ public class productm extends AppCompatActivity {
             if (settings.ingredients.ingredientses.size()> 0){
                 lbl_title_layout.setText("Ingredientes");
                 clickIngredients();
+                putIngredients();
                 if (showIngredients.getVisibility()==View.GONE){showIngredients.setVisibility(View.VISIBLE);}
                 showadditions.setVisibility(View.GONE);
                 showObservations.setVisibility(View.GONE);
@@ -1929,12 +1931,23 @@ public class productm extends AppCompatActivity {
         settings.ingredientsCar.ingredientsCars = new ArrayList<>();
         me.omidh.liquidradiobutton.LiquidRadioButton[] checks = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
         if (settings.ingredients.ingredientses.size()>0){
+            settings.ingredientsCar.ingredientsCars = new ArrayList<>();
+            final View childIn = View.inflate(productm.this, R.layout.ingradients, null);
+            LinearLayout liObli =(LinearLayout) childIn.findViewById(R.id.liObli);
             for (int k =0; k<settings.ingredients.ingredientses.size();k++){
 
-                settings.ingredientsCar.ingredientsCars = new ArrayList<>();
 
-                final View childIn = View.inflate(productm.this, R.layout.drink, null);
-                TextView name = (TextView) childIn.findViewById(R.id.text);
+                if(settings.ingredients.ingredientses.get(k).type==1){
+                    String t = settings.ingredients.ingredientses.get(k).name;
+                    final View childOb = View.inflate(productm.this, R.layout.obliga, null);
+                    TextView text = (TextView) childOb.findViewById(R.id.text);
+                    text.setText(t);
+                    liObli.addView(childOb);
+
+                }
+
+
+                /*TextView name = (TextView) childIn.findViewById(R.id.text);
                 name.setText(settings.ingredients.ingredientses.get(k).name);
                 LinearLayout p = (LinearLayout) childIn.findViewById(R.id.p);
                 LinearLayout allAll = (LinearLayout) childIn.findViewById(R.id.allAll);
@@ -1985,7 +1998,7 @@ public class productm extends AppCompatActivity {
                         settings.allChecks.allCheckses.get(0).getCheckAddition(),
                         checks));
 
-                /*if(settings.ingredients.ingredientses.get(k).obligatory == 1){
+                *//*if(settings.ingredients.ingredientses.get(k).obligatory == 1){
                     nuevo_checkbox.isChecked();
                     nuevo_checkbox.setChecked(seleccionado);
                     int states[][] = {{android.R.attr.state_checked}, {}};
@@ -1996,15 +2009,15 @@ public class productm extends AppCompatActivity {
                 else{
                     nuevo_checkbox.isChecked();
                     nuevo_checkbox.setChecked(seleccionado);
-                }*/
+                }*//*
 
                 allAll.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
 
                     }
-                });
-                p.setVisibility(View.GONE);
+                });*/
+                //p.setVisibility(View.GONE);
                 showIngredients.addView(childIn);
             }
 
