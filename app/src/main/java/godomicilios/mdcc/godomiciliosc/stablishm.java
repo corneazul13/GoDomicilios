@@ -1028,36 +1028,41 @@ public class stablishm extends AppCompatActivity
                                             norma.getInt("id"),norma.getString("nombre"),norma.getString("tipo_txt"),2,norma.getInt("ingrediente_id"),0,"none"
                                     ));
                                 }
-                                JSONObject optional = response.getJSONObject("OPCIONAL");
-                                Iterator<String> iterator;
-                                optional.keys();
-                                ArrayList<JSONObject> objectArray=new ArrayList<>();
-                                int i = 0;
-                                for (iterator= optional.keys(); iterator.hasNext(); i++) {
-                                    String s = iterator.next();
-                                    JSONObject j =optional.getJSONObject(s);
-                                    JSONArray array = j.getJSONArray("opciones");
-                                    Integer maxi = j.getInt("cantidad_max");
-                                    for(int cou =0;cou<array.length();cou++){
-                                        final JSONObject opti = array.getJSONObject(cou);
-                                        settings.ingredients.ingredientses.add(new ingredients(
-                                                opti.getInt("id"), opti.getString("nombre"), opti.getString("tipo_txt"),3, opti.getInt("ingrediente_id"),maxi,s
-                                        ));
+                                if(!response.isNull("OPCIONAL")){
+                                    JSONObject optional = response.getJSONObject("OPCIONAL");
+                                    Iterator<String> iterator;
+                                    optional.keys();
+                                    ArrayList<JSONObject> objectArray=new ArrayList<>();
+                                    int i = 0;
+                                    for (iterator= optional.keys(); iterator.hasNext(); i++) {
+                                        String s = iterator.next();
+                                        JSONObject j =optional.getJSONObject(s);
+                                        JSONArray array = j.getJSONArray("opciones");
+                                        Integer maxi = j.getInt("cantidad_max");
+                                        for(int cou =0;cou<array.length();cou++){
+                                            final JSONObject opti = array.getJSONObject(cou);
+                                            settings.ingredients.ingredientses.add(new ingredients(
+                                                    opti.getInt("id"), opti.getString("nombre"), opti.getString("tipo_txt"),3, opti.getInt("ingrediente_id"),maxi,s
+                                            ));
+                                        }
+                                        objectArray.add(j);
                                     }
-                                    objectArray.add(j);
-                                }
 
-                                Integer drink=settings.ingredients.ingredientses.size();
-                            }
-                            else {
-                                settings.ingredients.ingredientses= new ArrayList<>();
-                            }
-                            try {
-                                settings.addition.additions= new ArrayList<>();
-                                aditions("https://godomicilios.co/webService/servicios.php?svice=ADICIONES&metodo=json&proId="+ productId, productId);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                                    Integer drink=settings.ingredients.ingredientses.size();
+                                }
+                                else {
+                                    if(settings.ingredients.ingredientses==null){
+                                        settings.ingredients.ingredientses= new ArrayList<>();
+                                    }
+
+                                }
+                                try {
+                                    settings.addition.additions= new ArrayList<>();
+                                    aditions("https://godomicilios.co/webService/servicios.php?svice=ADICIONES&metodo=json&proId="+ productId, productId);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                }
 
                         }
 
