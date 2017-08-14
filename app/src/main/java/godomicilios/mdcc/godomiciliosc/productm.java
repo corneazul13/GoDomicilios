@@ -1506,7 +1506,7 @@ public class productm extends AppCompatActivity {
             if (settings.ingredients.ingredientses.size()> 0){
                 lbl_title_layout.setText("Ingredientes");
                 clickIngredients();
-                //putIngredients();
+                putIngredients();
                 if (showIngredients.getVisibility()==View.GONE){showIngredients.setVisibility(View.VISIBLE);}
                 showadditions.setVisibility(View.GONE);
                 showObservations.setVisibility(View.GONE);
@@ -1946,7 +1946,15 @@ public class productm extends AppCompatActivity {
                 }
 
 
-                /*TextView name = (TextView) childIn.findViewById(R.id.text);
+
+                //p.setVisibility(View.GONE);
+
+            }
+            showIngredients.addView(childIn);
+
+        }
+    }
+    /*TextView name = (TextView) childIn.findViewById(R.id.text);
                 name.setText(settings.ingredients.ingredientses.get(k).name);
                 LinearLayout p = (LinearLayout) childIn.findViewById(R.id.p);
                 LinearLayout allAll = (LinearLayout) childIn.findViewById(R.id.allAll);
@@ -2016,11 +2024,5 @@ public class productm extends AppCompatActivity {
 
                     }
                 });*/
-                //p.setVisibility(View.GONE);
-                showIngredients.addView(childIn);
-            }
-
-        }
-    }
 
 }
