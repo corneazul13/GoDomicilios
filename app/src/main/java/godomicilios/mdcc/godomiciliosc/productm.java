@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.daimajia.easing.linear.Linear;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -1490,7 +1491,7 @@ public class productm extends AppCompatActivity {
     public void confirmeFirstImage(Integer integer){
         Integer sizeDrink =settings.drink.drinks.size();
         if (0> 0){
-            imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_bebida_lleno));
+            drinkMethod(imageViewDrink);
             lbl_title_layout.setText("Bebidas");
             putDrink();
 
@@ -1505,6 +1506,7 @@ public class productm extends AppCompatActivity {
             drinkConfirm=0;
             if (settings.ingredients.ingredientses.size()> 0){
                 lbl_title_layout.setText("Ingredientes");
+                drinkMethod(imageViewIngredient);
                 clickIngredients();
                 putIngredients();
                 if (showIngredients.getVisibility()==View.GONE){showIngredients.setVisibility(View.VISIBLE);}
@@ -1518,6 +1520,7 @@ public class productm extends AppCompatActivity {
                 showIngredients.setVisibility(View.GONE);
                 if (settings.addition.additions.size()>0){
                     lbl_title_layout.setText("Adiciones");
+                    drinkMethod(imageViewAddition);
                     clickAdditions();
                     if (showadditions.getVisibility()==View.GONE){showadditions.setVisibility(View.VISIBLE);}
                     showObservations.setVisibility(View.GONE);
@@ -1525,6 +1528,7 @@ public class productm extends AppCompatActivity {
                 else{
                     additiConfirm=0;
                     if (showObservations.getVisibility()==View.GONE){showObservations.setVisibility(View.VISIBLE);}
+                    drinkMethod(imageViewObsrv);
                     lbl_title_layout.setText("Observaciones");
                     imgAddition.setVisibility(View.GONE);
                     showadditions.setVisibility(View.GONE);
@@ -1713,15 +1717,7 @@ public class productm extends AppCompatActivity {
         imageViewDrink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                YoYo.with(Techniques.Swing).duration(300).playOn(view);
-                Picasso.with(context).load(R.drawable.option_drink).centerInside().fit().into(img_banner_options);
-                YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
-                //Changes
-                lbl_title_layout.setText("Bebidas");
-                Picasso.with(context).load(R.drawable.icon_bebida_lleno).centerInside().fit().into(imageViewDrink);
-                Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
-                Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
-                Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+                drinkMethod(view);
             }
         });
     }
@@ -1777,32 +1773,7 @@ public class productm extends AppCompatActivity {
          });
      }
 
-    public void nothing () {
-        ArrayList<String> names = new ArrayList<>();
-        ArrayList<ingredients> countIngreOptio = new ArrayList<>();
-        for (int namess = 0; namess < names.size(); namess++) {
-            //add names categor
-            String absoluteName = names.get(namess);
-            ArrayList<ingredients> absoluteIngredients = new ArrayList<>();
 
-            for (int opt = 0; opt < countIngreOptio.size(); opt++) {
-                //add optionals
-                ingredients ingg = new ingredients(
-                        countIngreOptio.get(opt).id, countIngreOptio.get(opt).name,
-                        countIngreOptio.get(opt).status, countIngreOptio.get(opt).type,
-                        countIngreOptio.get(opt).ingId, countIngreOptio.get(opt).max,
-                        countIngreOptio.get(opt).categor
-                );
-                if (countIngreOptio.get(opt).categor.equals(absoluteName)) {
-                    absoluteIngredients.add(ingg);
-                }
-
-            }
-            settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(
-                    absoluteName, 0, absoluteIngredients
-            ));
-        }
-    }
     public void putDrink(){
         daa=settings.productCar.productCars.size()-1;
         settings.allChecks.allCheckses = new ArrayList<>();
@@ -1934,6 +1905,8 @@ public class productm extends AppCompatActivity {
             settings.ingredientsCar.ingredientsCars = new ArrayList<>();
             final View childIn = View.inflate(productm.this, R.layout.ingradients, null);
             LinearLayout liObli =(LinearLayout) childIn.findViewById(R.id.liObli);
+            LinearLayout liNor =(LinearLayout) childIn.findViewById(R.id.liIngredients);
+            LinearLayout liOpt =(LinearLayout) childIn.findViewById(R.id.liOptional);
             for (int k =0; k<settings.ingredients.ingredientses.size();k++){
 
 
@@ -1943,6 +1916,20 @@ public class productm extends AppCompatActivity {
                     TextView text = (TextView) childOb.findViewById(R.id.text);
                     text.setText(t);
                     liObli.addView(childOb);
+                }
+                if (settings.ingredients.ingredientses.get(k).type==2){
+                    String t = settings.ingredients.ingredientses.get(k).name;
+                    final View childOb = View.inflate(productm.this, R.layout.normal, null);
+                    TextView text = (TextView) childOb.findViewById(R.id.text);
+                    text.setText(t);
+                    liNor.addView(childOb);
+                }
+                if (settings.ingredients.ingredientses.get(k).type==3){
+                    String t = settings.ingredients.ingredientses.get(k).name;
+                    final View childOb = View.inflate(productm.this, R.layout.optional, null);
+                    TextView text = (TextView) childOb.findViewById(R.id.text);
+                    text.setText(t);
+                    liOpt.addView(childOb);
                 }
 
 
@@ -2024,5 +2011,19 @@ public class productm extends AppCompatActivity {
 
                     }
                 });*/
+
+                public void drinkMethod(View view){
+                    //Changes
+                    lbl_title_layout.setText("Bebidas");
+                    Picasso.with(context).load(R.drawable.icon_bebida_lleno).centerInside().fit().into(imageViewDrink);
+                    Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                    Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+                    Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+
+                  /*  YoYo.with(Techniques.Swing).duration(300).playOn(view);
+                    Picasso.with(context).load(R.drawable.option_drink).centerInside().fit().into(img_banner_options);
+                    YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+*/
+                }
 
 }

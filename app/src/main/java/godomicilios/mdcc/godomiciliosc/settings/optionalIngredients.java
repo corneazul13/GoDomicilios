@@ -8,14 +8,12 @@ import java.util.ArrayList;
 
 public class optionalIngredients {
     public String name;
-    public Integer count;
     public ArrayList<ingredients> ingredientses;
     public ArrayList<optionalIngredients> optionalIngredientses;
 
-    public optionalIngredients(String name,Integer count, ArrayList<ingredients> ingredientses){
+    public optionalIngredients(String name, ArrayList<ingredients> ingredientses){
 
         this.name = name;
-        this.count=count;
         this.ingredientses=ingredientses;
     }
     public optionalIngredients(){}
