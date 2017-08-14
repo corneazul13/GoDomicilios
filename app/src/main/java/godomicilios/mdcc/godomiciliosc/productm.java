@@ -121,7 +121,7 @@ public class productm extends AppCompatActivity {
         ));
         move();
         clicksDetails();
-        putDrink();
+        //putDrink();
 
         /*secondImg = (ImageView) findViewById(R.id.secondImg);
         productPicture = (ImageView) findViewById(R.id.profile_image);
@@ -1490,6 +1490,8 @@ public class productm extends AppCompatActivity {
         Integer sizeDrink =settings.drink.drinks.size();
         if (sizeDrink> 0){
             imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.icon_bebida_lleno));
+            lbl_title_layout.setText("Bebidas");
+            putDrink();
 
            /* showadditions.setVisibility(View.GONE);
             showIngredients.setVisibility(View.GONE);
@@ -1501,16 +1503,19 @@ public class productm extends AppCompatActivity {
             showDrink.setVisibility(View.GONE);
             drinkConfirm=0;
             if (settings.ingredients.ingredientses.size()> 0){
+                lbl_title_layout.setText("Ingredientes");
                 clickIngredients();
                 if (showIngredients.getVisibility()==View.GONE){showIngredients.setVisibility(View.VISIBLE);}
                 showadditions.setVisibility(View.GONE);
                 showObservations.setVisibility(View.GONE);
+
             }
             else{
                 ingreConfirm=0;
                 imgIngredient.setVisibility(View.GONE);
                 showIngredients.setVisibility(View.GONE);
                 if (settings.addition.additions.size()>0){
+                    lbl_title_layout.setText("Adiciones");
                     clickAdditions();
                     if (showadditions.getVisibility()==View.GONE){showadditions.setVisibility(View.VISIBLE);}
                     showObservations.setVisibility(View.GONE);
@@ -1518,6 +1523,7 @@ public class productm extends AppCompatActivity {
                 else{
                     additiConfirm=0;
                     if (showObservations.getVisibility()==View.GONE){showObservations.setVisibility(View.VISIBLE);}
+                    lbl_title_layout.setText("Observaciones");
                     imgAddition.setVisibility(View.GONE);
                     showadditions.setVisibility(View.GONE);
                     switch (integer){
