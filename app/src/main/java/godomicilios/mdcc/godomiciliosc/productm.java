@@ -1673,13 +1673,13 @@ public class productm extends AppCompatActivity {
     }
 
     public void sethomeToolbar (Toolbar toolbar){
-
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar !=null){
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             toolbar.setContentInsetStartWithNavigation(0);
+            toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
