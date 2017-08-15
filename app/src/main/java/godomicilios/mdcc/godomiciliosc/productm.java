@@ -1917,7 +1917,7 @@ public class productm extends AppCompatActivity {
                 if(settings.ingredients.ingredientses.get(k).type==1){
                     String t = settings.ingredients.ingredientses.get(k).name;
                     int id = settings.ingredients.ingredientses.get(k).id;
-                    LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
+                    LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.obliga, null);
                     radio.setText(t);
                     radio.setId(id);
 

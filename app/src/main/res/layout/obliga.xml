@@ -1,51 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<me.omidh.liquidradiobutton.LiquidRadioButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <LinearLayout
-        android:id="@+id/allAll"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:background="@color/white"
-        android:orientation="horizontal">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.8"
-            android:orientation="horizontal">
-
-
-            <me.omidh.liquidradiobutton.LiquidRadioButton
-                android:id="@+id/appCompatCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:enabled="false"
-                android:gravity="center"
-                android:padding="5dp"
-                android:text="Liquid Radio Button"
-                android:theme="@style/checkBoxStyle"
-                app:lrb_checkedColor="@color/graydark"
-                app:lrb_explodeCount="3"
-                app:lrb_inAnimDuration="500"
-                app:lrb_innerCircleRadius="5dp"
-                app:lrb_outAnimDuration="500"
-                app:lrb_outterPadding="8dp"
-                app:lrb_strokeRadius="10dp"
-                app:lrb_strokeWidth="1dp"
-                app:lrb_unCheckedColor="@color/redGo" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-</LinearLayout>
+    android:id="@+id/appCompatCheckBox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:checked="true"
+    android:enabled="false"
+    android:gravity="start"
+    android:padding="5dp"
+    android:text="@string/app_name"
+    android:theme="@style/checkBoxStyle"
+    app:lrb_checkedColor="@color/graydark"
+    app:lrb_explodeCount="3"
+    app:lrb_inAnimDuration="500"
+    app:lrb_innerCircleRadius="5dp"
+    app:lrb_outAnimDuration="500"
+    app:lrb_outterPadding="8dp"
+    app:lrb_strokeRadius="10dp"
+    app:lrb_strokeWidth="1dp"
+    app:lrb_unCheckedColor="@color/redGo"
+    android:textColor="@color/graydark"/>
