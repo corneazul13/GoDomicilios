@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:background="@color/white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -19,7 +20,7 @@
             android:orientation="horizontal">
             <me.omidh.liquidradiobutton.LiquidRadioButton
                 android:id="@+id/appCompatCheckBox"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:padding="5dp"
@@ -34,7 +35,7 @@
                 app:lrb_outAnimDuration="500"
                 app:lrb_checkedColor="@color/redGo"
                 app:lrb_unCheckedColor="@color/redGo"
-                android:text="Liquid Radio Button" />
+                android:text="@string/radio_button" />
         </LinearLayout>
         <LinearLayout
             android:id="@+id/p"
@@ -44,7 +45,8 @@
             android:orientation="horizontal">
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/puntosm" />
@@ -65,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:text=""
                 android:textColor="@color/black" />
         </LinearLayout>

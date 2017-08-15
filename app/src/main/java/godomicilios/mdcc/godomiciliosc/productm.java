@@ -28,6 +28,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -40,6 +41,7 @@ import godomicilios.mdcc.godomiciliosc.settings.ingredientsCar;
 import godomicilios.mdcc.godomiciliosc.settings.optionalIngredients;
 import godomicilios.mdcc.godomiciliosc.settings.productCar;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
+import me.omidh.liquidradiobutton.LiquidRadioButton;
 
 public class productm extends AppCompatActivity {
 
@@ -1912,24 +1914,39 @@ public class productm extends AppCompatActivity {
 
                 if(settings.ingredients.ingredientses.get(k).type==1){
                     String t = settings.ingredients.ingredientses.get(k).name;
-                    final View childOb = View.inflate(productm.this, R.layout.obliga, null);
+                    int id = settings.ingredients.ingredientses.get(k).id;
+                    LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
+                    radio.setText(t);
+                    radio.setId(id);
+
+                    /*final View childOb = View.inflate(productm.this, R.layout.obliga, null);
                     TextView text = (TextView) childOb.findViewById(R.id.text);
-                    text.setText(t);
-                    liObli.addView(childOb);
+                    text.setText(t);*/
+                    liObli.addView(radio);
                 }
                 if (settings.ingredients.ingredientses.get(k).type==2){
                     String t = settings.ingredients.ingredientses.get(k).name;
-                    final View childOb = View.inflate(productm.this, R.layout.normal, null);
+                    int id = settings.ingredients.ingredientses.get(k).id;
+                    LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
+                    radio.setText(t);
+                    radio.setId(id);
+
+                    /*final View childOb = View.inflate(productm.this, R.layout.normal, null);
                     TextView text = (TextView) childOb.findViewById(R.id.text);
-                    text.setText(t);
-                    liNor.addView(childOb);
+                    text.setText(t);*/
+                    liNor.addView(radio);
                 }
                 if (settings.ingredients.ingredientses.get(k).type==3){
                     String t = settings.ingredients.ingredientses.get(k).name;
-                    final View childOb = View.inflate(productm.this, R.layout.optional, null);
+                    int id = settings.ingredients.ingredientses.get(k).id;
+                    LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
+                    radio.setText(t);
+                    radio.setId(id);
+
+                    /*final View childOb = View.inflate(productm.this, R.layout.optional, null);
                     TextView text = (TextView) childOb.findViewById(R.id.text);
-                    text.setText(t);
-                    liOpt.addView(childOb);
+                    text.setText(t);*/
+                    liOpt.addView(radio);
                 }
 
 

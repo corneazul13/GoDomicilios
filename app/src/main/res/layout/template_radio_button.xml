@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<me.omidh.liquidradiobutton.LiquidRadioButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/appCompatCheckBox"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:padding="5dp"
+    android:gravity="start"
+    android:theme="@style/checkBoxStyle"
+    app:lrb_strokeWidth="1dp"
+    app:lrb_explodeCount="3"
+    app:lrb_outterPadding="8dp"
+    app:lrb_innerCircleRadius="5dp"
+    app:lrb_strokeRadius="10dp"
+    app:lrb_inAnimDuration="500"
+    app:lrb_outAnimDuration="500"
+    app:lrb_checkedColor="@color/redGo"
+    app:lrb_unCheckedColor="@color/redGo"
+    android:text="@string/app_name"
+    android:textColor="@color/blacBeer"/>

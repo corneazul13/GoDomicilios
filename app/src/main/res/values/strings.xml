@@ -37,12 +37,17 @@
     <string name="refFour">introduce a continuación su código de referencia y comparte puntos con el.</string>
     <string name="title_activity_qualify">qualify</string>
     <string name="title_activity_chat">chat</string>
-
-
     <string name="title_activity_productm">Producto</string>
     <string name="lbl_title_product">Nombre Producto</string>
     <string name="lbl_description_product">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</string>
     <string name="lbl_price_product">$15.000</string>
     <string name="separed">-</string>
+
+    <string name="radio_button">Radio Button</string>
+
+    <string name="lbl_choice_ingredients">ESCOJA SUS INGREDIENTES</string>
+    <string name="lbl_ingredients">Obligatorios</string>
+    <string name="lbl_optional">Opcionales</string>
+    <string name="lbl_other">Otros ingredientes</string>
 
 </resources>

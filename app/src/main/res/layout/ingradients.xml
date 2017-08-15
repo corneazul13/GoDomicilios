@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:background="@color/white"
@@ -12,91 +12,95 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="0.2"
             android:orientation="vertical">
-
             <TextView
                 android:id="@+id/textView46"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:textColor="@color/redGo"
-                android:text="ESCOJA SUS INGREDIENTES" />
-
+                android:text="@string/lbl_choice_ingredients" />
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
                 <LinearLayout
                     android:id="@+id/li"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
-
                     <LinearLayout
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
                         <TextView
                             android:id="@+id/textView52"
-                            android:layout_width="wrap_content"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:background="@drawable/background_items"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Obligatorios" />
-
+                            android:text="@string/lbl_ingredients" />
                         <LinearLayout
                             android:id="@+id/liObli"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="6dp"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical"></LinearLayout>
-
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
                     </LinearLayout>
                     <LinearLayout
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
                         <TextView
                             android:id="@+id/textView54"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:background="@drawable/background_items"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Opcionales" />
-
+                            android:text="@string/lbl_optional" />
                         <LinearLayout
                             android:id="@+id/liOptional"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="6dp"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"></LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
                     </LinearLayout>
-
                     <LinearLayout
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
                         <TextView
                             android:id="@+id/textView18"
+                            android:paddingStart="4dp"
+                            android:paddingEnd="4dp"
+                            android:background="@drawable/background_items"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Otros ingredientes" />
-
+                            android:text="@string/lbl_other" />
                         <LinearLayout
                             android:id="@+id/liIngredients"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginTop="6dp"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"></LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"/>
                     </LinearLayout>
-
-
-
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
