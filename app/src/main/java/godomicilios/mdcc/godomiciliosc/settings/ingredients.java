@@ -28,4 +28,18 @@ public class ingredients {
         this.categor=categor;
     }
     public ingredients(){}
+
+    @Override
+    public String toString() {
+        return "ingredients{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status='" + status + '\'' +
+                ", type=" + type +
+                ", ingId=" + ingId +
+                ", max=" + max +
+                ", categor='" + categor + '\'' +
+                ", ingredientses=" + ingredientses +
+                '}';
+    }
 }

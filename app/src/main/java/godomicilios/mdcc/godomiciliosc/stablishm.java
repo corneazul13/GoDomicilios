@@ -74,8 +74,8 @@ public class stablishm extends AppCompatActivity
     TextView numberCar;
     View include;
     DecimalFormat formatea = new DecimalFormat("###.###");
-    ArrayList<ingredients> ingr;
-    ArrayList<String> names;
+    ArrayList<ingredients> temporal = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1062,7 +1062,7 @@ public class stablishm extends AppCompatActivity
                                     }
 
                                 }
-                                //organize();
+                                organizeCategor();
                                 try {
                                     settings.addition.additions= new ArrayList<>();
                                     aditions("https://godomicilios.co/webService/servicios.php?svice=ADICIONES&metodo=json&proId="+ productId, productId);
@@ -1288,38 +1288,60 @@ public class stablishm extends AppCompatActivity
         }
     }
     public void organizeCategor(){
-         ingr= new ArrayList<>();
-         names = new ArrayList<>();
+        ArrayList<ingredients> ingr= new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+
+
         settings.optionalIngredients.optionalIngredientses = new ArrayList<>();
         for (int i =0;i<settings.ingredients.ingredientses.size();i++){
             String category = settings.ingredients.ingredientses.get(i).categor;
-            ArrayList<ingredients> ingre = settings.ingredients.ingredientses;
-            if(i==0&&!category.equals("")){
+            if(!category.equals("none")&&names.size()==0){
                 names.add(category);
                 settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category, ingr));
             }
-            for(int j=0; j<names.size();j++){
-                if(!names.get(j).equals(category)&&!category.equals("")){
+
+            if(names.size()>0){
+                if(!names.get(names.size()-1).equals(category)&&!category.equals("none")){
                     names.add(category);
                     settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category, ingr));
                 }
             }
+
+
         }
+        minim();
+
 
 
     }
     public void organizeIngredients(){
         ArrayList<ingredients> finalIngre=new ArrayList<>();
-        for (int i =0;i<settings.ingredients.ingredientses.size();i++){
-            ArrayList<ingredients> temporal = settings.ingredients.ingredientses;
-            String categor = settings.ingredients.ingredientses.get(i).categor;
-            ingredients ingredien= new ingredients(temporal.get(i).id, temporal.get(i).name, temporal.get(i).status, temporal.get(i).type,temporal.get(i).ingId,temporal.get(i).max,temporal.get(i).categor);
-            for (int j =0; j<names.size();j++){
-                if(categor.equals(names.get(j))){
-                    finalIngre.add(ingredien);
+        for (int j =0; j<settings.optionalIngredients.optionalIngredientses.size();j++){
+            String name = settings.optionalIngredients.optionalIngredientses.get(j).name;
+            ArrayList<ingredients> temp = new ArrayList<>();
+
+            for (int i =0;i<temporal.size();i++){
+                String nameTwo=temporal.get(i).categor;
+                if(name.equals(nameTwo)){
+                    ingredients ingredien= new ingredients(temporal.get(i).id, temporal.get(i).name, temporal.get(i).status, temporal.get(i).type,temporal.get(i).ingId,temporal.get(i).max,temporal.get(i).categor);
+                    temp.add(ingredien);
                 }
             }
+            settings.optionalIngredients.optionalIngredientses.set(j,new optionalIngredients(name, temp));
+
+
         }
+    }
+    public void minim (){
+        for (int i =0;i<settings.ingredients.ingredientses.size();i++){
+            ArrayList<ingredients>te=settings.ingredients.ingredientses;
+            ingredients ingredien= new ingredients(te.get(i).id, te.get(i).name, te.get(i).status, te.get(i).type,te.get(i).ingId,te.get(i).max,te.get(i).categor);
+            if(settings.ingredients.ingredientses.get(i).categor!="none"){
+
+                temporal.add(ingredien);
+            }
+        }
+        organizeIngredients();
     }
 
 }

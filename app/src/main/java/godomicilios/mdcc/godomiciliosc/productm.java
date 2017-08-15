@@ -71,6 +71,7 @@ public class productm extends AppCompatActivity {
     ArrayList<ingredients> countIngreNormal, countIngreOptio, countIngreObli;
     LinearLayout showDrink, showIngredients, showadditions,showObservations;
     Integer daa;
+    Integer test ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +97,7 @@ public class productm extends AppCompatActivity {
         productName.setText(settings.subtotal.getName());
         description.setText(settings.subtotal.getDescription());
         priceProduct.setText("$" +settings.subtotal.getPrice());
+        test = settings.optionalIngredients.optionalIngredientses.size();
         showadditions = (LinearLayout) findViewById(R.id.showAdditions);
         showDrink = (LinearLayout) findViewById(R.id.showDrink);
         showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
@@ -1675,13 +1677,13 @@ public class productm extends AppCompatActivity {
     }
 
     public void sethomeToolbar (Toolbar toolbar){
+
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar !=null){
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             toolbar.setContentInsetStartWithNavigation(0);
-            toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1936,26 +1938,45 @@ public class productm extends AppCompatActivity {
                     text.setText(t);*/
                     liNor.addView(radio);
                 }
-                if (settings.ingredients.ingredientses.get(k).type==3){
-                    String t = settings.ingredients.ingredientses.get(k).name;
-                    int id = settings.ingredients.ingredientses.get(k).id;
+
+                    /*int id = settings.ingredients.ingredientses.get(k).id;
                     LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
                     radio.setText(t);
                     radio.setId(id);
 
-                    /*final View childOb = View.inflate(productm.this, R.layout.optional, null);
+                    *//*final View childOb = View.inflate(productm.this, R.layout.optional, null);
                     TextView text = (TextView) childOb.findViewById(R.id.text);
-                    text.setText(t);*/
+                    text.setText(t);*//*
                     liOpt.addView(radio);
                 }
-
+*/
 
 
                 //p.setVisibility(View.GONE);
 
             }
+
             showIngredients.addView(childIn);
 
+            callOptionals(liOpt);
+        }
+
+    }
+    public void callOptionals(LinearLayout linear){
+        for (int i =0; i<settings.optionalIngredients.optionalIngredientses.size();i++){
+            final View childIn = View.inflate(productm.this, R.layout.optional, null);
+            TextView text=(TextView)childIn.findViewById(R.id.text);
+            LinearLayout layout_ingredients = (LinearLayout) childIn.findViewById(R.id.layout_ingredients);
+            text.setText(settings.optionalIngredients.optionalIngredientses.get(i).name);
+            for (int j =0; j<settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.size();j++){
+                String t = settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.get(j).name;
+                int id = settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.get(j).id;
+                LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
+                radio.setText(t);
+                radio.setId(id);
+                layout_ingredients.addView(radio);
+            }
+            linear.addView(childIn);
         }
     }
     /*TextView name = (TextView) childIn.findViewById(R.id.text);

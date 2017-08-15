@@ -4,59 +4,45 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-    android:id="@+id/allAll"
-    android:layout_width="match_parent"
-    android:layout_height="30dp"
-    android:background="@color/white"
-    android:orientation="horizontal">
 
     <LinearLayout
+        android:id="@+id/allAll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.8"
+        android:layout_height="30dp"
+        android:background="@color/white"
         android:orientation="horizontal">
-
-
-        <me.omidh.liquidradiobutton.LiquidRadioButton
-            android:id="@+id/appCompatCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="5dp"
-            android:enabled="false"
-            android:gravity="center"
-            android:checked="true"
-            android:theme="@style/checkBoxStyle"
-            app:lrb_strokeWidth="1dp"
-            app:lrb_explodeCount="3"
-            app:lrb_outterPadding="8dp"
-            app:lrb_innerCircleRadius="5dp"
-            app:lrb_strokeRadius="10dp"
-            app:lrb_inAnimDuration="500"
-            app:lrb_outAnimDuration="500"
-            app:lrb_checkedColor="@color/graydark"
-            app:lrb_unCheckedColor="@color/redGo"
-            android:text="Liquid Radio Button"
-            />
-    </LinearLayout>
 
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.2"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/black" />
 
+            <me.omidh.liquidradiobutton.LiquidRadioButton
+                android:id="@+id/appCompatCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="true"
+                android:enabled="false"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="Liquid Radio Button"
+                android:theme="@style/checkBoxStyle"
+                app:lrb_checkedColor="@color/graydark"
+                app:lrb_explodeCount="3"
+                app:lrb_inAnimDuration="500"
+                app:lrb_innerCircleRadius="5dp"
+                app:lrb_outAnimDuration="500"
+                app:lrb_outterPadding="8dp"
+                app:lrb_strokeRadius="10dp"
+                app:lrb_strokeWidth="1dp"
+                app:lrb_unCheckedColor="@color/redGo" />
         </LinearLayout>
 
-</LinearLayout>
+
+    </LinearLayout>
 
     <View
         android:layout_width="fill_parent"
