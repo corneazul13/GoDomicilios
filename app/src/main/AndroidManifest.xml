@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!--
+
      <repositories>
         <repository>
             <id>
@@ -34,7 +34,8 @@
             1.0.0
         </version>
     </dependency>
-    -->
+
+
     <application
         android:name=".goDomiciliosApp"
         android:allowBackup="true"
@@ -194,6 +195,11 @@
         <groupId>com.daimajia.easing</groupId>
         <artifactId>library</artifactId>
         <version>2.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.github.andyxialm</groupId>
+        <artifactId>TyperEditText</artifactId>
+        <version>1.0.2</version>
     </dependency>
 
 </manifest>

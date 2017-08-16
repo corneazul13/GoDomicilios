@@ -49,5 +49,7 @@
     <string name="lbl_ingredients">Obligatorios</string>
     <string name="lbl_optional">Opcionales</string>
     <string name="lbl_other">Otros ingredientes</string>
+    <string name="back">Volver</string>
+    <string name="cancel">Cancelar</string>
 
 </resources>

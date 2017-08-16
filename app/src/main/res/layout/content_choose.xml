@@ -25,7 +25,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.33"
+            android:gravity="center"
             android:orientation="horizontal">
+           <!-- <com.qintong.library.InsLoadingView
+                android:layout_centerInParent="true"
+                app:start_color="@android:color/transparent"
+                app:end_color="@android:color/transparent"
+                android:id="@+id/test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/arestaurantexdos"
+                />-->
 
             <ImageView
                 android:id="@+id/restaurant"

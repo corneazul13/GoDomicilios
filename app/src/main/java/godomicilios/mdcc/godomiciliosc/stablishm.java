@@ -52,6 +52,7 @@ import java.util.Objects;
 
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.addition;
+import godomicilios.mdcc.godomiciliosc.settings.check;
 import godomicilios.mdcc.godomiciliosc.settings.drink;
 import godomicilios.mdcc.godomiciliosc.settings.ingredients;
 import godomicilios.mdcc.godomiciliosc.settings.methodPay;
@@ -60,6 +61,7 @@ import godomicilios.mdcc.godomiciliosc.settings.product;
 import godomicilios.mdcc.godomiciliosc.settings.rank;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 import godomicilios.mdcc.godomiciliosc.settings.user;
+import me.omidh.liquidradiobutton.LiquidRadioButton;
 
 public class stablishm extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -86,7 +88,6 @@ public class stablishm extends AppCompatActivity
         context = this;
         image = (ImageView) findViewById(R.id.image);
         name = (TextView) findViewById(R.id.name);
-        address = (TextView) findViewById(R.id.address);
         price = (TextView) findViewById(R.id.price);
         one = (LinearLayout) findViewById(R.id.one);
         two = (LinearLayout) findViewById(R.id.two);
@@ -156,7 +157,6 @@ public class stablishm extends AppCompatActivity
         price.setText("$" + formatea.format(Integer.parseInt(settings.stablishment.stablishments.get(settings.stablishment.getNumber()).price)));
         priceMinimum.setText("$" + formatea.format(Integer.parseInt(settings.stablishment.stablishments.get(settings.stablishment.getNumber()).minimum)));
 
-        address.setText(settings.stablishment.stablishments.get(settings.stablishment.getNumber()).address);
 
         name.setText(settings.stablishment.stablishments.get(settings.stablishment.getNumber()).name);
 
@@ -463,6 +463,7 @@ public class stablishm extends AppCompatActivity
                             settings.subtotal.setProductId(settings.product.products.get(childs.getId()).id);
                             settings.subtotal.setDrinkType(settings.product.products.get(childs.getId()).drinkType);
                             settings.subtotal.setDrinkEdit(settings.product.products.get(childs.getId()).drinkEdit);
+                            settings.subtotal.setFinalPrice(Integer.parseInt(settings.stablishment.stablishments.get(settings.stablishment.getNumber()).price));
 
                             comp =settings.product.products.get(childs.getId()).drinkType;
                             proId=settings.product.products.get(childs.getId()).id;
@@ -1290,20 +1291,22 @@ public class stablishm extends AppCompatActivity
     public void organizeCategor(){
         ArrayList<ingredients> ingr= new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
+        ArrayList<check> liquidRadioButtons = new ArrayList<>();
 
 
         settings.optionalIngredients.optionalIngredientses = new ArrayList<>();
         for (int i =0;i<settings.ingredients.ingredientses.size();i++){
             String category = settings.ingredients.ingredientses.get(i).categor;
+            Integer cant = settings.ingredients.ingredientses.get(i).max;
             if(!category.equals("none")&&names.size()==0){
                 names.add(category);
-                settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category, ingr));
+                settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category,cant,0,liquidRadioButtons, ingr));
             }
 
             if(names.size()>0){
                 if(!names.get(names.size()-1).equals(category)&&!category.equals("none")){
                     names.add(category);
-                    settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category, ingr));
+                    settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category,cant,0,liquidRadioButtons, ingr));
                 }
             }
 
@@ -1316,10 +1319,11 @@ public class stablishm extends AppCompatActivity
     }
     public void organizeIngredients(){
         ArrayList<ingredients> finalIngre=new ArrayList<>();
+        ArrayList<check> liquidRadioButtons= new ArrayList<>();
         for (int j =0; j<settings.optionalIngredients.optionalIngredientses.size();j++){
             String name = settings.optionalIngredients.optionalIngredientses.get(j).name;
+            Integer cant = settings.optionalIngredients.optionalIngredientses.get(j).cant;
             ArrayList<ingredients> temp = new ArrayList<>();
-
             for (int i =0;i<temporal.size();i++){
                 String nameTwo=temporal.get(i).categor;
                 if(name.equals(nameTwo)){
@@ -1327,7 +1331,7 @@ public class stablishm extends AppCompatActivity
                     temp.add(ingredien);
                 }
             }
-            settings.optionalIngredients.optionalIngredientses.set(j,new optionalIngredients(name, temp));
+            settings.optionalIngredients.optionalIngredientses.set(j,new optionalIngredients(name,cant,0,liquidRadioButtons,temp));
 
 
         }

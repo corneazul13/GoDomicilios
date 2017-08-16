@@ -1,8 +1,10 @@
 package godomicilios.mdcc.godomiciliosc;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,9 +17,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.qintong.library.InsLoadingView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,6 +40,8 @@ public class choose extends AppCompatActivity {
     private static Tracker tracker;
 
     ImageView restaurant, beer, med, pet, market, imageView10;
+    public static int MILISEGUNDOS_ESPERA = 200;
+    InsLoadingView test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +52,19 @@ public class choose extends AppCompatActivity {
         med =(ImageView)findViewById(R.id.med);
         pet = (ImageView)findViewById(R.id.pet);
         market = (ImageView) findViewById(R.id.market);
+        /*test = (InsLoadingView) findViewById(R.id.test);
+        test.setStatus(InsLoadingView.Status.UNCLICKED);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                test.setStatus(InsLoadingView.Status.LOADING);
+                test.setStartColor(Color.YELLOW); //or your color
+                test.setEndColor(Color.BLUE);
+                test.setCircleDuration(2000);
+                test.setRotateDuration(10000);
+            }
+        });
+*/
 
         settings.shoppingCar.carFinal = new ArrayList<>();
 
@@ -62,14 +82,11 @@ public class choose extends AppCompatActivity {
         }        restaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                restaurant.setImageDrawable(getResources().getDrawable(R.drawable.arestaurantexdos));
-                settings.stablishment.setId(1);
-                try {
-                    categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                            +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1",1, head.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                YoYo.with(Techniques.RotateOutDownRight)
+                        .duration(600)
+                        .repeat(0)
+                        .playOn(restaurant);
+                esperarYCerrar(restaurant,1);
 
             }
         });
@@ -77,55 +94,47 @@ public class choose extends AppCompatActivity {
         beer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                beer.setImageDrawable(getResources().getDrawable(R.drawable.alicorxdos));
-                settings.stablishment.setId(2);
-                try {
-                    categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                            +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=2",2, headTwo.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
+                YoYo.with(Techniques.RotateOutDownRight)
+                        .duration(600)
+                        .repeat(0)
+                        .playOn(beer);
+                esperarYCerrar(beer,2);
+
 
             }
         });
         med.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                med.setImageDrawable(getResources().getDrawable(R.drawable.amedicinaxdos));
-                settings.stablishment.setId(3);
+                YoYo.with(Techniques.RotateOutDownRight)
+                        .duration(600)
+                        .repeat(0)
+                        .playOn(med);
+                esperarYCerrar(med,3);
 
-                try {
-                    categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                            +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=3",3, headThree.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
             }
         });
         pet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pet.setImageDrawable(getResources().getDrawable(R.drawable.amascotaxdos));
-                try {
-                    categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                            +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=4",4, headFour.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                settings.stablishment.setId(4);
+                YoYo.with(Techniques.RotateOutDownRight)
+                        .duration(600)
+                        .repeat(0)
+                        .playOn(pet);
+                esperarYCerrar(pet,4);
+
             }
         });
         market.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                market.setImageDrawable(getResources().getDrawable(R.drawable.amercadoxdos));
-                settings.stablishment.setId(5);
-                try {
-                    categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                            +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=5",5, headFive.class);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                YoYo.with(Techniques.RotateOutDownRight)
+                        .duration(600)
+                        .repeat(0)
+                        .playOn(market);
+                esperarYCerrar(market,5);
+
             }
         });
 
@@ -270,4 +279,73 @@ public class choose extends AppCompatActivity {
     }
 
 
+    public void esperarYCerrar(final ImageView ima, final Integer option ) {
+
+        int milisegundos=MILISEGUNDOS_ESPERA;
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                // acciones que se ejecutan tras los milisegundos
+                switch (option){
+                    case 1:
+                        ima.setImageDrawable(getResources().getDrawable(R.drawable.arestaurantexdos));
+                        settings.stablishment.setId(1);
+                        try {
+                            categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1",1, head.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        break;
+                    case 2:
+                        ima.setImageDrawable(getResources().getDrawable(R.drawable.alicorxdos));
+                        settings.stablishment.setId(2);
+                        try {
+                            categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=2",2, headTwo.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 3:
+                        ima.setImageDrawable(getResources().getDrawable(R.drawable.amedicinaxdos));
+                        settings.stablishment.setId(3);
+
+                        try {
+                            categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=3",3, headThree.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 4:
+                        ima.setImageDrawable(getResources().getDrawable(R.drawable.amascotaxdos));
+                        settings.stablishment.setId(4);
+                        try {
+                            categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=4",4, headFour.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                    case 5:
+                        ima.setImageDrawable(getResources().getDrawable(R.drawable.amercadoxdos));
+                        settings.stablishment.setId(5);
+                        try {
+                            categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=5",5, headFive.class);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        break;
+                }
+
+                YoYo.with(Techniques.RotateInUpRight)
+                        .duration(600)
+                        .repeat(0)
+                        .playOn(ima);
+            }
+        }, milisegundos);
+    }
 }

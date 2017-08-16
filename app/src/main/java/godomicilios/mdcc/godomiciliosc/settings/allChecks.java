@@ -10,13 +10,13 @@ import java.util.ArrayList;
 
 public class allChecks {
     private me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink;
-    private me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition;
+    private android.support.v7.widget.AppCompatCheckBox[] checkAddition;
     private me.omidh.liquidradiobutton.LiquidRadioButton[] checks;
     public ArrayList<EditText>ed;
     public ArrayList<allChecks> allCheckses;
 
     public allChecks (me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink,
-                      me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition,
+                      android.support.v7.widget.AppCompatCheckBox[] checkAddition,
                       me.omidh.liquidradiobutton.LiquidRadioButton[] checks){
         this.setChecksDrink(checksDrink);
         this.setCheckAddition(checkAddition);
@@ -33,11 +33,11 @@ public class allChecks {
         this.checksDrink = checksDrink;
     }
 
-    public me.omidh.liquidradiobutton.LiquidRadioButton[] getCheckAddition() {
+    public android.support.v7.widget.AppCompatCheckBox[] getCheckAddition() {
         return checkAddition;
     }
 
-    public void setCheckAddition(me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition) {
+    public void setCheckAddition(android.support.v7.widget.AppCompatCheckBox[] checkAddition) {
         this.checkAddition = checkAddition;
     }
 

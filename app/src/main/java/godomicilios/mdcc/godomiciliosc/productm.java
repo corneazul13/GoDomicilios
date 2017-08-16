@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +33,11 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.refactor.lib.colordialog.ColorDialog;
 import godomicilios.mdcc.godomiciliosc.settings.addition;
 import godomicilios.mdcc.godomiciliosc.settings.additionCar;
 import godomicilios.mdcc.godomiciliosc.settings.allChecks;
+import godomicilios.mdcc.godomiciliosc.settings.check;
 import godomicilios.mdcc.godomiciliosc.settings.drinkCar;
 import godomicilios.mdcc.godomiciliosc.settings.ingredients;
 import godomicilios.mdcc.godomiciliosc.settings.ingredientsCar;
@@ -46,32 +49,26 @@ import me.omidh.liquidradiobutton.LiquidRadioButton;
 public class productm extends AppCompatActivity {
 
     Context context;
-    ImageView profile_image, secondImg, imageViewDrink, imageViewIngredient, imageViewAddition, imageViewObsrv, img_banner_options;
-    TextView name, address, price, description, priceProduct, subtotal, back, number,productName,textxvi,priceMinimum, lbl_title_layout;
+    ImageView profile_image, secondImg, imageViewDrink, imageViewIngredient, imageViewAddition, imageViewObsrv, img_banner_options, more, less;
+    TextView name, address, description, priceProduct, subtotal, number,productName, lbl_title_layout;
     LinearLayout  li, imgDrink,imgIngredient, imgAddition;
-    Button addProduct;
+    Button add, buttonDrink, buttonIngre, buttonAddi;
     int dd=0, aa=0, validatora =0, bb=0, validatorb=0, validatorc=0,cc=0,
     removeCount= settings.subtotal.getCant();
-    Integer priceFirst= settings.subtotal.getPrice();
-    Integer moreInt=0;
-    Integer z=0;
-    Integer multi;
-    Integer countFinal=0;
+    Integer priceFirst= settings.subtotal.getPrice(), moreInt=0,z=0, multi, countFinal=0;
     public float init_x;
-    TextView numberCar;
-    Integer ingredientSize=settings.ingredients.ingredientses.size();
-    Integer additionSize = settings.addition.additions.size();
-    Integer drinkSize = settings.drink.drinks.size();
-    Integer cantii = settings.subtotal.getCant();
+    EditText text;
+    Integer ingredientSize=settings.ingredients.ingredientses.size(), additionSize = settings.addition.additions.size(), drinkSize = settings.drink.drinks.size();
     ArrayList<EditText>ed2 = new ArrayList<>();
     me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink2 = new me.omidh.liquidradiobutton.LiquidRadioButton[drinkSize];
-    me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition2 = new me.omidh.liquidradiobutton.LiquidRadioButton[additionSize];
+    android.support.v7.widget.AppCompatCheckBox[] checkAddition2 = new android.support.v7.widget.AppCompatCheckBox[additionSize];
     me.omidh.liquidradiobutton.LiquidRadioButton[] checks2 = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
     Integer ingreConfirm = 1, additiConfirm=1, drinkConfirm=1;
     ArrayList<ingredients> countIngreNormal, countIngreOptio, countIngreObli;
+    ArrayList<check> otherIngre=new ArrayList<>();
     LinearLayout showDrink, showIngredients, showadditions,showObservations;
-    Integer daa;
-    Integer test ;
+    Integer daa, test;
+    LinearLayout showDrin, showIngredient, showAddition, showObservatio, actual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +77,18 @@ public class productm extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         sethomeToolbar(toolbar);
         context = this;
+        showDrin= (LinearLayout) findViewById(R.id.showDrin);
+        showIngredient = (LinearLayout) findViewById(R.id.showIngredient);
+        showAddition = (LinearLayout) findViewById(R.id.showAddition);
+        showObservatio = (LinearLayout) findViewById(R.id.showObservatio);
+        buttonDrink = (Button) findViewById(R.id.buttonDrink);
+        buttonIngre = (Button) findViewById(R.id.buttonIngre);
+        buttonAddi = (Button) findViewById(R.id.buttonAddi);
+        more=(ImageView) findViewById(R.id.more);
+        less = (ImageView) findViewById(R.id.less);
+        text=(EditText) findViewById(R.id.text);
+        add=(Button) findViewById(R.id.add);
+        number=(TextView) findViewById(R.id.number);
         profile_image = (ImageView) findViewById(R.id.profile_image);
         productName = (TextView) findViewById(R.id.productName);
         lbl_title_layout = (TextView)findViewById(R.id.lbl_title_layout);
@@ -102,7 +111,79 @@ public class productm extends AppCompatActivity {
         showDrink = (LinearLayout) findViewById(R.id.showDrink);
         showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
         showObservations = (LinearLayout) findViewById(R.id.showObservation);
-        confirmeFirstImage(settings.stablishment.getId());
+        less.setEnabled(false);
+
+        buttonDrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                next(showDrin, showIngredient);
+                actual=showIngredient;
+                YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                Picasso.with(context).load(R.drawable.option_ingredients).centerInside().fit().into(img_banner_options);
+                YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                //Changes
+                lbl_title_layout.setText("Ingredientes");
+                Picasso.with(context).load(R.drawable.icon_ingredientes_lleno).centerInside().fit().into(imageViewIngredient);
+                Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+                Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+            }
+        });
+        buttonIngre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                next(showIngredient,showAddition);
+                actual=showAddition;
+
+                YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                Picasso.with(context).load(R.drawable.option_additions).centerInside().fit().into(img_banner_options);
+                YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                //Changes
+                lbl_title_layout.setText("Adiciones");
+                Picasso.with(context).load(R.drawable.icon_adiciones_lleno).centerInside().fit().into(imageViewAddition);
+                Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+            }
+        });
+        buttonAddi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                next(showAddition,showObservatio);
+                actual=showObservatio;
+                YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                Picasso.with(context).load(R.drawable.option_observations).centerInside().fit().into(img_banner_options);
+                YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                //Changes
+                lbl_title_layout.setText("Observaciones");
+                Picasso.with(context).load(R.drawable.icon_observaciones_lleno).centerInside().fit().into(imageViewObsrv);
+                Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+            }
+        });
+
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer newNumber= 1+Integer.parseInt(number.getText().toString());
+                number.setText(newNumber.toString());
+                less.setEnabled(true);
+
+            }
+        });
+        less.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer newNumber= Integer.parseInt(number.getText().toString())-1;
+                if(newNumber ==1){
+                    less.setEnabled(false);
+                }
+                number.setText(newNumber.toString());
+
+            }
+        });
+
         settings.productCar.productCars = new ArrayList<>();
         settings.productCar.productCars.add(new productCar(
 
@@ -116,18 +197,117 @@ public class productm extends AppCompatActivity {
                 settings.ingredientsCar.ingredientsCars,
                 settings.drinkCar
         ));
-
+        confirmeFirstImage(settings.stablishment.getId());
+        putDrink();
+        putIngredients();
+        showAdditions();
         showExists();
 
 
         View child = View.inflate(productm.this, R.layout.observation, null);
-        settings.ingredients.ingredientses = new ArrayList<>();
-        settings.addition.additions = new ArrayList<>();
-        showObservations.setVisibility(View.GONE);
+        showObservatio.setVisibility(View.GONE);
 
         move();
-        clicksDetails();
-        //putDrink();
+        //clicksDetails();
+
+        imageViewAddition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(actual!=showAddition){
+                    if(actual==showDrin || actual==showIngredient){
+                        //next(actual,showAddition);
+
+
+                    }
+                    else{
+                        prevous(actual,showAddition);
+                        actual=showAddition;
+
+                        YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                        Picasso.with(context).load(R.drawable.option_additions).centerInside().fit().into(img_banner_options);
+                        YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                        //Changes
+                        lbl_title_layout.setText("Adiciones");
+                        Picasso.with(context).load(R.drawable.icon_adiciones_lleno).centerInside().fit().into(imageViewAddition);
+                        Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                        Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                        Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+                    }
+
+
+                }
+
+            }
+        });
+        imageViewIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(actual!=showIngredient){
+
+                    if(actual==showDrin){
+                        //next(actual,showIngredients);
+
+                    }
+                    else{
+                        prevous(actual, showIngredient);
+                        actual=showIngredient;
+                        YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                        Picasso.with(context).load(R.drawable.option_ingredients).centerInside().fit().into(img_banner_options);
+                        YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                        //Changes
+                        lbl_title_layout.setText("Ingredientes");
+                        Picasso.with(context).load(R.drawable.icon_ingredientes_lleno).centerInside().fit().into(imageViewIngredient);
+                        Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                        Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+                        Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+                    }
+
+
+                }
+
+            }
+        });
+        imageViewObsrv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                    /*if(actual!=showObservatio){prevous(actual,showObservatio);
+
+                        YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                        Picasso.with(context).load(R.drawable.option_observations).centerInside().fit().into(img_banner_options);
+                        YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                        //Changes
+                        lbl_title_layout.setText("Observaciones");
+                        Picasso.with(context).load(R.drawable.icon_observaciones_lleno).centerInside().fit().into(imageViewObsrv);
+                        Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                        Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                        Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+                    }
+
+                actual=showObservatio;*/
+            }
+        });
+        imageViewDrink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if(actual!=showDrin){
+                   next(actual,showDrin);
+                actual=showDrin;
+                   YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                   Picasso.with(context).load(R.drawable.option_drink).centerInside().fit().into(img_banner_options);
+                   YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                   //Changes
+                   lbl_title_layout.setText("Bebidas");
+                   Picasso.with(context).load(R.drawable.icon_bebida_lleno).centerInside().fit().into(imageViewDrink);
+                   Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                   Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
+                   Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+
+
+               }
+            }
+        });
 
         /*secondImg = (ImageView) findViewById(R.id.secondImg);
         productPicture = (ImageView) findViewById(R.id.profile_image);
@@ -526,12 +706,7 @@ public class productm extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        backAdver();
     }
 
     public String subtotal (){
@@ -840,8 +1015,8 @@ public class productm extends AppCompatActivity {
 
     public void More (Integer g){
 
+        android.support.v7.widget.AppCompatCheckBox[] checkAddition = new android.support.v7.widget.AppCompatCheckBox[additionSize];
 
-        me.omidh.liquidradiobutton.LiquidRadioButton[] checkAddition = new me.omidh.liquidradiobutton.LiquidRadioButton[additionSize];
         me.omidh.liquidradiobutton.LiquidRadioButton[] checks = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
         ArrayList<EditText> ed = new ArrayList<>();
 
@@ -979,7 +1154,7 @@ public class productm extends AppCompatActivity {
                     settings.additionCar.additionCars = new ArrayList<>();
 
                     final View childAdd = View.inflate(productm.this, R.layout.additionss, null);
-                    final me.omidh.liquidradiobutton.LiquidRadioButton appCompatCheckBox = (me.omidh.liquidradiobutton.LiquidRadioButton) childAdd.findViewById(R.id.appCompatCheckBox);
+                    final android.support.v7.widget.AppCompatCheckBox appCompatCheckBox = (android.support.v7.widget.AppCompatCheckBox) childAdd.findViewById(R.id.appCompatCheckBox);
                     final ImageView image = (ImageView) childAdd.findViewById(R.id.image);
                     TextView name = (TextView) childAdd.findViewById(R.id.textOne);
                     TextView price = (TextView) childAdd.findViewById(R.id.textTwo);
@@ -1494,10 +1669,12 @@ public class productm extends AppCompatActivity {
 
     public void confirmeFirstImage(Integer integer){
         Integer sizeDrink =settings.drink.drinks.size();
-        if (0> 0){
-            drinkMethod(imageViewDrink);
+        if (sizeDrink> 0){
+            actual=showDrin;
+            imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_bebida_lleno));
+            img_banner_options.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.option_drink));
             lbl_title_layout.setText("Bebidas");
-            putDrink();
+            //putDrink();
 
            /* showadditions.setVisibility(View.GONE);
             showIngredients.setVisibility(View.GONE);
@@ -1508,14 +1685,15 @@ public class productm extends AppCompatActivity {
             imgDrink.setVisibility(View.GONE);
             showDrink.setVisibility(View.GONE);
             drinkConfirm=0;
+            putIngredients();
             if (settings.ingredients.ingredientses.size()> 0){
+                imageViewIngredient.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_ingredientes_lleno));
+                actual=showIngredient;
+                img_banner_options.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.option_ingredients));
                 lbl_title_layout.setText("Ingredientes");
-                drinkMethod(imageViewIngredient);
-                clickIngredients();
-                putIngredients();
                 if (showIngredients.getVisibility()==View.GONE){showIngredients.setVisibility(View.VISIBLE);}
                 showadditions.setVisibility(View.GONE);
-                showObservations.setVisibility(View.GONE);
+                showObservatio.setVisibility(View.GONE);
 
             }
             else{
@@ -1523,22 +1701,24 @@ public class productm extends AppCompatActivity {
                 imgIngredient.setVisibility(View.GONE);
                 showIngredients.setVisibility(View.GONE);
                 if (settings.addition.additions.size()>0){
+                    imageViewAddition.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_adiciones_lleno));
+                    img_banner_options.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.option_additions));
+                    actual=showAddition;
                     lbl_title_layout.setText("Adiciones");
-                    drinkMethod(imageViewAddition);
-                    clickAdditions();
                     if (showadditions.getVisibility()==View.GONE){showadditions.setVisibility(View.VISIBLE);}
-                    showObservations.setVisibility(View.GONE);
+                    showObservatio.setVisibility(View.GONE);
                 }
                 else{
                     additiConfirm=0;
                     if (showObservations.getVisibility()==View.GONE){showObservations.setVisibility(View.VISIBLE);}
-                    drinkMethod(imageViewObsrv);
+                    img_banner_options.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.option_observations));
                     lbl_title_layout.setText("Observaciones");
                     imgAddition.setVisibility(View.GONE);
+                    actual=showObservatio;
                     showadditions.setVisibility(View.GONE);
                     switch (integer){
                         case 1:
-                            clickObservations();
+                            imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno));
                             break;
                         case 2:
                             imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno_beer));
@@ -1566,6 +1746,8 @@ public class productm extends AppCompatActivity {
             if (showIngredients.getVisibility()==View.VISIBLE){showIngredients.setVisibility(View.GONE);}
             ingreConfirm=0;
             View child = View.inflate(productm.this, R.layout.ingradients, null);
+        }
+        else{
         }
         if (sizeAddi<1&&imgAddition.getVisibility() ==View.VISIBLE){
             imgAddition.setVisibility(View.GONE);
@@ -1688,7 +1870,7 @@ public class productm extends AppCompatActivity {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finish();
+                    backAdver();
                 }
             });
         }
@@ -1711,7 +1893,7 @@ public class productm extends AppCompatActivity {
         return names;
     }
 
-    public void clicksDetails() {
+    /*public void clicksDetails() {
         clickDrinks();
         clickIngredients();
         clickAdditions();
@@ -1776,7 +1958,7 @@ public class productm extends AppCompatActivity {
                  Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
              }
          });
-     }
+     }*/
 
 
     public void putDrink(){
@@ -1930,9 +2112,23 @@ public class productm extends AppCompatActivity {
                 if (settings.ingredients.ingredientses.get(k).type==2){
                     String t = settings.ingredients.ingredientses.get(k).name;
                     int id = settings.ingredients.ingredientses.get(k).id;
-                    LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
+                    final LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
                     radio.setText(t);
-                    radio.setId(id);
+                    radio.setId(otherIngre.size());
+                    otherIngre.add(new check(0,0,0,0,radio));
+                    radio.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (otherIngre.get(radio.getId()).in==0){
+                                radio.setChecked(true);
+                                otherIngre.set(radio.getId(),new check(1,0,0,0,otherIngre.get(radio.getId()).liquidRadioButtons));
+                            }
+                            else{
+                                radio.setChecked(false);
+                                otherIngre.set(radio.getId(),new check(0,0,0,0,otherIngre.get(radio.getId()).liquidRadioButtons));
+                            }
+                        }
+                    });
 
                     /*final View childOb = View.inflate(productm.this, R.layout.normal, null);
                     TextView text = (TextView) childOb.findViewById(R.id.text);
@@ -1966,17 +2162,61 @@ public class productm extends AppCompatActivity {
     public void callOptionals(LinearLayout linear){
         for (int i =0; i<settings.optionalIngredients.optionalIngredientses.size();i++){
             final View childIn = View.inflate(productm.this, R.layout.optional, null);
+            String conti = "  Mínimo 1 máximo "+ settings.optionalIngredients.optionalIngredientses.get(i).cant.toString()+" ingrediente(s)";
+            final Integer can = settings.optionalIngredients.optionalIngredientses.get(i).cant;
+            final Integer[] coun = {settings.optionalIngredients.optionalIngredientses.get(i).coun};
             TextView text=(TextView)childIn.findViewById(R.id.text);
             LinearLayout layout_ingredients = (LinearLayout) childIn.findViewById(R.id.layout_ingredients);
-            text.setText(settings.optionalIngredients.optionalIngredientses.get(i).name);
+            text.setText(settings.optionalIngredients.optionalIngredientses.get(i).name+conti);
+            final ArrayList<check> checks= new ArrayList<>();
+            final List<LiquidRadioButton> liquidRadioButtons= new ArrayList<>();
             for (int j =0; j<settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.size();j++){
                 String t = settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.get(j).name;
                 int id = settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.get(j).id;
-                LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
+                final LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
+
                 radio.setText(t);
-                radio.setId(id);
+                radio.setId(j);
+
                 layout_ingredients.addView(radio);
+                checks.add(new check(0,j,can,0, radio));
+                liquidRadioButtons.add(radio);
+
+                final int finalJ = i;
+                radio.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(checks.get(radio.getId()).in==0){
+                            if(can> coun[0]){
+                                radio.setChecked(true);
+                                checks.set(radio.getId(),new check(1,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count+1,checks.get(radio.getId()).liquidRadioButtons));
+                                coun[0] = coun[0] +1;
+                            }
+                            else {
+                                radio.setChecked(false);
+                                String mensajee ="no puedes escoger mas ingredientes";
+
+                                Toast toast1 =
+                                        Toast.makeText(getApplicationContext(),
+                                                mensajee, Toast.LENGTH_SHORT);
+
+                                toast1.show();
+                            }
+
+
+                        }
+                        else {
+                            radio.setChecked(false);
+                            checks.set(radio.getId(),new check(0,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count-1,checks.get(radio.getId()).liquidRadioButtons));
+                            coun[0] = coun[0] -1;
+
+                        }
+                    }
+                });
+
             }
+            settings.optionalIngredients.optionalIngredientses.set(i, new optionalIngredients(settings.optionalIngredients.optionalIngredientses.get(i).name, settings.optionalIngredients.optionalIngredientses.get(i).cant,
+                    settings.optionalIngredients.optionalIngredientses.get(i).coun, checks,settings.optionalIngredients.optionalIngredientses.get(i).ingredientses));
             linear.addView(childIn);
         }
     }
@@ -2050,7 +2290,7 @@ public class productm extends AppCompatActivity {
 
                     }
                 });*/
-
+/*
                 public void drinkMethod(View view){
                     //Changes
                     lbl_title_layout.setText("Bebidas");
@@ -2059,10 +2299,280 @@ public class productm extends AppCompatActivity {
                     Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
                     Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
 
-                  /*  YoYo.with(Techniques.Swing).duration(300).playOn(view);
+                  *//*  YoYo.with(Techniques.Swing).duration(300).playOn(view);
                     Picasso.with(context).load(R.drawable.option_drink).centerInside().fit().into(img_banner_options);
                     YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
-*/
-                }
+*//*
+                }*/
 
+    public void backAdver(){
+
+
+        ColorDialog dialog = new ColorDialog(this);
+        dialog.setTitle("Alerta!");
+        dialog.setContentImage(getResources().getDrawable(R.drawable.alert));
+        dialog.setContentText("Deseas volver sin completar el pedido?");
+        dialog.setPositiveListener(getString(R.string.back), new ColorDialog.OnPositiveListener() {
+            @Override
+            public void onClick(ColorDialog dialog) {
+                /*DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
+                } else {
+                    dialog.onBackPressed();
+                }*/
+                finish();
+            }
+        })
+                .setNegativeListener(getString(R.string.cancel), new ColorDialog.OnNegativeListener() {
+                    @Override
+                    public void onClick(ColorDialog dialog) {
+
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
+    public void prevous(LinearLayout gone, LinearLayout visible){
+        /*YoYo.with(Techniques.FadeOutRight)
+                .duration(500)
+                .repeat(0)
+                .playOn(now);
+
+        YoYo.with(Techniques.FadeInRight)
+                .duration(500)
+                .repeat(0)
+                .playOn(linTwo);*/
+        visible.setVisibility(View.VISIBLE);
+        gone.setVisibility(View.GONE);
+    }
+    public void next(LinearLayout gone, LinearLayout visible){
+       /* YoYo.with(Techniques.FadeOutLeft)
+                .duration(500)
+                .repeat(0)
+                .playOn(lin);
+        YoYo.with(Techniques.FadeInLeft)
+                .duration(500)
+                .repeat(0)
+                .playOn(linTwo);*/
+       visible.setVisibility(View.VISIBLE);
+        gone.setVisibility(View.GONE);
+    }
+    public void showAdditions (){
+        android.support.v7.widget.AppCompatCheckBox[] checkAddition = new android.support.v7.widget.AppCompatCheckBox[additionSize];
+            if(settings.addition.additions.size()>0){
+
+                for(int bb =0;bb<settings.addition.additions.size();bb++) {
+
+                    settings.additionCar.additionCars = new ArrayList<>();
+
+                    final View childAdd = View.inflate(productm.this, R.layout.additionss, null);
+                    final android.support.v7.widget.AppCompatCheckBox appCompatCheckBox = (android.support.v7.widget.AppCompatCheckBox) childAdd.findViewById(R.id.appCompatCheckBox);
+                    final ImageView image = (ImageView) childAdd.findViewById(R.id.image);
+                    TextView name = (TextView) childAdd.findViewById(R.id.textOne);
+                    TextView price = (TextView) childAdd.findViewById(R.id.textTwo);
+                    LinearLayout allAll = (LinearLayout) childAdd.findViewById(R.id.allAll);
+                    final ImageView more = (ImageView) childAdd.findViewById(R.id.more);
+                    final ImageView less = (ImageView) childAdd.findViewById(R.id.less);
+                    final TextView numberaa = (TextView) childAdd.findViewById(R.id.number);
+                    appCompatCheckBox.setId(bb);
+                    more.setId(bb);
+                    less.setId(bb);
+                    more.setEnabled(false);
+                    less.setEnabled(false);
+                    checkAddition[bb] = appCompatCheckBox;
+                    checkAddition[bb].setId(bb);
+                    settings.allChecks.allCheckses.set(0, new allChecks(
+                            settings.allChecks.allCheckses.get(0).getChecksDrink(),
+                            checkAddition,
+                            settings.allChecks.allCheckses.get(0).getChecks()));
+
+                    for (int ad = 0; ad < settings.addition.additions.size(); ad++) {
+
+                        settings.additionCar.additionCars.add(new additionCar(
+                                settings.addition.additions.get(ad).getId(),
+                                settings.addition.additions.get(ad).getCantss(),
+                                settings.addition.additions.get(ad).getName(),
+                                settings.addition.additions.get(ad).getPrice()
+                        ));
+                    }
+
+                    settings.productCar.productCars.set(daa,new productCar(
+                                    settings.productCar.productCars.get(daa).getIdProduct(),
+                                    settings.productCar.productCars.get(daa).getName(),
+                                    settings.productCar.productCars.get(daa).getPrice(),
+                                    settings.productCar.productCars.get(daa).getPicture(),
+                                    settings.productCar.productCars.get(daa).getObser(),0,
+                                    settings.additionCar.additionCars,
+                                    settings.productCar.productCars.get(daa).getIngredientsCars(),
+                                    settings.productCar.productCars.get(daa).getDrinkCar()
+                            )
+                    );
+
+                    Picasso.with(productm.this)
+                            .load("http://godomicilios.co/admin/img/adiciones/"+settings.addition.additions.get(bb).getPicture())
+                            .into(image, new com.squareup.picasso.Callback() {
+                                @Override
+                                public void onSuccess() {
+                                    //do smth when picture is loaded successfully
+                                }
+
+                                @Override
+                                public void onError() {
+                                    //do smth when there is picture loading error
+                                }
+                            });
+
+                    name.setText(settings.addition.additions.get(bb).getName());
+                    price.setText(settings.addition.additions.get(bb).getPrice().toString());
+
+                    appCompatCheckBox.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Integer One = settings.subtotal.getFinalPrice();
+                            Integer Two = settings.addition.additions.get(
+                                    appCompatCheckBox.getId()
+                            ).getPrice();
+                            Integer idCheck =appCompatCheckBox.getId();
+
+                            if(appCompatCheckBox.isChecked()){
+
+                                Integer Total= One+Two;
+                                settings.subtotal.setFinalPrice(Total);
+                                settings.addition.additions.set(idCheck,
+                                        new addition(settings.addition.additions.get(idCheck).getId(),
+                                                settings.addition.additions.get(idCheck).getName(),
+                                                settings.addition.additions.get(idCheck).getPrice(),
+                                                settings.addition.additions.get(idCheck).getPicture(),
+                                                1));
+                                numberaa.setText(settings.addition.additions.get(idCheck).getCantss().toString());
+                                more.setEnabled(true);
+
+
+                                int states[][] = {{android.R.attr.state_checked}, {}};
+                                int colors[] = {ContextCompat.getColor(context,R.color.redGo),ContextCompat.getColor(context,R.color.black)};
+                                CompoundButtonCompat.setButtonTintList(appCompatCheckBox, new ColorStateList(states, colors));
+                                appCompatCheckBox.isChecked();
+                                appCompatCheckBox.setChecked(true);
+
+                                if(settings.addition.additions.get(idCheck).getCantss()>=2){
+                                    appCompatCheckBox.setEnabled(false);
+                                }
+
+
+                            }
+                            else{
+                                Integer Total=settings.subtotal.getFinalPrice()-settings.addition.additions.get(appCompatCheckBox.getId()).getPrice();
+                                settings.subtotal.setFinalPrice(Total);
+                                    more.setEnabled(false);
+                                settings.addition.additions.set(idCheck,
+                                        new addition(settings.addition.additions.get(idCheck).getId(),
+                                                settings.addition.additions.get(idCheck).getName(),
+                                                settings.addition.additions.get(idCheck).getPrice(),
+                                                settings.addition.additions.get(idCheck).getPicture(),
+                                                0));
+
+                                if(!numberaa.getText().equals("-")){
+                                    numberaa.setText("-");
+                                }
+
+                            }
+                        }
+                    });
+
+
+                    showadditions.addView(childAdd);
+                    allAll.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    more.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Integer nn=more.getId();
+
+                            if(settings.addition.additions.get(more.getId()).getCantss() >= 1){
+
+                                settings.addition.additions.set(more.getId(),
+                                        new addition(settings.addition.additions.get(more.getId()).getId(),
+                                                settings.addition.additions.get(more.getId()).getName(),
+                                                settings.addition.additions.get(more.getId()).getPrice(),
+                                                settings.addition.additions.get(more.getId()).getPicture(),
+                                                settings.addition.additions.get(more.getId()).getCantss()+1));
+                                numberaa.setText(settings.addition.additions.get(more.getId()).getCantss().toString());
+                                Integer a = settings.subtotal.getFinalPrice();
+                                multi=settings.addition.additions.get(nn).getPrice()+a;
+                                settings.subtotal.setFinalPrice(multi);
+                                less.setEnabled(true);
+                                appCompatCheckBox.setEnabled(false);
+                                //showAny(1);
+                            }
+
+                        }
+                    });
+                    less.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Integer nn=less.getId();
+
+                            if(settings.addition.additions.get(nn).getCantss()>2){
+
+                                settings.addition.additions.set(more.getId(),
+                                        new addition(settings.addition.additions.get(nn).getId(),
+                                                settings.addition.additions.get(nn).getName(),
+                                                settings.addition.additions.get(nn).getPrice(),
+                                                settings.addition.additions.get(nn).getPicture(),
+                                                settings.addition.additions.get(nn).getCantss()-1));
+                                numberaa.setText(settings.addition.additions.get(nn).getCantss().toString());
+                                Integer a = settings.subtotal.getFinalPrice();
+                                Integer b = settings.addition.additions.get(nn).getPrice();
+                                Integer multi= a - b;
+                                settings.subtotal.setFinalPrice(multi);
+
+                                //deleteView();
+                            }
+                            else{
+                                if(settings.addition.additions.get(nn).getCantss() == 2){
+                                    settings.addition.additions.set(more.getId(),
+                                            new addition(settings.addition.additions.get(nn).getId(),
+                                                    settings.addition.additions.get(nn).getName(),
+                                                    settings.addition.additions.get(nn).getPrice(),
+                                                    settings.addition.additions.get(nn).getPicture(),
+                                                    settings.addition.additions.get(nn).getCantss()-1));
+                                    numberaa.setText("1");
+                                    Integer a = settings.subtotal.getFinalPrice();
+                                    Integer b = settings.addition.additions.get(nn).getPrice();
+                                    Integer multi= a - b;
+                                    settings.subtotal.setFinalPrice(multi);
+                                    less.setEnabled(false);
+                                    appCompatCheckBox.setEnabled(true);
+                                }
+                                else{
+                                    if(settings.addition.additions.get(nn).getCantss()== 1){
+                                        appCompatCheckBox.setChecked(false);
+                                        appCompatCheckBox.setEnabled(true);
+                                        numberaa.setText("-");
+                                        settings.addition.additions.set(more.getId(),
+                                                new addition(settings.addition.additions.get(nn).getId(),
+                                                        settings.addition.additions.get(nn).getName(),
+                                                        settings.addition.additions.get(nn).getPrice(),
+                                                        settings.addition.additions.get(nn).getPicture(),
+                                                        settings.addition.additions.get(nn).getCantss()-1));
+                                        Integer a = settings.subtotal.getFinalPrice();
+                                        Integer b = settings.addition.additions.get(nn).getPrice();
+                                        Integer multi= a - b;
+                                        settings.subtotal.setFinalPrice(multi);
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+
+                }
+            }
+    }
 }
+

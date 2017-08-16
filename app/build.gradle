@@ -7,8 +7,8 @@ android {
         applicationId 'godomicilios.mdcc.godomiciliosc'
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 31
-        versionName '1.0.6'
+        versionCode 33
+        versionName '1.0.8'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -58,5 +58,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     compile 'me.omidh:liquidradiobutton:1.0.01'
+    compile 'com.hanks.animatecheckbox:library:0.1'
+    compile 'com.qintong:insLoadingAnimation:1.1.0'
+    compile 'com.github.andyxialm:TyperEditText:1.0.2'
 }
 apply plugin: 'com.google.gms.google-services'
