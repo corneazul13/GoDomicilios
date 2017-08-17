@@ -2308,9 +2308,9 @@ public class productm extends AppCompatActivity {
     public void backAdver(){
 
 
-        ColorDialog dialog = new ColorDialog(this);
+        ColorDialog dialog = new ColorDialog(context);
         dialog.setTitle("Alerta!");
-        dialog.setContentImage(getResources().getDrawable(R.drawable.alert));
+        dialog.setContentImage(ContextCompat.getDrawable(context, R.drawable.alert));
         dialog.setContentText("Deseas volver sin completar el pedido?");
         dialog.setPositiveListener(getString(R.string.back), new ColorDialog.OnPositiveListener() {
             @Override
@@ -2321,17 +2321,17 @@ public class productm extends AppCompatActivity {
                 } else {
                     dialog.onBackPressed();
                 }*/
+                dialog.dismiss();
                 finish();
             }
-        })
-                .setNegativeListener(getString(R.string.cancel), new ColorDialog.OnNegativeListener() {
-                    @Override
-                    public void onClick(ColorDialog dialog) {
-
-                        dialog.dismiss();
-                    }
-                }).show();
+        }).setNegativeListener(getString(R.string.cancel), new ColorDialog.OnNegativeListener() {
+            @Override
+            public void onClick(ColorDialog dialog) {
+                dialog.dismiss();
+            }
+        }).show();
     }
+
     public void prevous(LinearLayout gone, LinearLayout visible){
         /*YoYo.with(Techniques.FadeOutRight)
                 .duration(500)
