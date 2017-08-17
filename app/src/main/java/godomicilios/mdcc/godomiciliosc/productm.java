@@ -2233,6 +2233,7 @@ public class productm extends AppCompatActivity {
             settings.optionalIngredients.optionalIngredientses.set(i, new optionalIngredients(settings.optionalIngredients.optionalIngredientses.get(i).name, settings.optionalIngredients.optionalIngredientses.get(i).cant,
                     settings.optionalIngredients.optionalIngredientses.get(i).coun, checks,settings.optionalIngredients.optionalIngredientses.get(i).ingredientses));
             linear.addView(childIn);
+
         }
     }
     /*TextView name = (TextView) childIn.findViewById(R.id.text);
