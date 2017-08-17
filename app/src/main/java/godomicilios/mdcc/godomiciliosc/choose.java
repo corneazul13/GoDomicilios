@@ -1,7 +1,6 @@
 package godomicilios.mdcc.godomiciliosc;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,12 +21,9 @@ import com.facebook.login.LoginManager;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.qintong.library.InsLoadingView;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
-
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.coupon;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
@@ -39,7 +34,7 @@ public class choose extends AppCompatActivity {
 
     private static Tracker tracker;
 
-    ImageView restaurant, beer, med, pet, market, imageView10;
+    ImageView restaurant, beer, med, pet, market;
     public static int MILISEGUNDOS_ESPERA = 200;
     InsLoadingView test;
 
@@ -82,59 +77,52 @@ public class choose extends AppCompatActivity {
         }        restaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YoYo.with(Techniques.RotateOutDownRight)
+                YoYo.with(Techniques.Swing)
                         .duration(600)
                         .repeat(0)
                         .playOn(restaurant);
                 esperarYCerrar(restaurant,1);
-
             }
         });
 
         beer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                YoYo.with(Techniques.RotateOutDownRight)
+                YoYo.with(Techniques.Swing)
                         .duration(600)
                         .repeat(0)
                         .playOn(beer);
                 esperarYCerrar(beer,2);
-
-
             }
         });
         med.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YoYo.with(Techniques.RotateOutDownRight)
+                YoYo.with(Techniques.Swing)
                         .duration(600)
                         .repeat(0)
                         .playOn(med);
                 esperarYCerrar(med,3);
-
             }
         });
         pet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YoYo.with(Techniques.RotateOutDownRight)
+                YoYo.with(Techniques.Swing)
                         .duration(600)
                         .repeat(0)
                         .playOn(pet);
                 esperarYCerrar(pet,4);
-
             }
         });
         market.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                YoYo.with(Techniques.RotateOutDownRight)
+                YoYo.with(Techniques.Swing)
                         .duration(600)
                         .repeat(0)
                         .playOn(market);
                 esperarYCerrar(market,5);
-
             }
         });
 
@@ -341,7 +329,7 @@ public class choose extends AppCompatActivity {
                         break;
                 }
 
-                YoYo.with(Techniques.RotateInUpRight)
+                YoYo.with(Techniques.Swing)
                         .duration(600)
                         .repeat(0)
                         .playOn(ima);
