@@ -69,6 +69,7 @@ public class productm extends AppCompatActivity {
     LinearLayout showDrink, showIngredients, showadditions,showObservations;
     Integer daa, test;
     LinearLayout showDrin, showIngredient, showAddition, showObservatio, actual;
+    ArrayList<check> checksTemp= new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,18 +133,29 @@ public class productm extends AppCompatActivity {
         buttonIngre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                next(showIngredient,showAddition);
-                actual=showAddition;
+                Integer si = checksTemp.size();
+                for (int i =0;i<si;i++){
+                    if(checksTemp.get(i).cant>0){
+                        if(i==si-1){
+                            next(showIngredient,showAddition);
+                            actual=showAddition;
 
-                YoYo.with(Techniques.Swing).duration(300).playOn(v);
-                Picasso.with(context).load(R.drawable.option_additions).centerInside().fit().into(img_banner_options);
-                YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
-                //Changes
-                lbl_title_layout.setText("Adiciones");
-                Picasso.with(context).load(R.drawable.icon_adiciones_lleno).centerInside().fit().into(imageViewAddition);
-                Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
-                Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
-                Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+                            YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                            Picasso.with(context).load(R.drawable.option_additions).centerInside().fit().into(img_banner_options);
+                            YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
+                            //Changes
+                            lbl_title_layout.setText("Adiciones");
+                            Picasso.with(context).load(R.drawable.icon_adiciones_lleno).centerInside().fit().into(imageViewAddition);
+                            Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                            Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                            Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
+                        }
+                    }
+                    else{
+                        break;
+                    }
+                }
+
             }
         });
         buttonAddi.setOnClickListener(new View.OnClickListener() {
@@ -2180,6 +2192,7 @@ public class productm extends AppCompatActivity {
 
                 layout_ingredients.addView(radio);
                 checks.add(new check(0,j,can,0, radio));
+                checksTemp.add(new check(0,j,can,0,radio));
                 liquidRadioButtons.add(radio);
 
                 final int finalJ = i;
@@ -2189,6 +2202,7 @@ public class productm extends AppCompatActivity {
                         if(checks.get(radio.getId()).in==0){
                             if(can> coun[0]){
                                 radio.setChecked(true);
+                                checksTemp.set(radio.getId(),new check(1,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count+1,checks.get(radio.getId()).liquidRadioButtons));
                                 checks.set(radio.getId(),new check(1,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count+1,checks.get(radio.getId()).liquidRadioButtons));
                                 coun[0] = coun[0] +1;
                             }
@@ -2207,6 +2221,7 @@ public class productm extends AppCompatActivity {
                         }
                         else {
                             radio.setChecked(false);
+                            checksTemp.set(radio.getId(),new check(0,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count-1,checks.get(radio.getId()).liquidRadioButtons));
                             checks.set(radio.getId(),new check(0,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count-1,checks.get(radio.getId()).liquidRadioButtons));
                             coun[0] = coun[0] -1;
 
