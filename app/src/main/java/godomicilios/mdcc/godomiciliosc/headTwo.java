@@ -346,7 +346,8 @@ public class headTwo  extends AppCompatActivity
                                                 address.getDouble("longitud"),
                                                 settings.order.getLongitude()),
                                         duration(),address.getInt("empresa_id"),
-                                        Math.round(address.getInt("estrellas_sucursal")*2)));
+                                        Math.round(address.getInt("estrellas_sucursal")*2),
+                                        address.getString("categorias_products")));
 
                                 View child = View.inflate(headTwo.this, R.layout.li, null);
 
@@ -393,6 +394,38 @@ public class headTwo  extends AppCompatActivity
 
                                 }
                                 settings.product.products = new ArrayList<>();
+                                buttons.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            settings.rank.setIdStablishment(address.getInt("empresa_id"));
+                                            settings.stablishment.setNumber(main.getId());
+                                            if (settings.product.getStablishSelection() == null) {
+
+                                                settings.product.setStablishSelection(main.getId());
+                                                settings.product.setConfirm(0);
+
+                                            } else {
+                                                if (settings.product.getStablishSelection() == main.getId()) {
+                                                    settings.product.setConfirm(1);
+                                                } else {
+                                                    settings.product.setStablishSelection(main.getId());
+                                                    settings.product.setConfirm(0);
+                                                }
+                                            }
+
+                                            try {
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        } catch(JSONException e){
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                });
 
 
                                 main.setOnClickListener(new View.OnClickListener() {
@@ -416,7 +449,9 @@ public class headTwo  extends AppCompatActivity
                                             }
 
                                             try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.rank.getIdStablishment());
+
+                                                String pro = settings.stablishment.stablishments.get(main.getId()).getProductRank();
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+pro ,main.getId());
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -516,7 +551,7 @@ public class headTwo  extends AppCompatActivity
         return "Distancia: "+big.toString()+" Km";
     }
 
-    public void httpRank (final String url) throws Exception{
+    public void httpRank (final String url, final Integer id) throws Exception{
 
 
         final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
@@ -553,7 +588,8 @@ public class headTwo  extends AppCompatActivity
                                         ranks.getInt("estado"),0)
                                 );
                             }
-                            final JsonArrayRequest jsonArrayRequests= new JsonArrayRequest(JsonArrayRequest.Method.GET, "https://godomicilios.co/webService/servicios.php?svice=PRODUCTOS&metodo=json&empId="+settings.rank.getIdStablishment(), null,
+                            final JsonArrayRequest jsonArrayRequests= new JsonArrayRequest(JsonArrayRequest.Method.GET, "https://godomicilios.co/webService/servicios.php?svice=PRODUCTOS&metodo=json&sucId="
+                                    +settings.stablishment.stablishments.get(id).getId()+"&empId="+settings.stablishment.stablishments.get(id).getId_Stablish(), null,
                                     new Response.Listener<JSONArray>() {
                                         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
                                         @Override
@@ -845,7 +881,8 @@ public class headTwo  extends AppCompatActivity
                                                 address.getDouble("longitud"),
                                                 settings.order.getLongitude()),
                                         duration(),address.getInt("empresa_id"),
-                                        Math.round(address.getInt("estrellas_sucursal")*2)));
+                                        Math.round(address.getInt("estrellas_sucursal")*2),
+                                        address.getString("categorias_products")));
 
 
                                 View child = View.inflate(headTwo.this, R.layout.li, null);
@@ -881,6 +918,38 @@ public class headTwo  extends AppCompatActivity
                                     main.setEnabled(false);
 
                                 }
+                                buttons.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        try {
+                                            settings.rank.setIdStablishment(address.getInt("empresa_id"));
+                                            settings.stablishment.setNumber(main.getId());
+                                            if (settings.product.getStablishSelection() == null) {
+
+                                                settings.product.setStablishSelection(main.getId());
+                                                settings.product.setConfirm(0);
+
+                                            } else {
+                                                if (settings.product.getStablishSelection() == main.getId()) {
+                                                    settings.product.setConfirm(1);
+                                                } else {
+                                                    settings.product.setStablishSelection(main.getId());
+                                                    settings.product.setConfirm(0);
+                                                }
+                                            }
+
+                                            try {
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        } catch(JSONException e){
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                });
 
                                 main.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -903,7 +972,8 @@ public class headTwo  extends AppCompatActivity
                                             }
 
                                             try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.rank.getIdStablishment());
+                                                String pro = settings.stablishment.stablishments.get(main.getId()).getProductRank();
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+pro ,main.getId());
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }

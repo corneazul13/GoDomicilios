@@ -44,6 +44,7 @@ public class settings {
     public static chats chats = new chats();
     public static optionalIngredients optionalIngredients = new optionalIngredients();
     public static check check= new check();
+    public static subGlobalChecks subGlobalChecks = new subGlobalChecks();
 
     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;

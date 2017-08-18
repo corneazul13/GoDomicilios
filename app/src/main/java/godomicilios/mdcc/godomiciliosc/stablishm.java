@@ -262,6 +262,7 @@ public class stablishm extends AppCompatActivity
             Auth.GoogleSignInApi.signOut(settings.user.getGoogleApiClient()).setResultCallback(new ResultCallback<Status>() {
                 @Override
                 public void onResult(@NonNull Status status) {
+
                     logOut();
                     settings.user.logouts();
                     goLoginScreen();

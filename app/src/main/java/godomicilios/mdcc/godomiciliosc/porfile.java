@@ -272,9 +272,19 @@ public class porfile extends AppCompatActivity
 
         String names = settings.user.getName();
         String phones = settings.user.getPhone().toString();
+        String surn = settings.user.getSurname();
 
-        surname.setText(settings.user.getSurname().toLowerCase());
-        name.setText(names.toLowerCase());
+        if(names!=null&&surn!=null){
+
+            surname.setText(surn.toLowerCase());
+            name.setText(names.toLowerCase());
+        }
+        else{
+            settings.user.setName("");
+            settings.user.setSurname("");
+        }
+
+
         if(phones.equals("")){
             phone.setHint("Ingresa un nùmero contacto");
             phone.setEnabled(true);
