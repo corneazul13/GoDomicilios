@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -46,7 +44,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -370,7 +367,6 @@ public class head extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     public void httpC (String url) throws Exception{
         LinearLayout linear = (LinearLayout) findViewById(R.id.li);
         linear.removeAllViews();
@@ -469,7 +465,7 @@ public class head extends AppCompatActivity
                                             }
 
                                             try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.stablishment.stablishments.get(main.getId()).getId_Company(), main.getId());
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -694,7 +690,7 @@ public class head extends AppCompatActivity
                             }
                             settings.product.products = new ArrayList<>();
                             final JsonArrayRequest jsonArrayRequests= new JsonArrayRequest(JsonArrayRequest.Method.GET, "https://godomicilios.co/webService/servicios.php?svice=PRODUCTOS&metodo=json&sucId="
-                                    +settings.stablishment.stablishments.get(id).getId()+"&empId="+settings.stablishment.stablishments.get(id).getId_Stablish(), null,
+                                    +settings.stablishment.stablishments.get(id).idBranch+"&empId="+settings.stablishment.stablishments.get(id).getId_Company(), null,
                                     new Response.Listener<JSONArray>() {
                                         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
                                         @Override

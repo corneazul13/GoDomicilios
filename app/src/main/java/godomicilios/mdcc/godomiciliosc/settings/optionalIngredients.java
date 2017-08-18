@@ -10,6 +10,7 @@ import me.omidh.liquidradiobutton.LiquidRadioButton;
  */
 
 public class optionalIngredients {
+    public Integer id;
     public String name;
     public Integer cant;
     public Integer coun;
@@ -17,8 +18,9 @@ public class optionalIngredients {
     public ArrayList<check> checks;
     public ArrayList<optionalIngredients> optionalIngredientses;
 
-    public optionalIngredients(String name, Integer cant,Integer count, ArrayList<check> checks, ArrayList<ingredients> ingredientses){
+    public optionalIngredients(Integer id, String name, Integer cant,Integer count, ArrayList<check> checks, ArrayList<ingredients> ingredientses){
 
+        this.id=id;
         this.name = name;
         this.cant= cant;
         this.coun=count;

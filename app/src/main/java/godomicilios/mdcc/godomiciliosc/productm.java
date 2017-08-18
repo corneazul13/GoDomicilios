@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.refactor.lib.colordialog.ColorDialog;
+import godomicilios.mdcc.godomiciliosc.settings.StablishmentCar;
 import godomicilios.mdcc.godomiciliosc.settings.addition;
 import godomicilios.mdcc.godomiciliosc.settings.additionCar;
 import godomicilios.mdcc.godomiciliosc.settings.allChecks;
@@ -65,6 +66,8 @@ public class productm extends AppCompatActivity {
     Integer daa, test;
     LinearLayout showDrin, showIngredient, showAddition, showObservatio, actual;
     ArrayList<check> checksTemp= new ArrayList<>();
+    ArrayList<ingredientsCar> tempIng = new ArrayList<>();
+    int rN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,98 @@ public class productm extends AppCompatActivity {
         showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
         showObservations = (LinearLayout) findViewById(R.id.showObservation);
         less.setEnabled(false);
+        settings.allChecks.allCheckses = new ArrayList<>();
+        rN= new Integer(0);
+        if(settings.shoppingCar.carFinal==null){
+            settings.shoppingCar.carFinal = new ArrayList<>();
+        }
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                settings.productCar.productCars.set(daa,new productCar(
+                                settings.productCar.productCars.get(daa).getIdProduct(),
+                                settings.productCar.productCars.get(daa).getName(),
+                                settings.productCar.productCars.get(daa).getPrice(),
+                                settings.productCar.productCars.get(daa).getPicture(),
+                                text.getText().toString(),0,
+                                settings.productCar.productCars.get(daa).getAdditionCars(),
+                                settings.productCar.productCars.get(daa).getIngredientsCars(),
+                                settings.productCar.productCars.get(daa).getDrinkCar()
+                ));
+
+                if(settings.shoppingCar.carFinal.size()>=1){
+                    for (int bb=0; bb<settings.shoppingCar.carFinal.size();bb++){
+
+                        Integer firstOption = settings.shoppingCar.carFinal.get(bb).getIdBranch();
+                        Integer secondOption = settings.stablishment.stablishments.get(settings.stablishment.getNumber()).idBranch;
+
+
+                        if (firstOption==secondOption
+                                ){
+
+                            Integer sd = settings.productCar.getProductCars().size();
+
+                            settings.shoppingCar.carFinal.get(bb).productCars.add(
+                                    new productCar(
+                                            settings.productCar.productCars.get(cc).getIdProduct(),
+                                            settings.productCar.productCars.get(cc).getName(),
+                                            settings.productCar.productCars.get(cc).getPrice(),
+                                            settings.productCar.productCars.get(cc).getPicture(),
+                                            settings.productCar.productCars.get(cc).getObser(),0,
+                                            settings.productCar.productCars.get(cc).getAdditionCars(),
+                                            settings.productCar.productCars.get(cc).getIngredientsCars(),
+                                            settings.productCar.productCars.get(cc).getDrinkCar()
+                                    )
+                            );
+
+                            break;
+                        }
+
+                        else{
+                            if(bb==settings.shoppingCar.carFinal.size()-1){
+                                settings.shoppingCar.carFinal.add(
+                                        new StablishmentCar(
+                                                settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company(),
+                                                settings.stablishment.stablishments.get(settings.stablishment.getNumber()).idBranch,
+                                                settings.stablishment.getId(),
+                                                settings.stablishment.stablishments.get(settings.stablishment.getNumber()).image,
+                                                settings.stablishment.stablishments.get(settings.stablishment.getNumber()).name,
+                                                settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getDistance(),
+                                                settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getDurattion(),
+                                                settings.stablishment.stablishments.get(settings.stablishment.getNumber()).price,
+                                                settings.stablishment.stablishments.get(settings.stablishment.getNumber()).minimum,
+                                                Integer.parseInt(subtotal.getText().toString()),
+                                                settings.productCar.getProductCars()
+                                        ));
+                                break;
+                            }
+
+
+                        }
+                    }}
+                else {
+                    settings.shoppingCar.carFinal.add(
+                            new StablishmentCar(
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company(),
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).idBranch,
+                                    settings.stablishment.getId(),
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).image,
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).name,
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getDistance(),
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getDurattion(),
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).price,
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).minimum,
+                                    0,
+                                    settings.productCar.getProductCars()
+                            ));
+                }
+                Intent go = new Intent(productm.this, car.class);
+                startActivity(go);
+                productm.this.finish();
+            }
+        });
+
 
         buttonDrink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,6 +261,18 @@ public class productm extends AppCompatActivity {
                     Integer in =settings.subGlobalChecks.subGlobalCheckses.get(i).count;
                     if(in>0){
                         if(i==si-1){
+
+                            settings.productCar.productCars.set(daa,new productCar(
+                                            settings.productCar.productCars.get(daa).getIdProduct(),
+                                            settings.productCar.productCars.get(daa).getName(),
+                                            settings.productCar.productCars.get(daa).getPrice(),
+                                            settings.productCar.productCars.get(daa).getPicture(),
+                                            settings.productCar.productCars.get(daa).getObser(),0,
+                                            settings.productCar.productCars.get(daa).getAdditionCars(),
+                                            tempIng,
+                                            settings.productCar.productCars.get(daa).getDrinkCar()
+                                    )
+                            );
                             if(additiConfirm==0){
                                 next(showIngredient,showObservatio);
                                 actual=showObservatio;
@@ -193,7 +300,6 @@ public class productm extends AppCompatActivity {
                                 Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
                                 Picasso.with(context).load(R.drawable.icon_observaciones_normal).centerInside().fit().into(imageViewObsrv);
 
-
                             }
 
                         }
@@ -215,7 +321,36 @@ public class productm extends AppCompatActivity {
         buttonAddi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 next(showAddition,showObservatio);
+                for(int h =0; h<settings.productCar.productCars.size();h++){
+                    ArrayList<additionCar> realAddition = new ArrayList<additionCar>();
+                    Integer intAdditions = settings.productCar.productCars.get(h).getAdditionCars().size();
+                    for(int j=0;j<intAdditions;j++){
+                        Boolean boole = settings.allChecks.allCheckses.get(h).getCheckAddition()[j].isChecked();
+                        if (boole==true){
+                            realAddition.add(new additionCar(
+                                            settings.productCar.productCars.get(h).getAdditionCars().get(j).id,
+                                            settings.productCar.productCars.get(h).getAdditionCars().get(j).cant,
+                                            settings.productCar.productCars.get(h).getAdditionCars().get(j).name,
+                                            settings.productCar.productCars.get(h).getAdditionCars().get(j).price
+                                    )
+                            );
+                        }
+                    }
+                    settings.productCar.productCars.set(h, new productCar(
+                            settings.productCar.productCars.get(h).getIdProduct(),
+                            settings.productCar.productCars.get(h).getName(),
+                            settings.productCar.productCars.get(h).getPrice(),
+                            settings.productCar.productCars.get(h).getPicture(),
+                            settings.productCar.productCars.get(h).getObser(),
+                            settings.productCar.productCars.get(h).getTotal(),
+                            realAddition,
+                            settings.productCar.productCars.get(h).getIngredientsCars(),
+                            settings.productCar.productCars.get(h).getDrinkCar()
+                    ));
+                }
                 actual=showObservatio;
                 YoYo.with(Techniques.Swing).duration(300).playOn(v);
                 Picasso.with(context).load(R.drawable.option_observations).centerInside().fit().into(img_banner_options);
@@ -527,7 +662,7 @@ public class productm extends AppCompatActivity {
                         if(bb==settings.shoppingCar.carFinal.size()-1){
                             settings.shoppingCar.carFinal.add(
                                     new StablishmentCar(
-                                            settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Stablish(),
+                                            settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company(),
                                             settings.stablishment.stablishments.get(settings.stablishment.getNumber()).idBranch,
                                             settings.stablishment.getId(),
                                             settings.stablishment.stablishments.get(settings.stablishment.getNumber()).image,
@@ -548,7 +683,7 @@ public class productm extends AppCompatActivity {
                 else {
                     settings.shoppingCar.carFinal.add(
                             new StablishmentCar(
-                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Stablish(),
+                                    settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company(),
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).idBranch,
                                     settings.stablishment.getId(),
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).image,
@@ -1735,7 +1870,7 @@ public class productm extends AppCompatActivity {
 
     public void confirmeFirstImage(Integer integer){
         Integer sizeDrink =settings.drink.drinks.size();
-        if (0> 0){
+        if (sizeDrink> 0){
             actual=showDrin;
 
             imageViewDrink.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_bebida_lleno));
@@ -2030,9 +2165,6 @@ public class productm extends AppCompatActivity {
 
     public void putDrink(){
         daa=settings.productCar.productCars.size()-1;
-        settings.allChecks.allCheckses = new ArrayList<>();
-        settings.allChecks.allCheckses.add(new allChecks(checksDrink2, checkAddition2, checks2)
-        );
 
 
         settings.allChecks.allCheckses.add(new allChecks(
@@ -2170,6 +2302,7 @@ public class productm extends AppCompatActivity {
                     LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.obliga, null);
                     radio.setText(t);
                     radio.setId(id);
+                    tempIng.add(new ingredientsCar(id,t));
 
                     /*final View childOb = View.inflate(productm.this, R.layout.obliga, null);
                     TextView text = (TextView) childOb.findViewById(R.id.text);
@@ -2177,8 +2310,8 @@ public class productm extends AppCompatActivity {
                     liObli.addView(radio);
                 }
                 if (settings.ingredients.ingredientses.get(k).type==2){
-                    String t = settings.ingredients.ingredientses.get(k).name;
-                    int id = settings.ingredients.ingredientses.get(k).id;
+                    final String t = settings.ingredients.ingredientses.get(k).name;
+                    final int id = settings.ingredients.ingredientses.get(k).id;
                     final LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
                     radio.setText(t);
                     radio.setId(otherIngre.size());
@@ -2189,10 +2322,13 @@ public class productm extends AppCompatActivity {
                             if (otherIngre.get(radio.getId()).in==0){
                                 radio.setChecked(true);
                                 otherIngre.set(radio.getId(),new check(1,0,0,0,otherIngre.get(radio.getId()).liquidRadioButtons));
+                                tempIng.add(new ingredientsCar(id,t));
                             }
                             else{
                                 radio.setChecked(false);
                                 otherIngre.set(radio.getId(),new check(0,0,0,0,otherIngre.get(radio.getId()).liquidRadioButtons));
+                                removeNormal(id);
+                                tempIng.remove(rN);
                             }
                         }
                     });
@@ -2226,6 +2362,14 @@ public class productm extends AppCompatActivity {
         }
 
     }
+    public void removeNormal(Integer id){
+        for(int i=0;i<tempIng.size();i++){
+            int idTemp=tempIng.get(i).getId();
+            if(idTemp==id){
+                rN =i;
+            }
+        }
+    }
     public void callOptionals(LinearLayout linear){
         settings.subGlobalChecks.subGlobalCheckses= new ArrayList<>();
         for (int i =0; i<settings.optionalIngredients.optionalIngredientses.size();i++){
@@ -2240,8 +2384,8 @@ public class productm extends AppCompatActivity {
             final ArrayList<check> checks= new ArrayList<>();
             final List<LiquidRadioButton> liquidRadioButtons= new ArrayList<>();
             for (int j =0; j<settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.size();j++){
-                String t = settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.get(j).name;
-                int id = settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.get(j).id;
+                final String t = settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.get(j).name;
+                final int id = settings.optionalIngredients.optionalIngredientses.get(i).ingredientses.get(j).id;
                 final LiquidRadioButton radio = (LiquidRadioButton)View.inflate(context, R.layout.template_radio_button, null);
 
                 radio.setText(t);
@@ -2267,6 +2411,7 @@ public class productm extends AppCompatActivity {
                                 checksTemp.set(radio.getId(),new check(1,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count+1,checks.get(radio.getId()).liquidRadioButtons));
                                 checks.set(radio.getId(),new check(1,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count+1,checks.get(radio.getId()).liquidRadioButtons));
                                 coun[0] = coun[0] +1;
+                                tempIng.add(new ingredientsCar(id,t));
                             }
                             else {
                                 radio.setChecked(false);
@@ -2277,6 +2422,8 @@ public class productm extends AppCompatActivity {
                                                 mensajee, Toast.LENGTH_SHORT);
 
                                 toast1.show();
+
+
                             }
 
 
@@ -2288,6 +2435,9 @@ public class productm extends AppCompatActivity {
                                     settings.subGlobalChecks.subGlobalCheckses.get(finalJ).cant
                             ));
                             radio.setChecked(false);
+                            removeNormal(id);
+                            Integer a=rN;
+                            tempIng.remove(a);
                             checksTemp.set(radio.getId(),new check(0,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count-1,checks.get(radio.getId()).liquidRadioButtons));
                             checks.set(radio.getId(),new check(0,checks.get(radio.getId()).categor,checks.get(radio.getId()).cant,checks.get(radio.getId()).count-1,checks.get(radio.getId()).liquidRadioButtons));
                             coun[0] = coun[0] -1;
@@ -2297,7 +2447,7 @@ public class productm extends AppCompatActivity {
                 });
 
             }
-            settings.optionalIngredients.optionalIngredientses.set(i, new optionalIngredients(settings.optionalIngredients.optionalIngredientses.get(i).name, settings.optionalIngredients.optionalIngredientses.get(i).cant,
+            settings.optionalIngredients.optionalIngredientses.set(i, new optionalIngredients(settings.optionalIngredients.optionalIngredientses.get(i).id,settings.optionalIngredients.optionalIngredientses.get(i).name, settings.optionalIngredients.optionalIngredientses.get(i).cant,
                     settings.optionalIngredients.optionalIngredientses.get(i).coun, checks,settings.optionalIngredients.optionalIngredientses.get(i).ingredientses));
             linear.addView(childIn);
 
@@ -2394,6 +2544,8 @@ public class productm extends AppCompatActivity {
 
         ColorDialog dialog = new ColorDialog(context);
         dialog.setTitle("Alerta!");
+        dialog.setTitleTextColor(ContextCompat.getColor(context, R.color.black));
+        dialog.setColor(ContextCompat.getColor(context, R.color.white));
         dialog.setContentImage(ContextCompat.getDrawable(context, R.drawable.alert));
         dialog.setContentText("Deseas volver sin completar el pedido?");
         dialog.setPositiveListener(getString(R.string.back), new ColorDialog.OnPositiveListener() {

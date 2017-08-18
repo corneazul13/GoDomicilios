@@ -76,7 +76,7 @@ public class stablishm extends AppCompatActivity
     TextView numberCar;
     View include;
     DecimalFormat formatea = new DecimalFormat("###.###");
-    ArrayList<ingredients> temporal = new ArrayList<>();
+    ArrayList<ingredients> temporal ;
 
 
     @Override
@@ -1292,21 +1292,23 @@ public class stablishm extends AppCompatActivity
         ArrayList<ingredients> ingr= new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         ArrayList<check> liquidRadioButtons = new ArrayList<>();
-
+        temporal = new ArrayList<>();
 
         settings.optionalIngredients.optionalIngredientses = new ArrayList<>();
         for (int i =0;i<settings.ingredients.ingredientses.size();i++){
+
+            Integer id = settings.ingredients.ingredientses.get(i).id;
             String category = settings.ingredients.ingredientses.get(i).categor;
             Integer cant = settings.ingredients.ingredientses.get(i).max;
             if(!category.equals("none")&&names.size()==0){
                 names.add(category);
-                settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category,cant,0,liquidRadioButtons, ingr));
+                settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(id,category,cant,0,liquidRadioButtons, ingr));
             }
 
             if(names.size()>0){
                 if(!names.get(names.size()-1).equals(category)&&!category.equals("none")){
                     names.add(category);
-                    settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(category,cant,0,liquidRadioButtons, ingr));
+                    settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(id,category,cant,0,liquidRadioButtons, ingr));
                 }
             }
 
@@ -1321,6 +1323,7 @@ public class stablishm extends AppCompatActivity
         ArrayList<ingredients> finalIngre=new ArrayList<>();
         ArrayList<check> liquidRadioButtons= new ArrayList<>();
         for (int j =0; j<settings.optionalIngredients.optionalIngredientses.size();j++){
+            Integer id = settings.optionalIngredients.optionalIngredientses.get(j).id;
             String name = settings.optionalIngredients.optionalIngredientses.get(j).name;
             Integer cant = settings.optionalIngredients.optionalIngredientses.get(j).cant;
             ArrayList<ingredients> temp = new ArrayList<>();
@@ -1331,12 +1334,13 @@ public class stablishm extends AppCompatActivity
                     temp.add(ingredien);
                 }
             }
-            settings.optionalIngredients.optionalIngredientses.set(j,new optionalIngredients(name,cant,0,liquidRadioButtons,temp));
+            settings.optionalIngredients.optionalIngredientses.set(j,new optionalIngredients(id,name,cant,0,liquidRadioButtons,temp));
 
 
         }
     }
     public void minim (){
+
         for (int i =0;i<settings.ingredients.ingredientses.size();i++){
             ArrayList<ingredients>te=settings.ingredients.ingredientses;
             ingredients ingredien= new ingredients(te.get(i).id, te.get(i).name, te.get(i).status, te.get(i).type,te.get(i).ingId,te.get(i).max,te.get(i).categor);

@@ -40,7 +40,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -406,7 +405,7 @@ public class car extends AppCompatActivity
                 @Override
                 public void onClick(View v) {
                     try {
-                        methodPay (settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Stablish());
+                        methodPay (settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -590,8 +589,8 @@ public class car extends AppCompatActivity
     public void paint (Integer i){/*
         Integer put;
         Integer One;
-        put = settings.shoppingCar.shoppingCars.get(settings.shoppingCar.getNum()-1).getStablishment().getId_Stablish();
-        One = settings.shoppingCar.shoppingCars.get(i).getStablishment().getId_Stablish();
+        put = settings.shoppingCar.shoppingCars.get(settings.shoppingCar.getNum()-1).getStablishment().getId_Company();
+        One = settings.shoppingCar.shoppingCars.get(i).getStablishment().getId_Company();
 
         for(int hh=-1; hh<settings.shoppingCar.mod.size();hh++){
             Integer hhNew;
@@ -603,7 +602,7 @@ public class car extends AppCompatActivity
             }
 
 
-            if(settings.shoppingCar.mod.size()>0 && settings.shoppingCar.mod.get(i).equals(settings.shoppingCar.shoppingCars.get(hhNew).getStablishment().getId_Stablish())){
+            if(settings.shoppingCar.mod.size()>0 && settings.shoppingCar.mod.get(i).equals(settings.shoppingCar.shoppingCars.get(hhNew).getStablishment().getId_Company())){
                 Integer num, numTwo;
                 num = settings.shoppingCar.shoppingCars.get(settings.shoppingCar.getNum()-1).getCant()+ settings.shoppingCar.shoppingCars.get(i).getCant();
                 numTwo =settings.shoppingCar.shoppingCars.get(settings.shoppingCar.getNum()-1).getSubtotal()+ settings.shoppingCar.shoppingCars.get(i).getSubtotal() ;

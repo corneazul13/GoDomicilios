@@ -20,14 +20,14 @@ public class stablishment {
     public String minimum;
     private String distance;
     private String durattion;
-    private Integer id_Stablish;
+    private Integer id_Company;
     private Integer stars;
     private String productRank;
     public ArrayList<stablishment> stablishments;
 
     public stablishment(Integer id, Integer idBranch, String name, String address, String price,
-                   String status, String image, String nameBranch, String minimum, String distance,
-                        String duration, Integer id_Stablish, Integer stars, String productRank){
+                        String status, String image, String nameBranch, String minimum, String distance,
+                        String duration, Integer id_Company, Integer stars, String productRank){
         this.setId(id);
         this.idBranch = idBranch;
         this.name = name;
@@ -39,7 +39,7 @@ public class stablishment {
         this.minimum = minimum;
         this.setDistance(distance);
         this.setDurattion(duration);
-        this.setId_Stablish(id_Stablish);
+        this.setId_Company(id_Company);
         this.setStars(stars);
         this.setProductRank(productRank);
 
@@ -89,12 +89,12 @@ public class stablishment {
         this.durattion = durattion;
     }
 
-    public Integer getId_Stablish() {
-        return id_Stablish;
+    public Integer getId_Company() {
+        return id_Company;
     }
 
-    public void setId_Stablish(Integer id_Stablish) {
-        this.id_Stablish = id_Stablish;
+    public void setId_Company(Integer id_Company) {
+        this.id_Company = id_Company;
     }
 
     public Integer getStars() {
