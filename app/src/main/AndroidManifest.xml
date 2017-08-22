@@ -51,7 +51,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
         <activity
-            android:name=".Splash"
+            android:name=".testTwo"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
@@ -145,7 +145,7 @@
             android:name=".car"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".testTwo" />
+        <activity android:name=".Splash" />
         <activity
             android:name=".payM"
             android:screenOrientation="portrait"
@@ -178,7 +178,9 @@
 
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
 
-        <activity android:name=".status" />
+        <activity android:name=".status"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
 
     </application>
     <dependency>
@@ -200,6 +202,11 @@
         <groupId>com.github.andyxialm</groupId>
         <artifactId>TyperEditText</artifactId>
         <version>1.0.2</version>
+    </dependency>
+    <dependency>
+        <groupId>joda-time</groupId>
+        <artifactId>joda-time</artifactId>
+        <version>2.9.9</version>
     </dependency>
 
 </manifest>

@@ -31,6 +31,7 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.daimajia.easing.linear.Linear;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
@@ -59,13 +60,12 @@ public class car extends AppCompatActivity
 
     private static Tracker tracker;
 
-    LinearLayout li, princ, detail, show, up;
+    LinearLayout li;
     TextView total;
     Button confrim, cancel;
     Integer tota =0;
-    TextView numberCar;
+    TextView numberCar, cash, datapho,onLine;
     Integer totals = 0;
-    ImageView cash, datapho, onLine;
     Integer view=0;
     String firstUrl = "https://godomicilios.co/webService/servicios.php?svice=COMPRAR_PRODUCTOS&metodo=json";
 
@@ -83,12 +83,7 @@ public class car extends AppCompatActivity
         numberCar = (TextView) findViewById(R.id.numberCar);
         Integer car= settings.shoppingCar.carFinal.size();
         numberCar.setText(settings.user.getCarCant());
-        cash = (ImageView) findViewById(R.id.cash);
-        datapho = (ImageView) findViewById(R.id.datapho);
-        onLine = (ImageView) findViewById(R.id.onLine);
-        show = (LinearLayout) findViewById(R.id.show);
-        up = (LinearLayout) findViewById(R.id.up);
-        show.setTranslationY(4000);
+
         if (settings.temporalCar.temporalCars==null){
             settings.temporalCar.temporalCars = new ArrayList<>();
         }
@@ -101,25 +96,6 @@ public class car extends AppCompatActivity
         settings.user.tracker.enableAdvertisingIdCollection(true);
         settings.user.tracker.enableAutoActivityTracking(true);
 
-        up.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(view ==1){
-                    view =0;
-                    AnimationSet set = new AnimationSet(true);
-                    Animation animation;
-                    animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-                            0.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
-                            0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-                    animation.setDuration(1000);
-                    set.addAnimation(animation);
-                    LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                    show.setTranslationY(4000);
-                    show.startAnimation(animation);
-                    overridePendingTransition(R.anim.izquierdasale, R.anim.izquierdaentra);
-                }
-            }
-        });
 
         confrim.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -291,6 +267,7 @@ public class car extends AppCompatActivity
             }
             View child = View.inflate(car.this, R.layout.product_in_car, null);
             LinearLayout up = (LinearLayout) child.findViewById(R.id.up);
+            LinearLayout paint = (LinearLayout) child.findViewById(R.id.pint);
             TextView cant = (TextView) child.findViewById(R.id.cant);
             LinearLayout shows = (LinearLayout) findViewById(R.id.shows);
             ImageView imageOne = (ImageView) child.findViewById(R.id.imageOne);
@@ -301,8 +278,9 @@ public class car extends AppCompatActivity
             TextView re = (TextView) child.findViewById(R.id.re);
             TextView cou = (TextView) child.findViewById(R.id.textView12);
             final LinearLayout addCoupon = (LinearLayout) child.findViewById(R.id.addCoupon);
-            LinearLayout me = (LinearLayout) child.findViewById(R.id.met);
-            final TextView meth = (TextView) child.findViewById(R.id.meth);
+            LinearLayout otherColor = (LinearLayout) child.findViewById(R.id.otherColor);
+            /*LinearLayout me = (LinearLayout) child.findViewById(R.id.met);
+            final TextView meth = (TextView) child.findViewById(R.id.meth);*/
             final ImageView image = (ImageView) child.findViewById(R.id.image);
             image.setId(i);
             LinearLayout color= (LinearLayout) child.findViewById(R.id.color);
@@ -333,10 +311,10 @@ public class car extends AppCompatActivity
             distance.setText(settings.shoppingCar.carFinal.get(i).getDistance());
 
             final int finalI = i;
-            cash.setOnClickListener(new View.OnClickListener() {
+            /*cash.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    meth.setText("  EFECTIVO");
+                    //meth.setText("  EFECTIVO");
                     if(view ==1){
                         view =0;
                         AnimationSet set = new AnimationSet(true);
@@ -347,8 +325,6 @@ public class car extends AppCompatActivity
                         animation.setDuration(1000);
                         set.addAnimation(animation);
                         LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                        show.setTranslationY(4000);
-                        show.startAnimation(animation);
                         overridePendingTransition(R.anim.izquierdasale, R.anim.izquierdaentra);
                         settings.temporalCar.temporalCars.set(finalI, new temporalCar(
                                 settings.temporalCar.temporalCars.get(finalI).getIdStablish(),
@@ -364,7 +340,7 @@ public class car extends AppCompatActivity
             datapho.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    meth.setText("  DATÁFONO");
+                    //meth.setText("  DATÁFONO");
                     if(view ==1){
                         view =0;
                         AnimationSet set = new AnimationSet(true);
@@ -375,8 +351,6 @@ public class car extends AppCompatActivity
                         animation.setDuration(1000);
                         set.addAnimation(animation);
                         LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                        show.setTranslationY(4000);
-                        show.startAnimation(animation);
                         overridePendingTransition(R.anim.izquierdasale, R.anim.izquierdaentra);
                         settings.temporalCar.temporalCars.set(finalI, new temporalCar(
                                 settings.temporalCar.temporalCars.get(finalI).getIdStablish(),
@@ -393,7 +367,7 @@ public class car extends AppCompatActivity
             onLine.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    meth.setText("  OnLine");
+                    //meth.setText("  OnLine");
                     if(view ==1){
                         view =0;
                         AnimationSet set = new AnimationSet(true);
@@ -404,8 +378,6 @@ public class car extends AppCompatActivity
                         animation.setDuration(1000);
                         set.addAnimation(animation);
                         LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                        show.setTranslationY(4000);
-                        show.startAnimation(animation);
                         overridePendingTransition(R.anim.izquierdasale, R.anim.izquierdaentra);
                         settings.temporalCar.temporalCars.set(finalI, new temporalCar(
                                 settings.temporalCar.temporalCars.get(finalI).getIdStablish(),
@@ -417,11 +389,9 @@ public class car extends AppCompatActivity
                     }
                 }
 
-            });
+            });*/
 
-            me.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+
                     try {
                         methodPay (settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company());
                     } catch (Exception e) {
@@ -436,12 +406,9 @@ public class car extends AppCompatActivity
                     animation.setDuration(300);
                     set.addAnimation(animation);
                     LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                    show.setTranslationY(0);
-                    show.startAnimation(animation);
                     view =1;
                     overridePendingTransition(R.anim.izquierdaentra, R.anim.izquierdasale);
-                }
-            });
+
             String pictu = "http://godomicilios.co/admin/documentosVarios/"+settings.shoppingCar.carFinal.get(i).getImg();
 
             Picasso.with(car.this)
@@ -473,29 +440,39 @@ public class car extends AppCompatActivity
 
             switch (settings.shoppingCar.carFinal.get(i).getIdColor()) {
                 case 1:
-                    up.setBackgroundColor(getResources().getColor(R.color.redGo));
-                    cant.setBackgroundColor(getResources().getColor(R.color.redGoSelect));
-                    color.setBackgroundColor(getResources().getColor(R.color.redGoSelect));
+                    up.setBackgroundColor(getResources().getColor(R.color.redLast));
+                    paint.setBackgroundColor(getResources().getColor(R.color.redLast));
+                    cant.setBackgroundColor(getResources().getColor(R.color.redLast));
+                    color.setBackgroundColor(getResources().getColor(R.color.redLast));
+                    otherColor.setBackgroundColor(getResources().getColor(R.color.redLast));
                     break;
                 case 2:
                     up.setBackgroundColor(getResources().getColor(R.color.blacBeer));
-                    cant.setBackgroundColor(getResources().getColor(R.color.blacBeerSelec));
-                    color.setBackgroundColor(getResources().getColor(R.color.blacBeerSelec));
+                    paint.setBackgroundColor(getResources().getColor(R.color.blacBeer));
+                    cant.setBackgroundColor(getResources().getColor(R.color.blacBeer));
+                    color.setBackgroundColor(getResources().getColor(R.color.blacBeer));
+                    otherColor.setBackgroundColor(getResources().getColor(R.color.blacBeer));
                     break;
                 case 3:
                     up.setBackgroundColor(getResources().getColor(R.color.blueFarmacy));
-                    cant.setBackgroundColor(getResources().getColor(R.color.blueFarmacySelect));
-                    color.setBackgroundColor(getResources().getColor(R.color.blueFarmacySelect));
+                    paint.setBackgroundColor(getResources().getColor(R.color.blueFarmacy));
+                    cant.setBackgroundColor(getResources().getColor(R.color.blueFarmacy));
+                    color.setBackgroundColor(getResources().getColor(R.color.blueFarmacy));
+                    otherColor.setBackgroundColor(getResources().getColor(R.color.blueFarmacy));
                     break;
                 case 4:
                     up.setBackgroundColor(getResources().getColor(R.color.bluePet));
-                    cant.setBackgroundColor(getResources().getColor(R.color.bluePetSelect));
-                    color.setBackgroundColor(getResources().getColor(R.color.bluePetSelect));
+                    paint.setBackgroundColor(getResources().getColor(R.color.bluePet));
+                    cant.setBackgroundColor(getResources().getColor(R.color.bluePet));
+                    color.setBackgroundColor(getResources().getColor(R.color.bluePet));
+                    otherColor.setBackgroundColor(getResources().getColor(R.color.bluePet));
                     break;
                 case 5:
                     up.setBackgroundColor(getResources().getColor(R.color.yellowmarket));
-                    cant.setBackgroundColor(getResources().getColor(R.color.yellowmarketSelect));
-                    color.setBackgroundColor(getResources().getColor(R.color.yellowmarketSelect));
+                    paint.setBackgroundColor(getResources().getColor(R.color.yellowmarket));
+                    cant.setBackgroundColor(getResources().getColor(R.color.yellowmarket));
+                    color.setBackgroundColor(getResources().getColor(R.color.yellowmarket));
+                    otherColor.setBackgroundColor(getResources().getColor(R.color.yellowmarket));
                     break;
             }
 
@@ -710,7 +687,7 @@ public class car extends AppCompatActivity
                                             method.getString("img")
                                     ));
 
-                                        if(settings.methodPay.methodPays.get(i).getStatus()==1){
+                                        /*if(settings.methodPay.methodPays.get(i).getStatus()==1){
                                             switch (settings.methodPay.methodPays.get(i).getName()){
                                                 case ("Efectivo"):
                                                     Picasso.with(car.this)
@@ -772,7 +749,7 @@ public class car extends AppCompatActivity
                                                     onLine.setEnabled(false);
                                                     break;
                                             }
-                                        }
+                                        }*/
                                 }
                             }
                             else {
@@ -809,6 +786,7 @@ public class car extends AppCompatActivity
         url = url.replace("null","");
         url = url.replace("\\","");
         url = url.replace("},]","}]");
+        final String other= url;
 
         final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
                 null, CustomSSLSocketFactory.getSSLSocketFactory(car.this)));
@@ -854,6 +832,14 @@ public class car extends AppCompatActivity
             public void onErrorResponse(VolleyError error) {
 
                 String e = error.getMessage();
+                e = e.substring(35);
+                if(e.equals("javax.net.ssl.SSLHandshakeException")){
+                    try {
+                        sendCar(other,p);
+                    } catch (Exception es) {
+                        es.printStackTrace();
+                    }
+                }
             }
         }
         );

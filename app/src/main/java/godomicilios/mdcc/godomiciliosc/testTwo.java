@@ -1,9 +1,11 @@
 package godomicilios.mdcc.godomiciliosc;
 
 import android.os.Build;
+import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -21,10 +23,19 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.ingredients;
@@ -39,13 +50,90 @@ public class testTwo extends AppCompatActivity
             public float init_x;
             private ViewFlipper vf;
             Integer as=0;
-
+            Date now = new Date();
+            String format1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).format(now);
+            String format2 = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z", Locale.US).format(now);
+            String format3 = new SimpleDateFormat("yyyyMMddHHmmss", Locale.US).format(now);
+            long dayD;
+            long hourH;
+            long minM;
+            long segS;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.drink);
-        final LiquidRadioButton appCompatCheckBox = (LiquidRadioButton) findViewById(R.id.appCompatCheckBox);
 
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+        Date fechaI = null, fechaF = null;
+        Calendar now = Calendar.getInstance();
+        int year = now.get(Calendar.YEAR);
+        int month = now.get(Calendar.MONTH) + 1; // Note: zero based!
+        int day = now.get(Calendar.DAY_OF_MONTH);
+        int hour = now.get(Calendar.HOUR_OF_DAY);
+        int minute = now.get(Calendar.MINUTE);
+        int second = now.get(Calendar.SECOND);
+        int millis = now.get(Calendar.MILLISECOND);
+
+        String total = day+"/"+month+"/"+year+" "+ hour+":" +minute+";"+second;
+        try {
+            fechaI = simpleDateFormat.parse("22/8/2017 18:44:38");
+            //fechaF puede ser la fecha actual o tu puedes asignarala,
+            //por ejemplo: fechaF = simpleDateFormat.parse("2/6/2016 15:40:42");
+            fechaF = new Date(System.currentTimeMillis());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Milli "+getDiferencia(fechaI , fechaF));
+
+        if (dayD==0&&hourH==0&&minM<5){
+            minM = (minM*60)+(segS);
+            double d = 300-minM;
+            System.out.println("Milli "+d);
+        }
+
+
+
+        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        DateTime jodaTime = new DateTime();
+        Date fechaI = null;
+
+        try {
+            fechaI = simpleDateFormat.parse("8/22/2017 18:00:12");
+            //fechaF puede ser la fecha actual o tu puedes asignarala,
+            //por ejemplo: fechaF = simpleDateFormat.parse("2/6/2016 15:40:42");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+      *//*  DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+        String h = "jodaTime = " + formatter.print(jodaTime);*//*
+
+        System.out.println("Milli "+getTimeInMilliSeconds("Thu Aug 22 18:05:12 CDT 2017"));
+
+
+*/
+
+
+        /*String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+
+        String month= String.valueOf(calendar.get(Calendar.MONTH));
+
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+
+        String hour = String.valueOf(calendar.get(Calendar.HOUR));
+
+        String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+
+        String second = String.valueOf(calendar.get(Calendar.SECOND));
+
+        String hourComplete =day+"-"+month+"-"+year+"/"+hour+":"+minute+":"+second;
+        String hourCompleteTwo = format1;
+        String hourCompleteThree = format2;
+        String hourCompleteFour = format3;*/
+
+        final LiquidRadioButton appCompatCheckBox = (LiquidRadioButton) findViewById(R.id.appCompatCheckBox);
 
         appCompatCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -229,5 +317,56 @@ public class testTwo extends AppCompatActivity
 
 
             }*/
+            public long getTimeInMilliSeconds(String deadline){
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
+                long back_timer = 0;
+                try {
+                    Calendar calendar_deadline = Calendar.getInstance();
+                    Calendar calendar_datenow = Calendar.getInstance();
 
+                    Date date = format.parse(deadline);
+                    calendar_deadline.setTime(date);
+
+                    System.out.println("tiempo convertido: " + calendar_deadline.getTimeInMillis());
+
+                    back_timer =  calendar_datenow.getTimeInMillis()-calendar_deadline.getTimeInMillis();
+                    System.out.println("back_timer: " + back_timer);
+                } catch (Exception ex) {
+                    Log.e("Challenge(setDeadline)", "Error: " + ex.getMessage());
+                }
+                return back_timer;
+            }
+
+            public String getDiferencia(Date fechaInicial, Date fechaFinal){
+
+                long diferencia = fechaFinal.getTime() - fechaInicial.getTime();
+
+                Log.i("MainActivity", "fechaInicial : " + fechaInicial);
+                Log.i("MainActivity", "fechaFinal : " + fechaFinal);
+
+                long segsMilli = 1000;
+                long minsMilli = segsMilli * 60;
+                long horasMilli = minsMilli * 60;
+                long diasMilli = horasMilli * 24;
+
+                long diasTranscurridos = diferencia / diasMilli;
+                diferencia = diferencia % diasMilli;
+
+                long horasTranscurridos = diferencia / horasMilli;
+                diferencia = diferencia % horasMilli;
+
+                long minutosTranscurridos = diferencia / minsMilli;
+                diferencia = diferencia % minsMilli;
+
+                long segsTranscurridos = diferencia / segsMilli;
+                dayD = diasTranscurridos;
+                hourH = horasTranscurridos;
+                minM = minutosTranscurridos;
+                segS = segsTranscurridos;
+
+                return "diasTranscurridos: " + diasTranscurridos + " , horasTranscurridos: " + horasTranscurridos +
+                        " , minutosTranscurridos: " + minutosTranscurridos + " , segsTranscurridos: " + segsTranscurridos;
+
+
+            }
 }

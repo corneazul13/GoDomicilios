@@ -37,14 +37,19 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.answerOrder;
 import godomicilios.mdcc.godomiciliosc.settings.canvas;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 import godomicilios.mdcc.godomiciliosc.settings.shoppingCar;
+
+import static android.R.attr.format;
 
 public class status extends AppCompatActivity {
     LinearLayout li;
@@ -61,7 +66,11 @@ public class status extends AppCompatActivity {
     public static final String VALIDATOR = "validator";
     public static final String CANT = "cant";
     public static final String PICTURES = "pictures";
+    public static final String DATE= "date";
     public static final shoppingCar SHOPPING_CAR = settings.shoppingCar;
+    Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat format = new SimpleDateFormat("HH", Locale.US);
+    String hour = format.format(new Date());
     SharedPreferences sharedpreferences;
     ArrayList<Long> times = new ArrayList<>();
 
@@ -76,10 +85,15 @@ public class status extends AppCompatActivity {
         /*SharedPreferences.Editor editors = sharedpreferences.edit();
         editors.putString(VALIDATOR,"false");
         editors.commit();*/
+
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
+
         if (sharedpreferences.getAll().size() > 0 && sharedpreferences.getString(VALIDATOR, "").equals("true")) {
 
             String pictures = sharedpreferences.getString(PICTURES, "");
             String numString = sharedpreferences.getString(CANT, "");
+            String dataTime = sharedpreferences.getString(DATE, "");
             Integer num = Integer.parseInt(numString);
             for (int g = 0; g < num; g++) {
                 showAll(g, getPictures(pictures));

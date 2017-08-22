@@ -442,7 +442,7 @@ public class head extends AppCompatActivity
                                 } else{
                                     buttons.setBackgroundColor(ContextCompat.getColor(context,R.color.redLast));
                                     buttons.setText("CERRADO");
-                                    main.setEnabled(true);
+                                    main.setEnabled(false);
                                 }
                                 buttons.setOnClickListener(new View.OnClickListener() {
                                     @Override

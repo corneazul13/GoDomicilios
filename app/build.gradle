@@ -7,8 +7,8 @@ android {
         applicationId 'godomicilios.mdcc.godomiciliosc'
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 35
-        versionName '1.0.10'
+        versionCode 36
+        versionName '1.0.11'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -61,5 +61,6 @@ dependencies {
     compile 'com.hanks.animatecheckbox:library:0.1'
     compile 'com.qintong:insLoadingAnimation:1.1.0'
     compile 'com.github.andyxialm:TyperEditText:1.0.2'
+    compile 'joda-time:joda-time:2.9.9'
 }
 apply plugin: 'com.google.gms.google-services'

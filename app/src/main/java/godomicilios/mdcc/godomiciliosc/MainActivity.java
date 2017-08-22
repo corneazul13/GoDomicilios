@@ -702,6 +702,25 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onErrorResponse(VolleyError error) {
 
+            String err = error.getCause().getMessage();
+
+            if (err.equals("javax.net.ssl.SSLProtocolException: SSL handshake aborted: ssl=0x74614008: Failure in SSL library, usually a protocol error\n" +
+                    "error:14077410:SSL routines:SSL23_GET_SERVER_HELLO:sslv3 alert handshake failure (external/openssl/ssl/s23_clnt.c:741 0x71872d74:0x00000000)")){
+                String mensajee ="Oops, Revisa tu conexión a internet!";
+
+                Toast toast1 =
+                        Toast.makeText(getApplicationContext(),
+                                mensajee, Toast.LENGTH_SHORT);
+
+                toast1.show();
+            }
+            else{
+                try {
+                    httpCities();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
             dialog.dismiss();
 
