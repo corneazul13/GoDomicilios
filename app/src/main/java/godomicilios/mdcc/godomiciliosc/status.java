@@ -35,6 +35,7 @@ import com.facebook.login.widget.LoginButton;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +56,7 @@ public class status extends AppCompatActivity {
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     final Handler handler = new Handler();
-    String firstUrl = "https://godomicilios.co/webService/servicios.php?svice=RESPUESTA_PEDIDO&metodo=json";
+    String firstUrl = "https://godomicilios.co/webService/servicios.php?svice=RESPUESTA_PEDIDO&metodo=json&pedidoId=";
     public static final String MyPREFERENCES = "myPreferences";
     public static final String VALIDATOR = "validator";
     public static final String CANT = "cant";
@@ -70,14 +71,18 @@ public class status extends AppCompatActivity {
         setContentView(R.layout.activity_status);
         li = (LinearLayout) findViewById(R.id.li);
         settings.answerOrder.answerOrders = new ArrayList<>();
+
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        /*SharedPreferences.Editor editors = sharedpreferences.edit();
+        editors.putString(VALIDATOR,"false");
+        editors.commit();*/
         if (sharedpreferences.getAll().size() > 0 && sharedpreferences.getString(VALIDATOR, "").equals("true")) {
 
             String pictures = sharedpreferences.getString(PICTURES, "");
             String numString = sharedpreferences.getString(CANT, "");
             Integer num = Integer.parseInt(numString);
             for (int g = 0; g < num; g++) {
-                //showAll(g, getPictures(pictures));
+                showAll(g, getPictures(pictures));
             }
 
         } else {
@@ -88,18 +93,31 @@ public class status extends AppCompatActivity {
 
                     for (int h = 0; h < f; h++) {
 
-                        //showAll(h, nothing);
+                        showAll(h, nothing);
                         String newString= "http://godomicilios.co/admin/documentosVarios/" + settings.shoppingCar.carFinal.get(h).getImg();
                         strings.add(new String(newString));
                     }
-                if (sharedpreferences.getAll().size() < 1) {
                     SharedPreferences.Editor editor = sharedpreferences.edit();
                     editor.putString(VALIDATOR, "true");
                     editor.putString(CANT, f.toString());
                     editor.putString(PICTURES, picturestoString(strings));
-                    editor.commit();}
+                    editor.commit();
                 }
             }
+        handler.postDelayed(new Runnable() {
+            public void run() {
+
+                for(int fi=0;fi<settings.shoppingCar.carFinal.size();fi++){
+
+                    try {
+                        https(firstUrl+settings.shoppingCar.carFinal.get(fi).getIdOrder());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                handler.postDelayed(this, 5000);
+            }
+        }, 5000);
         }
 
 
@@ -124,7 +142,7 @@ public class status extends AppCompatActivity {
 
                 for (int h = 0; h < f; h++) {
 
-                    //showAll(h, nothing);
+                    showAll(h, nothing);
                     String newString= "http://godomicilios.co/admin/documentosVarios/" + settings.shoppingCar.carFinal.get(h).getImg();
                     strings.add(new String(newString));
                 }
@@ -144,20 +162,6 @@ public class status extends AppCompatActivity {
 
             }
         }
-        handler.postDelayed(new Runnable() {
-            public void run() {
-
-                for(int fi=0;fi<settings.answerOrder.answerOrders.size();fi++){
-
-                    try {
-                        https(firstUrl+settings.answerOrder.answerOrders.get(fi).getId());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                handler.postDelayed(this, 5000);
-            }
-        }, 5000);
     }
 
     public void count(final TextView text1, final Button moreTime) {
@@ -233,10 +237,19 @@ public class status extends AppCompatActivity {
                     @Override
                     public void onResponse(final JSONArray response) {
                         try {
+                            for (int i = 0;i<response.length();i++){
+                                final JSONObject object = response.getJSONObject(i);
+                                Integer sta =object.getInt("estado_venta");
+                                if (sta.equals(2)){
 
+                                }
+                                else if (sta.equals(3)){
+
+                                }
+                            }
 
                         } catch (Exception e) {
-
+                            String er = e.getMessage();
 
                         }
 
@@ -244,14 +257,14 @@ public class status extends AppCompatActivity {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                String er = error.getMessage();
             }
         }
         );
         queue.add(jsonArrayRequest);
     }
 
-    /*public void showAll(Integer h, ArrayList<String> pictures) {
+    public void showAll(Integer h, ArrayList<String> pictures) {
 
         View child = View.inflate(status.this, R.layout.activity_test, null);
         final Button moreTime = (Button) child.findViewById(R.id.moreTime);
@@ -290,22 +303,21 @@ public class status extends AppCompatActivity {
             }
         });
 
-        String example = "";
-        if (pictures == null) {
+        String example ;
+        if (pictures.size()<1) {
             example = "http://godomicilios.co/admin/documentosVarios/" + settings.shoppingCar.carFinal.get(h).getImg();
         } else {
             example = pictures.get(h);
         }
 
-        Picasso.with(status.this)
-                .load(
 
-                        example
-                )
+        Picasso.with(status.this)
+
+                .load(example)
                 .into(imageView, new com.squareup.picasso.Callback() {
                     @Override
                     public void onSuccess() {
-
+                        //do smth when picture is loaded successfully
                     }
 
                     @Override
@@ -338,7 +350,7 @@ public class status extends AppCompatActivity {
                 count, settings.answerOrder.answerOrders.get(h).getText()));
         li.addView(child);
 
-    }*/
+    }
 
     public ArrayList<String> getPictures(String pictures) {
         ArrayList<String> pics = new ArrayList<>();

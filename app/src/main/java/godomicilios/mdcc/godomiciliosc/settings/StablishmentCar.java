@@ -17,10 +17,11 @@ public class StablishmentCar {
     private String price;
     private String minimum;
     private Integer subtotal;
+    private Integer idOrder;
     public ArrayList<productCar> productCars;
     public ArrayList<StablishmentCar> stablishmentCars;
     public StablishmentCar(Integer id,Integer idBranch, Integer idColor, String img, String name, String distance,
-                           String duration, String price, String minimum, Integer subtotal,ArrayList<productCar> productCars){
+                           String duration, String price, String minimum, Integer subtotal,Integer idOrder,ArrayList<productCar> productCars){
 
         this.setId(id);
         this.setIdBranch(idBranch);
@@ -33,6 +34,7 @@ public class StablishmentCar {
         this.setProductCars(productCars);
         this.setMinimum(minimum);
         this.setSubtotal(subtotal);
+        this.setIdOrder(idOrder);
     }
 
     public  StablishmentCar (){}
@@ -131,5 +133,13 @@ public class StablishmentCar {
 
     public void setIdBranch(Integer idBranch) {
         this.idBranch = idBranch;
+    }
+
+    public Integer getIdOrder() {
+        return idOrder;
+    }
+
+    public void setIdOrder(Integer idOrder) {
+        this.idOrder = idOrder;
     }
 }

@@ -135,7 +135,7 @@ public class Splash extends AppCompatActivity {
                                 String j = sharedpreferences.getString(Password, "");
                                 String k = sharedpreferences.getString(VALIDATOR, "");
                                 String l = sharedpreferences.getString(QUALIFY, "");
-                                if (k.equals("true")){
+                                if (k.equals("trues")){
                                     Intent go = new Intent(Splash.this, status.class);
                                     go.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(go);

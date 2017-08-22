@@ -96,7 +96,7 @@
                             app:civ_border_width="2dp"
                             app:civ_border_color="#FF000000"/>
 
-                        <ImageView
+                        <!--<ImageView
                             android:id="@+id/imageView7"
                             android:layout_width="300dp"
                             android:layout_height="300dp"
@@ -104,7 +104,7 @@
                             android:background="@android:color/transparent"
                             android:scaleType="center"
                             app:srcCompat="@drawable/arestaurante" />
-
+-->
                     </RelativeLayout>
                 </LinearLayout>
 

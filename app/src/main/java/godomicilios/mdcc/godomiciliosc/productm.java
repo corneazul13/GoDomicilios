@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.ActionBar;
+import android.text.InputType;
 import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -67,6 +68,8 @@ public class productm extends AppCompatActivity {
     LinearLayout showDrin, showIngredient, showAddition, showObservatio, actual;
     ArrayList<check> checksTemp= new ArrayList<>();
     ArrayList<ingredientsCar> tempIng = new ArrayList<>();
+    ArrayList<productCar> productCars = new ArrayList<>();
+    productCar actualProduct;
     int rN;
 
     @Override
@@ -113,6 +116,7 @@ public class productm extends AppCompatActivity {
         less.setEnabled(false);
         settings.allChecks.allCheckses = new ArrayList<>();
         rN= new Integer(0);
+
         if(settings.shoppingCar.carFinal==null){
             settings.shoppingCar.carFinal = new ArrayList<>();
         }
@@ -140,23 +144,26 @@ public class productm extends AppCompatActivity {
 
                         if (firstOption==secondOption
                                 ){
+                            for (int i = 0;i<productCars.size();i++){
+                                Integer sd = settings.productCar.getProductCars().size();
 
-                            Integer sd = settings.productCar.getProductCars().size();
+                                settings.shoppingCar.carFinal.get(bb).productCars.add(
+                                        new productCar(
+                                                productCars.get(i).getIdProduct(),
+                                                productCars.get(i).getName(),
+                                                productCars.get(i).getPrice(),
+                                                productCars.get(i).getPicture(),
+                                                productCars.get(i).getObser(),0,
+                                                productCars.get(i).getAdditionCars(),
+                                                productCars.get(i).getIngredientsCars(),
+                                                productCars.get(i).getDrinkCar()
+                                        )
+                                );
 
-                            settings.shoppingCar.carFinal.get(bb).productCars.add(
-                                    new productCar(
-                                            settings.productCar.productCars.get(cc).getIdProduct(),
-                                            settings.productCar.productCars.get(cc).getName(),
-                                            settings.productCar.productCars.get(cc).getPrice(),
-                                            settings.productCar.productCars.get(cc).getPicture(),
-                                            settings.productCar.productCars.get(cc).getObser(),0,
-                                            settings.productCar.productCars.get(cc).getAdditionCars(),
-                                            settings.productCar.productCars.get(cc).getIngredientsCars(),
-                                            settings.productCar.productCars.get(cc).getDrinkCar()
-                                    )
-                            );
+                                break;
+                            }
 
-                            break;
+
                         }
 
                         else{
@@ -172,8 +179,8 @@ public class productm extends AppCompatActivity {
                                                 settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getDurattion(),
                                                 settings.stablishment.stablishments.get(settings.stablishment.getNumber()).price,
                                                 settings.stablishment.stablishments.get(settings.stablishment.getNumber()).minimum,
-                                                Integer.parseInt(subtotal.getText().toString()),
-                                                settings.productCar.getProductCars()
+                                                Integer.parseInt(subtotal.getText().toString()),0,
+                                                productCars
                                         ));
                                 break;
                             }
@@ -193,8 +200,8 @@ public class productm extends AppCompatActivity {
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getDurattion(),
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).price,
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).minimum,
-                                    0,
-                                    settings.productCar.getProductCars()
+                                    0,0,
+                                    productCars
                             ));
                 }
                 Intent go = new Intent(productm.this, car.class);
@@ -209,7 +216,7 @@ public class productm extends AppCompatActivity {
             public void onClick(View v) {
                 if(ingreConfirm==0){
                     if(additiConfirm==0){
-                        next(showDrink,showObservatio);
+                        next(showDrin,showObservatio);
                         actual=showObservatio;
                         YoYo.with(Techniques.Swing).duration(300).playOn(v);
                         Picasso.with(context).load(R.drawable.option_observations).centerInside().fit().into(img_banner_options);
@@ -222,10 +229,11 @@ public class productm extends AppCompatActivity {
                         Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
                     }
                     else{
-                        next(showDrink,showAddition);
-                        actual=showAddition;
+                        next(showDrin, showAddition);
+                        actual = showAddition;
+                        actual = showAddition;
 
-                        YoYo.with(Techniques.Swing).duration(300).playOn(v);
+                       YoYo.with(Techniques.Swing).duration(300).playOn(v);
                         Picasso.with(context).load(R.drawable.option_additions).centerInside().fit().into(img_banner_options);
                         YoYo.with(Techniques.FadeIn).duration(300).playOn(img_banner_options);
                         //Changes
@@ -261,6 +269,26 @@ public class productm extends AppCompatActivity {
                     Integer in =settings.subGlobalChecks.subGlobalCheckses.get(i).count;
                     if(in>0){
                         if(i==si-1){
+                            productCars.set(daa,new productCar(
+                                    settings.productCar.productCars.get(daa).getIdProduct(),
+                                    settings.productCar.productCars.get(daa).getName(),
+                                    settings.productCar.productCars.get(daa).getPrice(),
+                                    settings.productCar.productCars.get(daa).getPicture(),
+                                    settings.productCar.productCars.get(daa).getObser(),0,
+                                    settings.productCar.productCars.get(daa).getAdditionCars(),
+                                    tempIng,
+                                    settings.productCar.productCars.get(daa).getDrinkCar()
+                            ));
+                            actualProduct = new productCar(
+                                    settings.productCar.productCars.get(daa).getIdProduct(),
+                                    settings.productCar.productCars.get(daa).getName(),
+                                    settings.productCar.productCars.get(daa).getPrice(),
+                                    settings.productCar.productCars.get(daa).getPicture(),
+                                    settings.productCar.productCars.get(daa).getObser(),0,
+                                    settings.productCar.productCars.get(daa).getAdditionCars(),
+                                    tempIng,
+                                    settings.productCar.productCars.get(daa).getDrinkCar()
+                            );
 
                             settings.productCar.productCars.set(daa,new productCar(
                                             settings.productCar.productCars.get(daa).getIdProduct(),
@@ -367,6 +395,19 @@ public class productm extends AppCompatActivity {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(actualProduct.getIngredientsCars()== null){
+                    ArrayList<ingredientsCar> in = new ArrayList<>();
+                    actualProduct.setIngredientsCars(in);
+                }
+                if (actualProduct.getAdditionCars()==null){
+                    ArrayList<additionCar> ad = new ArrayList<>();
+                    actualProduct.setAdditionCars(ad);
+                }
+                if(actualProduct.getDrinkCar().id==null){
+                    drinkCar d = new drinkCar(-1,"","","");
+                    actualProduct.setDrinkCar(d);
+                }
+                productCars.add(actualProduct);
                 Integer newNumber= 1+Integer.parseInt(number.getText().toString());
                 number.setText(newNumber.toString());
                 less.setEnabled(true);
@@ -385,9 +426,18 @@ public class productm extends AppCompatActivity {
             }
         });
 
+        ArrayList<additionCar> ad = new ArrayList<>();
+        ArrayList<ingredientsCar> ic = new ArrayList<>();
+        drinkCar dc = new drinkCar(-1,"","","");
         settings.productCar.productCars = new ArrayList<>();
-        settings.productCar.productCars.add(new productCar(
+        productCars.add(new productCar(
 
+                settings.subtotal.getProductId(),
+                settings.subtotal.getName(),
+                settings.subtotal.getPrice(),
+                settings.subtotal.getPicture(),
+                "", 0, ad, ic,dc));
+        actualProduct = new productCar(
                 settings.subtotal.getProductId(),
                 settings.subtotal.getName(),
                 settings.subtotal.getPrice(),
@@ -396,17 +446,25 @@ public class productm extends AppCompatActivity {
                 0,
                 settings.additionCar.additionCars,
                 settings.ingredientsCar.ingredientsCars,
-                settings.drinkCar
+                dc
+        );
+
+
+        settings.productCar.productCars.add(new productCar(
+
+                settings.subtotal.getProductId(),
+                settings.subtotal.getName(),
+                settings.subtotal.getPrice(),
+                settings.subtotal.getPicture(),
+                "",0, ad, ic, settings.drinkCar
         ));
         confirmeFirstImage(settings.stablishment.getId());
+        daa=settings.productCar.productCars.size()-1;
         putDrink();
         putIngredients();
         showAdditions();
         showExists();
 
-
-        View child = View.inflate(productm.this, R.layout.observation, null);
-        showObservatio.setVisibility(View.GONE);
 
         move();
         //clicksDetails();
@@ -1878,23 +1936,23 @@ public class productm extends AppCompatActivity {
             lbl_title_layout.setText("Bebidas");
             //putDrink();
 
-           /* showadditions.setVisibility(View.GONE);
+            showadditions.setVisibility(View.GONE);
             showIngredients.setVisibility(View.GONE);
             showObservations.setVisibility(View.GONE);
-            View child = View.inflate(productm.this, R.layout.drink, null);*/
+
         }
         else{
             imgDrink.setVisibility(View.GONE);
             showDrink.setVisibility(View.GONE);
+            showDrin.setVisibility(View.GONE);
             drinkConfirm=0;
-            putIngredients();
             if (settings.ingredients.ingredientses.size()> 0){
                 imageViewIngredient.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_ingredientes_lleno));
                 actual=showIngredient;
                 img_banner_options.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.option_ingredients));
                 lbl_title_layout.setText("Ingredientes");
                 if (showIngredients.getVisibility()==View.GONE){showIngredients.setVisibility(View.VISIBLE);}
-                showadditions.setVisibility(View.GONE);
+                showAddition.setVisibility(View.GONE);
                 showObservatio.setVisibility(View.GONE);
 
             }
@@ -1902,6 +1960,7 @@ public class productm extends AppCompatActivity {
                 ingreConfirm=0;
                 imgIngredient.setVisibility(View.GONE);
                 showIngredients.setVisibility(View.GONE);
+                showIngredient.setVisibility(View.GONE);
                 if (settings.addition.additions.size()>0){
                     imageViewAddition.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_adiciones_lleno));
                     img_banner_options.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.option_additions));
@@ -1912,12 +1971,31 @@ public class productm extends AppCompatActivity {
                 }
                 else{
                     additiConfirm=0;
+                    showAddition.setVisibility(View.GONE);
+                    showadditions.setVisibility(View.GONE);
+                    imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno));
+                    actual=showObservatio;
+                    showObservatio.setVisibility(View.VISIBLE);
+                    showObservations.setVisibility(View.VISIBLE);
+                    img_banner_options.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.option_observations));
+                    lbl_title_layout.setText("Observaciones");
+
+                    /*additiConfirm=0;
+                    showAddition.setVisibility(View.GONE);
+                    showadditions.setVisibility(View.GONE);
+                    imgAddition.setVisibility(View.GONE);
                     if (showObservations.getVisibility()==View.GONE){showObservations.setVisibility(View.VISIBLE);}
                     img_banner_options.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.option_observations));
                     lbl_title_layout.setText("Observaciones");
-                    imgAddition.setVisibility(View.GONE);
                     actual=showObservatio;
-                    showadditions.setVisibility(View.GONE);
+                    showObservations.setVisibility(View.VISIBLE);
+                    showObservatio.setVisibility(View.VISIBLE);
+
+                    lbl_title_layout.setText("Observaciones");
+                    Picasso.with(context).load(R.drawable.icon_observaciones_lleno).centerInside().fit().into(imageViewObsrv);
+                    Picasso.with(context).load(R.drawable.icon_bebida_normal).centerInside().fit().into(imageViewDrink);
+                    Picasso.with(context).load(R.drawable.icon_ingredientes_normal).centerInside().fit().into(imageViewIngredient);
+                    Picasso.with(context).load(R.drawable.icon_addition_normal).centerInside().fit().into(imageViewAddition);
                     switch (integer){
                         case 1:
                             imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno));
@@ -1931,7 +2009,7 @@ public class productm extends AppCompatActivity {
                         case 4:imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno_mascotas));
                             break;
                         case 5:imageViewObsrv.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.icon_observaciones_lleno_mercado));
-                    }
+                    }*/
 
                 }
 
@@ -1943,19 +2021,17 @@ public class productm extends AppCompatActivity {
         Integer sizeIngre=settings.ingredients.ingredientses.size();
         Integer sizeAddi = settings.addition.additions.size();
 
-        if (sizeIngre<1&&imgIngredient.getVisibility() ==View.VISIBLE){
+        if (sizeIngre<1){
             imgIngredient.setVisibility(View.GONE);
-            if (showIngredients.getVisibility()==View.VISIBLE){showIngredients.setVisibility(View.GONE);}
+            showIngredient.setVisibility(View.GONE);
+           showIngredients.setVisibility(View.GONE);
             ingreConfirm=0;
-            View child = View.inflate(productm.this, R.layout.ingradients, null);
         }
-        else{
-        }
-        if (sizeAddi<1&&imgAddition.getVisibility() ==View.VISIBLE){
+        if (sizeAddi<1){
             imgAddition.setVisibility(View.GONE);
+            showAddition.setVisibility(View.GONE);
             additiConfirm=0;
-            if (showadditions.getVisibility()==View.VISIBLE){showadditions.setVisibility(View.GONE);}
-            View child = View.inflate(productm.this, R.layout.additionss, null);
+            showadditions.setVisibility(View.GONE);
         }
     }
 
@@ -2164,8 +2240,6 @@ public class productm extends AppCompatActivity {
 
 
     public void putDrink(){
-        daa=settings.productCar.productCars.size()-1;
-
 
         settings.allChecks.allCheckses.add(new allChecks(
                 checksDrink2, checkAddition2, checks2
@@ -2212,6 +2286,35 @@ public class productm extends AppCompatActivity {
                             }
                         });
                 if(x==0){
+                    productCars.add(daa ,new productCar(
+                            settings.productCar.productCars.get(daa).getIdProduct(),
+                            settings.productCar.productCars.get(daa).getName(),
+                            settings.productCar.productCars.get(daa).getPrice(),
+                            settings.productCar.productCars.get(daa).getPicture(),
+                            settings.productCar.productCars.get(daa).getObser(),0,
+                            settings.productCar.productCars.get(daa).getAdditionCars(),
+                            settings.productCar.productCars.get(daa).getIngredientsCars(),
+                            new drinkCar(
+                                    settings.drinkCar.getId(),
+                                    settings.drinkCar.getName(),
+                                    settings.drinkCar.getPicture(),
+                                    settings.drinkCar.getLength()
+                            )
+                    ));
+                    actualProduct = new productCar(settings.productCar.productCars.get(daa).getIdProduct(),
+                            settings.productCar.productCars.get(daa).getName(),
+                            settings.productCar.productCars.get(daa).getPrice(),
+                            settings.productCar.productCars.get(daa).getPicture(),
+                            settings.productCar.productCars.get(daa).getObser(),0,
+                            settings.productCar.productCars.get(daa).getAdditionCars(),
+                            settings.productCar.productCars.get(daa).getIngredientsCars(),
+                            new drinkCar(
+                                    settings.drinkCar.getId(),
+                                    settings.drinkCar.getName(),
+                                    settings.drinkCar.getPicture(),
+                                    settings.drinkCar.getLength()
+                            ));
+
                     settings.productCar.productCars.set(daa ,new productCar(
                                     settings.productCar.productCars.get(daa).getIdProduct(),
                                     settings.productCar.productCars.get(daa).getName(),
@@ -2282,6 +2385,17 @@ public class productm extends AppCompatActivity {
                 //length.setText(settings.drink.drinks.get(i).getLenght());
                 showDrink.addView(childa);
             }
+        }
+        else{
+            drinkCar d = new drinkCar(-1,"","","");
+            actualProduct = new productCar(settings.productCar.productCars.get(daa).getIdProduct(),
+                    settings.productCar.productCars.get(daa).getName(),
+                    settings.productCar.productCars.get(daa).getPrice(),
+                    settings.productCar.productCars.get(daa).getPicture(),
+                    settings.productCar.productCars.get(daa).getObser(),0,
+                    settings.productCar.productCars.get(daa).getAdditionCars(),
+                    settings.productCar.productCars.get(daa).getIngredientsCars(),
+                    d);
         }
     }
     public void putIngredients(){
@@ -2359,6 +2473,17 @@ public class productm extends AppCompatActivity {
             showIngredients.addView(childIn);
 
             callOptionals(liOpt);
+        }
+        else{
+            ArrayList<ingredientsCar> ing = new ArrayList<>();
+            actualProduct = new productCar(settings.productCar.productCars.get(daa).getIdProduct(),
+                    settings.productCar.productCars.get(daa).getName(),
+                    settings.productCar.productCars.get(daa).getPrice(),
+                    settings.productCar.productCars.get(daa).getPicture(),
+                    settings.productCar.productCars.get(daa).getObser(),0,
+                    settings.productCar.productCars.get(daa).getAdditionCars(),
+                    ing,
+                    settings.productCar.productCars.get(daa).getDrinkCar());
         }
 
     }
@@ -2631,6 +2756,24 @@ public class productm extends AppCompatActivity {
                                 settings.addition.additions.get(ad).getPrice()
                         ));
                     }
+                    productCars.set(daa,new productCar(
+                            settings.productCar.productCars.get(daa).getIdProduct(),
+                            settings.productCar.productCars.get(daa).getName(),
+                            settings.productCar.productCars.get(daa).getPrice(),
+                            settings.productCar.productCars.get(daa).getPicture(),
+                            settings.productCar.productCars.get(daa).getObser(),0,
+                            settings.additionCar.additionCars,
+                            settings.productCar.productCars.get(daa).getIngredientsCars(),
+                            settings.productCar.productCars.get(daa).getDrinkCar()
+                    ));
+                    actualProduct = new productCar(settings.productCar.productCars.get(daa).getIdProduct(),
+                            settings.productCar.productCars.get(daa).getName(),
+                            settings.productCar.productCars.get(daa).getPrice(),
+                            settings.productCar.productCars.get(daa).getPicture(),
+                            settings.productCar.productCars.get(daa).getObser(),0,
+                            settings.additionCar.additionCars,
+                            settings.productCar.productCars.get(daa).getIngredientsCars(),
+                            settings.productCar.productCars.get(daa).getDrinkCar());
 
                     settings.productCar.productCars.set(daa,new productCar(
                                     settings.productCar.productCars.get(daa).getIdProduct(),
@@ -2808,6 +2951,17 @@ public class productm extends AppCompatActivity {
                     });
 
                 }
+            }
+            else{
+                ArrayList<additionCar> ad = new ArrayList<>();
+                actualProduct = new productCar(settings.productCar.productCars.get(daa).getIdProduct(),
+                        settings.productCar.productCars.get(daa).getName(),
+                        settings.productCar.productCars.get(daa).getPrice(),
+                        settings.productCar.productCars.get(daa).getPicture(),
+                        settings.productCar.productCars.get(daa).getObser(),0,
+                        ad,
+                        settings.productCar.productCars.get(daa).getIngredientsCars(),
+                        settings.productCar.productCars.get(daa).getDrinkCar());
             }
     }
 }

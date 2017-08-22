@@ -29,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -44,6 +45,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
+import godomicilios.mdcc.godomiciliosc.settings.StablishmentCar;
+import godomicilios.mdcc.godomiciliosc.settings.answerOrder;
 import godomicilios.mdcc.godomiciliosc.settings.methodPay;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 import godomicilios.mdcc.godomiciliosc.settings.temporalCar;
@@ -167,11 +170,18 @@ public class car extends AppCompatActivity
                             String [] json= new String [settings.shoppingCar.carFinal.get(p).getProductCars().size()];
                             for (int o =0;o<settings.shoppingCar.carFinal.get(p).getProductCars().size();o++){
                                 jsonObject= new JSONObject();
-                                Integer [] ingr;
-                                String [] adic;
-                                adic = new String [settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getAdditionCars().size()];
-                                ingr = new Integer[settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIngredientsCars().size()];
+                                String [] ingr = new String[0];
+                                String [] adic = new String[0];
+                                if (settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getAdditionCars().size()>0){
+                                    adic = new String [settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getAdditionCars().size()];
+                                }
+                                if(settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIngredientsCars().size()>0){
+                                    ingr = new String[settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIngredientsCars().size()];
+                                }
+
+
                                 Integer kj = settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getAdditionCars().size();
+
                                 for(int b=0;b<kj;b++){
 
                                     String vb=settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getAdditionCars().get(b).id.toString();
@@ -188,8 +198,15 @@ public class car extends AppCompatActivity
 
 
                                 if (settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIngredientsCars().size()>0){
-                                    for(int b=0;b<settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIngredientsCars().size();b++){
-                                        ingr[b] = settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIngredientsCars().get(b).getId();
+                                    Integer ingC = settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIngredientsCars().size();
+                                    for(int b=0;b<ingC;b++){
+                                        Integer vb = settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIngredientsCars().get(b).getId();
+                                        if(b==ingC-1){
+                                            ingr[b] = vb.toString();
+                                        }
+                                        else{
+                                            ingr[b] = vb.toString()+",";
+                                        }
                                     }
                                 }
 
@@ -203,12 +220,15 @@ public class car extends AppCompatActivity
                                 }
 
                                 try {
+                                    String drink="";
+
+                                        drink = settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getDrinkCar().getId().toString();
+
                                     jsonObject.put("id_producto",
                                             settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIdProduct());
                                     jsonObject.put("venta_producto",
                                             settings.shoppingCar.carFinal.get(p).getSubtotal());
-                                    jsonObject.put("bebida",
-                                            settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getDrinkCar().getId());
+                                    jsonObject.put("bebida", drink);
                                     jsonObject.put("array_ingredientes", cadena);
                                     jsonObject.put("array_adiciones", cadena2);
                                     jsonObject.put("observacion", settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getObser());
@@ -231,14 +251,12 @@ public class car extends AppCompatActivity
                             }
                             
                             try {
-                                sendCar(firstUrl+id+idBranch+sale+domi+idPay+coupon+payApp+addressDomi+latit+longi+idStablish+"&carrito=["+carrr+"]");
+                                sendCar(firstUrl+id+idBranch+sale+domi+idPay+coupon+payApp+addressDomi+latit+longi+idStablish+"&carrito=["+carrr+"]",p);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
-                        Intent go = new Intent(car.this, status.class);
-                        startActivity(go);
-                        settings.couponActivate.setStatus(0);
+
 
                 }
 
@@ -424,9 +442,11 @@ public class car extends AppCompatActivity
                     overridePendingTransition(R.anim.izquierdaentra, R.anim.izquierdasale);
                 }
             });
+            String pictu = "http://godomicilios.co/admin/documentosVarios/"+settings.shoppingCar.carFinal.get(i).getImg();
 
             Picasso.with(car.this)
-                    .load("http://godomicilios.co/admin/documentosVarios/"+settings.shoppingCar.carFinal.get(i).getImg())
+
+                    .load(pictu)
                     .into(imageOne, new com.squareup.picasso.Callback() {
                         @Override
                         public void onSuccess() {
@@ -780,7 +800,7 @@ public class car extends AppCompatActivity
     }
 
 
-    public void sendCar (String url) throws Exception{
+    public void sendCar (String url, final Integer p) throws Exception{
 
         url = url.replace(" ", "%20");
         url = url.replace("#", "%23");
@@ -793,20 +813,39 @@ public class car extends AppCompatActivity
         final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
                 null, CustomSSLSocketFactory.getSSLSocketFactory(car.this)));
 
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
+        JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(JsonObjectRequest.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
                     @Override
-                    public void onResponse(final JSONArray response) {
+                    public void onResponse(final JSONObject response) {
                         try{
 
-                            for(int m=0;m<response.length();m++){
 
-                            }
+                                settings.shoppingCar.carFinal.set(p, new StablishmentCar(
+                                        settings.shoppingCar.carFinal.get(p).getId(),
+                                        settings.shoppingCar.carFinal.get(p).getIdBranch(),
+                                        settings.shoppingCar.carFinal.get(p).getIdColor(),
+                                        settings.shoppingCar.carFinal.get(p).img,
+                                        settings.shoppingCar.carFinal.get(p).name,
+                                        settings.shoppingCar.carFinal.get(p).distance,
+                                        settings.shoppingCar.carFinal.get(p).duration,
+                                        settings.shoppingCar.carFinal.get(p).getPrice(),
+                                        settings.shoppingCar.carFinal.get(p).getMinimum(),
+                                        settings.shoppingCar.carFinal.get(p).getSubtotal(),
+                                        response.getInt("pedidoId"),
+                                        settings.shoppingCar.carFinal.get(p).productCars
+                                ));
+
+
+                                Intent go = new Intent(car.this, status.class);
+                                startActivity(go);
+                                settings.couponActivate.setStatus(0);
+
                         }
 
                         catch (Exception e){
 
+                            String i = e.getMessage();
                         }
 
                     }
@@ -814,10 +853,11 @@ public class car extends AppCompatActivity
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                String e = error.getMessage();
             }
         }
         );
-        queue.add(jsonArrayRequest);
+        queue.add(jsonObjectRequest);
 
 
     }

@@ -465,7 +465,7 @@ public class head extends AppCompatActivity
                                             }
 
                                             try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.stablishment.stablishments.get(main.getId()).getId_Company(), main.getId());
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -510,7 +510,7 @@ public class head extends AppCompatActivity
 
                                             try {
                                                 String pro = settings.stablishment.stablishments.get(main.getId()).getProductRank();
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+pro ,main.getId());
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -1033,7 +1033,7 @@ public class head extends AppCompatActivity
                                             }
 
                                             try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -1066,7 +1066,7 @@ public class head extends AppCompatActivity
                                             }
 
                                             try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&empId=" + settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
