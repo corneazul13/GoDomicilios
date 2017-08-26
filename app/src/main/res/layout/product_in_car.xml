@@ -3,17 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="220dp"
+        android:layout_marginLeft="10dp"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.8"
+            android:layout_weight="0.7"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -21,6 +24,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.75"
                 android:gravity="center"
+                android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
                 <ImageView
@@ -33,8 +37,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:id="@+id/up"
+                android:layout_marginTop="5dp"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
                 android:layout_weight="0.25"
                 android:orientation="vertical">
 
@@ -77,13 +81,14 @@
                         android:id="@+id/pint"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.5"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="0.2"
                         android:orientation="vertical"></LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.5"
+                        android:layout_weight="0.8"
                         android:orientation="vertical"></LinearLayout>
                 </LinearLayout>
 
@@ -91,10 +96,10 @@
                     android:id="@+id/image"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
                     android:layout_weight="0.75"
-                    app:srcCompat="@drawable/cerrarrojo" />
+                    app:srcCompat="@drawable/cerrarrojo"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
         </LinearLayout>
@@ -104,13 +109,12 @@
             android:layout_height="match_parent"
             android:layout_weight="0.8"
             android:background="@color/gray"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
@@ -151,8 +155,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
                 android:layout_weight="0.5"
                 android:orientation="horizontal">
 
@@ -199,6 +201,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.45"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -310,6 +313,7 @@
                             android:orientation="horizontal">
 
                             <LinearLayout
+                                android:id="@+id/cashView"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.33"
@@ -346,6 +350,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/dataShow"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.33"
@@ -379,6 +384,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/onLineShow"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_weight="0.33"
@@ -433,6 +439,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.95"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -456,12 +464,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:textColor="@color/white"
                 android:text="productos" />
 
             <TextView
                 android:id="@+id/textView38"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
                 android:layout_weight="1"
                 android:gravity="right"
                 android:text="ver detalle" />
@@ -472,6 +482,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.8"
             android:gravity="center"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -486,6 +497,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
+                    android:visibility="gone"
                     android:layout_centerVertical="true"
                     app:srcCompat="@drawable/cerrarb" />
             </RelativeLayout>

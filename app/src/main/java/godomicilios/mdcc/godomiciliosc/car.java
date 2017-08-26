@@ -1,6 +1,8 @@
 package godomicilios.mdcc.godomiciliosc;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -31,6 +33,8 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.daimajia.easing.linear.Linear;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -61,13 +65,15 @@ public class car extends AppCompatActivity
     private static Tracker tracker;
 
     LinearLayout li;
+    Context context;
     TextView total;
     Button confrim, cancel;
     Integer tota =0;
-    TextView numberCar, cash, datapho,onLine;
+    TextView numberCar;
     Integer totals = 0;
     Integer view=0;
     String firstUrl = "https://godomicilios.co/webService/servicios.php?svice=COMPRAR_PRODUCTOS&metodo=json";
+    Integer totalTotal = 0;
 
 
     @Override
@@ -76,6 +82,7 @@ public class car extends AppCompatActivity
         setContentView(R.layout.activity_car);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context = this;
         li = (LinearLayout) findViewById(R.id.li);
         total = (TextView) findViewById(R.id.total);
         confrim= (Button) findViewById(R.id.confirm);
@@ -248,6 +255,7 @@ public class car extends AppCompatActivity
             }
         });
 
+
         for(int i = 0; i< settings.shoppingCar.carFinal.size(); i++)
         {
             /*View childs = View.inflate(car.this, R.layout.product_in_product, null);
@@ -266,6 +274,9 @@ public class car extends AppCompatActivity
                 ));
             }
             View child = View.inflate(car.this, R.layout.product_in_car, null);
+            LinearLayout cashShow = ( LinearLayout) child.findViewById(R.id.cashView);
+            LinearLayout dataShow = ( LinearLayout) child.findViewById(R.id.dataShow);
+            LinearLayout onLineShow = ( LinearLayout) child.findViewById(R.id.onLineShow);
             LinearLayout up = (LinearLayout) child.findViewById(R.id.up);
             LinearLayout paint = (LinearLayout) child.findViewById(R.id.pint);
             TextView cant = (TextView) child.findViewById(R.id.cant);
@@ -277,6 +288,9 @@ public class car extends AppCompatActivity
             TextView sub = (TextView) child.findViewById(R.id.sub);
             TextView re = (TextView) child.findViewById(R.id.re);
             TextView cou = (TextView) child.findViewById(R.id.textView12);
+            final ImageView cash = ( ImageView) child.findViewById(R.id.cash);
+            final ImageView datapho = ( ImageView) child.findViewById(R.id.datapho);
+            final ImageView onLine = ( ImageView) child.findViewById(R.id.onLine);
             final LinearLayout addCoupon = (LinearLayout) child.findViewById(R.id.addCoupon);
             LinearLayout otherColor = (LinearLayout) child.findViewById(R.id.otherColor);
             /*LinearLayout me = (LinearLayout) child.findViewById(R.id.met);
@@ -287,6 +301,24 @@ public class car extends AppCompatActivity
             image.setId(i);
             Integer g=0;
             addCoupon.setId(i);
+            ArrayList<Integer> metho = new ArrayList<>();
+            try {
+                metho = methodPay (settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            for (int j = 0; j<metho.size();j++){
+                if (j==0&&metho.get(j)==0){
+                    cashShow.setVisibility(View.GONE);
+                }
+                if(j==1&&metho.get(j)==0){
+                    dataShow.setVisibility(View.GONE);
+                }
+                if(j==1&&metho.get(j)==0){
+                    onLineShow.setVisibility(View.GONE);
+                }
+            }
 
             if(settings.temporalCar.temporalCars.get(i).getCoupon()>=0){
                 cou.setText("$ "+settings.temporalCar.temporalCars.get(i).getCoupon().toString());
@@ -300,32 +332,34 @@ public class car extends AppCompatActivity
                     settings.temporalCar.setIdClick(addCoupon.getId());
                 }
             });
+            Integer subReal=0;
+            for (int gg=0;gg<settings.shoppingCar.carFinal.get(i).getProductCars().size();gg++){
+                subReal=subReal+settings.shoppingCar.carFinal.get(i).getProductCars().get(gg).getTotal();
+            }
+
+            String h = settings.shoppingCar.carFinal.get(i).getPrice().replace("$ ","");
+            Integer tempDomi = Integer.parseInt(h);
+            totalTotal = totalTotal+subReal+tempDomi;
+            total.setText("$" + totalTotal);
+
             totals = totals + settings.shoppingCar.carFinal.get(i).getSubtotal();
-            total.setText("$ "+totals.toString());
             g = settings.shoppingCar.carFinal.get(i).productCars.size();
                 cant.setText(" "+g.toString()+" ");
             name.setText(settings.shoppingCar.carFinal.get(i).getName());
-            sub.setText("$ "+settings.shoppingCar.carFinal.get(i).getSubtotal().toString());
+            sub.setText("$ "+subReal.toString());
             duration.setText(settings.shoppingCar.carFinal.get(i).getDuration());
             re.setText(settings.shoppingCar.carFinal.get(i).getPrice());
             distance.setText(settings.shoppingCar.carFinal.get(i).getDistance());
 
             final int finalI = i;
-            /*cash.setOnClickListener(new View.OnClickListener() {
+
+            cash.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //meth.setText("  EFECTIVO");
-                    if(view ==1){
-                        view =0;
-                        AnimationSet set = new AnimationSet(true);
-                        Animation animation;
-                        animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-                                0.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
-                                0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-                        animation.setDuration(1000);
-                        set.addAnimation(animation);
-                        LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                        overridePendingTransition(R.anim.izquierdasale, R.anim.izquierdaentra);
+
+                    selectMethod(1,cash,datapho,onLine);
+
+
                         settings.temporalCar.temporalCars.set(finalI, new temporalCar(
                                 settings.temporalCar.temporalCars.get(finalI).getIdStablish(),
                                 settings.temporalCar.temporalCars.get(finalI).getIdClick(),
@@ -333,25 +367,15 @@ public class car extends AppCompatActivity
                                 "EFECTIVO",settings.temporalCar.temporalCars.get(finalI).getSubtotal(),
                                 settings.temporalCar.temporalCars.get(finalI).getDomiPrice())
                         );
-                    }
+
                 }
             });
 
             datapho.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //meth.setText("  DATÁFONO");
-                    if(view ==1){
-                        view =0;
-                        AnimationSet set = new AnimationSet(true);
-                        Animation animation;
-                        animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-                                0.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
-                                0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-                        animation.setDuration(1000);
-                        set.addAnimation(animation);
-                        LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                        overridePendingTransition(R.anim.izquierdasale, R.anim.izquierdaentra);
+
+                    selectMethod(2,datapho,cash,onLine);
                         settings.temporalCar.temporalCars.set(finalI, new temporalCar(
                                 settings.temporalCar.temporalCars.get(finalI).getIdStablish(),
                                 settings.temporalCar.temporalCars.get(finalI).getIdClick(),
@@ -359,7 +383,6 @@ public class car extends AppCompatActivity
                                 "DATÁFONO",settings.temporalCar.temporalCars.get(finalI).getSubtotal(),
                                 settings.temporalCar.temporalCars.get(finalI).getDomiPrice())
                         );
-                    }
                 }
 
             });
@@ -367,18 +390,9 @@ public class car extends AppCompatActivity
             onLine.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //meth.setText("  OnLine");
-                    if(view ==1){
-                        view =0;
-                        AnimationSet set = new AnimationSet(true);
-                        Animation animation;
-                        animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
-                                0.0f, Animation.RELATIVE_TO_SELF, 1.0f, Animation.RELATIVE_TO_SELF,
-                                0.0f, Animation.RELATIVE_TO_SELF, 1.0f);
-                        animation.setDuration(1000);
-                        set.addAnimation(animation);
-                        LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                        overridePendingTransition(R.anim.izquierdasale, R.anim.izquierdaentra);
+
+                    selectMethod(3,onLine,cash,datapho);
+
                         settings.temporalCar.temporalCars.set(finalI, new temporalCar(
                                 settings.temporalCar.temporalCars.get(finalI).getIdStablish(),
                                 settings.temporalCar.temporalCars.get(finalI).getIdClick(),
@@ -386,28 +400,10 @@ public class car extends AppCompatActivity
                                 "OnLine",settings.temporalCar.temporalCars.get(finalI).getSubtotal(),
                                 settings.temporalCar.temporalCars.get(finalI).getDomiPrice())
                         );
-                    }
+
                 }
 
-            });*/
-
-
-                    try {
-                        methodPay (settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    AnimationSet set = new AnimationSet(true);
-                    Animation animation;
-                    animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 1.0f,
-                            Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
-                            1.0f, Animation.RELATIVE_TO_SELF, 0.0f);
-                    animation.setDuration(300);
-                    set.addAnimation(animation);
-                    LayoutAnimationController controller = new LayoutAnimationController(set, 0.25f);
-                    view =1;
-                    overridePendingTransition(R.anim.izquierdaentra, R.anim.izquierdasale);
+            });
 
             String pictu = "http://godomicilios.co/admin/documentosVarios/"+settings.shoppingCar.carFinal.get(i).getImg();
 
@@ -431,7 +427,7 @@ public class car extends AppCompatActivity
                 public void onClick(View v) {
 
                     Integer h =totals-settings.shoppingCar.carFinal.get(image.getId()).getSubtotal();
-                    total.setText("$" + h.toString());
+                    total.setText("$" + totalTotal);
                     li.removeViewAt(image.getId());
                     settings.shoppingCar.carFinal.remove(image.getId());
                     numberCar.setText(settings.user.getCarCant());
@@ -659,11 +655,12 @@ public class car extends AppCompatActivity
         startActivity(intent);
         settings.couponActivate.setStatus(0);
     }
-    public void methodPay (Integer in) throws Exception{
+    public ArrayList<Integer> methodPay ( Integer in) throws Exception{
 
         String url = "https://godomicilios.co/webService/servicios.php?svice=METODOS_PAGO&metodo=json&empresaId="+
                 in;
 
+        final ArrayList<Integer> all = new ArrayList<>();
 
         final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
                 null, CustomSSLSocketFactory.getSSLSocketFactory(car.this)));
@@ -678,6 +675,7 @@ public class car extends AppCompatActivity
                                 settings.methodPay.methodPays= new ArrayList<>();
 
                                 for(int i =0;i<response.length();i++){
+
                                     final JSONObject method = (JSONObject) response.getJSONObject(i);
 
                                     settings.methodPay.methodPays.add( new methodPay(
@@ -686,70 +684,34 @@ public class car extends AppCompatActivity
                                             method.getInt("estado"),
                                             method.getString("img")
                                     ));
-
-                                        /*if(settings.methodPay.methodPays.get(i).getStatus()==1){
-                                            switch (settings.methodPay.methodPays.get(i).getName()){
-                                                case ("Efectivo"):
-                                                    Picasso.with(car.this)
-                                                            .load("http://godomicilios.co/"+settings.methodPay.methodPays.get(i).getImage())
-                                                            .into(cash, new com.squareup.picasso.Callback() {
-                                                                @Override
-                                                                public void onSuccess() {
-                                                                    //do smth when picture is loaded successfully
-                                                                }
-
-                                                                @Override
-                                                                public void onError() {
-                                                                    //do smth when there is picture loading error
-                                                                }
-                                                            });
-                                                    break;
-                                                case ("Datafono"):
-                                                    Picasso.with(car.this)
-                                                            .load("http://godomicilios.co/"+settings.methodPay.methodPays.get(i).getImage())
-                                                            .into(datapho, new com.squareup.picasso.Callback() {
-                                                                @Override
-                                                                public void onSuccess() {
-                                                                    //do smth when picture is loaded successfully
-                                                                }
-
-                                                                @Override
-                                                                public void onError() {
-                                                                    //do smth when there is picture loading error
-                                                                }
-                                                            });
-                                                    break;
-                                                case ("Pago online"):
-                                                    Picasso.with(car.this)
-                                                            .load("http://godomicilios.co/"+settings.methodPay.methodPays.get(i).getImage())
-                                                            .into(onLine, new com.squareup.picasso.Callback() {
-                                                                @Override
-                                                                public void onSuccess() {
-                                                                    //do smth when picture is loaded successfully
-                                                                }
-
-                                                                @Override
-                                                                public void onError() {
-                                                                    //do smth when there is picture loading error
-                                                                }
-                                                            });
-                                                    break;
-                                            }
+                                }
+                                for(int j=0; j<settings.methodPay.methodPays.size();j++){
+                                    Integer idM = settings.methodPay.methodPays.get(j).getId();
+                                    Integer status = settings.methodPay.methodPays.get(j).getStatus();
+                                    if (j==0){
+                                        if(idM==1&&status==1){
+                                            all.add(1);
                                         }
                                         else{
-
-                                            switch (settings.methodPay.methodPays.get(i).getName()){
-                                                case ("Efectivo"):
-                                                    cash.setEnabled(false);
-                                                    break;
-                                                case ("Datafono"):
-                                                    datapho.setEnabled(false);
-                                                    break;
-                                                case ("Pago online"):
-                                                    onLine.setEnabled(false);
-                                                    break;
-                                            }
-                                        }*/
+                                            all.add(0);
+                                        }
+                                    }
+                                    else if(j==1){
+                                        if(idM==2&&status==1){
+                                            all.add(1);
+                                        }
+                                        else{
+                                            all.add(0);
+                                        }
+                                    }
+                                    else if (j==2){
+                                        if(idM==3&&status==1){
+                                            all.add(1);
+                                        }
+                                        else{
+                                            all.add(0);
+                                        }
+                                    }
                                 }
                             }
                             else {
@@ -772,6 +734,7 @@ public class car extends AppCompatActivity
         }
         );
         queue.add(jsonArrayRequest);
+        return all;
 
 
     }
@@ -844,7 +807,25 @@ public class car extends AppCompatActivity
         }
         );
         queue.add(jsonObjectRequest);
+    }
+    public void selectMethod(Integer se, ImageView select, ImageView no1, ImageView no2){
 
+        //Changes
+        if (se==1){
+            Picasso.with(context).load(R.drawable.efectivox3).centerInside().fit().into(select);
+            Picasso.with(context).load(R.drawable.datafono_gx3).centerInside().fit().into(no1);
+            Picasso.with(context).load(R.drawable.pagoonline_gx3).centerInside().fit().into(no2);
+        }
+        else if (se==2){
+            Picasso.with(context).load(R.drawable.datafonox3).centerInside().fit().into(select);
+            Picasso.with(context).load(R.drawable.efectivo_gx3).centerInside().fit().into(no1);
+            Picasso.with(context).load(R.drawable.pagoonline_gx3).centerInside().fit().into(no2);
+        }
+        else if (se==3){
+            Picasso.with(context).load(R.drawable.pagoonlinex3).centerInside().fit().into(select);
+            Picasso.with(context).load(R.drawable.efectivo_gx3).centerInside().fit().into(no1);
+            Picasso.with(context).load(R.drawable.datafono_gx3).centerInside().fit().into(no2);
+        }
 
     }
 

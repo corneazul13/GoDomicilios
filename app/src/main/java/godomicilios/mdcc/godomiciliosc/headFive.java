@@ -845,10 +845,17 @@ public class headFive extends AppCompatActivity
                                 final LinearLayout main = (LinearLayout)child.findViewById(R.id.main);
                                 Integer cantStars=address.getInt("estrellas_sucursal") ;
                                 Integer cantt = Math.round(cantStars*2);
+                                Integer flag=address.getInt("flag_nombre");
+                                if(flag.equals(1)){
+                                    name.setText(address.getString("nombre_sucursal"));
+                                    branch.setText(address.getString("nombre"));
+                                }
+                                else{
+                                    name.setText(address.getString("nombre"));
+                                    branch.setText(address.getString("nombre_sucursal"));
+                                }
 
                                 stars(cantt,one1, two1, three1, four1, five1);
-                                name.setText(address.getString("nombre"));
-                                branch.setText(address.getString("nombre_sucursal"));
                                 addressbranch.setText(address.getString("direccion_mapa"));
                                 price.setText("Pedido mínimo $" + address.getString("csto_domicilio"));
 

@@ -6,12 +6,22 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:orientation="vertical"
-android:background="@color/white"
+android:background="@android:color/transparent"
 app:layout_behavior="@string/appbar_scrolling_view_behavior"
 tools:context=".productm"
 tools:showIn="@layout/app_bar_productm">
 
-<RelativeLayout
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/showCom"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+
+    <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="80dp">
 
@@ -358,6 +368,7 @@ tools:showIn="@layout/app_bar_productm">
     android:text="@string/app_name"
     android:textAllCaps="true"
     android:textColor="@color/blacBeer" />
+    </LinearLayout>
 
 </LinearLayout>
 

@@ -391,9 +391,17 @@ public class headThree extends AppCompatActivity
                                 final LinearLayout main = (LinearLayout)child.findViewById(R.id.main);
                                 Integer cantStars=address.getInt("estrellas_sucursal") ;
                                 Integer cantt = Math.round(cantStars*2);
+                                Integer flag=address.getInt("flag_nombre");
+                                branch.setText(address.getString(""));
+                                if(flag.equals(1)){
+                                    name.setText(address.getString("nombre_sucursal"));
+                                }
+                                else{
+                                    name.setText(address.getString("nombre"));
+
+                                }
 
                                 stars(cantt,one1, two1, three1, four1, five1);
-                                name.setText(address.getString("nombre"));
                                 one1.setImageDrawable(getResources().getDrawable(R.drawable.estrellaverdevacia));
                                 two1.setImageDrawable(getResources().getDrawable(R.drawable.estrellaverdevacia));
                                 three1.setImageDrawable(getResources().getDrawable(R.drawable.estrellaverdevacia));
@@ -916,10 +924,17 @@ public class headThree extends AppCompatActivity
                                 final LinearLayout main = (LinearLayout)child.findViewById(R.id.main);
                                 Integer cantStars=address.getInt("estrellas_sucursal") ;
                                 Integer cantt = Math.round(cantStars*2);
+                                Integer flag=address.getInt("flag_nombre");
+                                if(flag.equals(1)){
+                                    name.setText(address.getString("nombre_sucursal"));
+                                    branch.setText(address.getString("nombre"));
+                                }
+                                else{
+                                    name.setText(address.getString("nombre"));
+                                    branch.setText(address.getString("nombre_sucursal"));
+                                }
 
                                 stars(cantt,one1, two1, three1, four1, five1);
-                                name.setText(address.getString("nombre"));
-                                branch.setText(address.getString("nombre_sucursal"));
                                 addressbranch.setText(address.getString("direccion_mapa"));
                                 price.setText("Pedido mínimo $" + address.getString("csto_domicilio"));
 

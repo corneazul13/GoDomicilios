@@ -1,10 +1,13 @@
 package godomicilios.mdcc.godomiciliosc;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.ActionBar;
@@ -16,24 +19,41 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
+import com.tt.whorlviewlibrary.WhorlView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import cn.refactor.lib.colordialog.ColorDialog;
+import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.StablishmentCar;
 import godomicilios.mdcc.godomiciliosc.settings.addition;
 import godomicilios.mdcc.godomiciliosc.settings.additionCar;
 import godomicilios.mdcc.godomiciliosc.settings.allChecks;
 import godomicilios.mdcc.godomiciliosc.settings.check;
+import godomicilios.mdcc.godomiciliosc.settings.drink;
 import godomicilios.mdcc.godomiciliosc.settings.drinkCar;
 import godomicilios.mdcc.godomiciliosc.settings.ingredients;
 import godomicilios.mdcc.godomiciliosc.settings.ingredientsCar;
@@ -55,11 +75,11 @@ public class productm extends AppCompatActivity {
     Integer priceFirst= settings.subtotal.getPrice(), moreInt=0,z=0, multi, countFinal=0;
     public float init_x;
     EditText text;
-    Integer ingredientSize=settings.ingredients.ingredientses.size(), additionSize = settings.addition.additions.size(), drinkSize = settings.drink.drinks.size();
+    Integer ingredientSize, additionSize , drinkSize;
     ArrayList<EditText>ed2 = new ArrayList<>();
-    me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink2 = new me.omidh.liquidradiobutton.LiquidRadioButton[drinkSize];
-    android.support.v7.widget.AppCompatCheckBox[] checkAddition2 = new android.support.v7.widget.AppCompatCheckBox[additionSize];
-    me.omidh.liquidradiobutton.LiquidRadioButton[] checks2 = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
+    me.omidh.liquidradiobutton.LiquidRadioButton[] checksDrink2 ;
+    android.support.v7.widget.AppCompatCheckBox[] checkAddition2;
+    me.omidh.liquidradiobutton.LiquidRadioButton[] checks2 ;
     Integer ingreConfirm = 1, additiConfirm=1, drinkConfirm=1;
     ArrayList<ingredients> countIngreNormal, countIngreOptio, countIngreObli;
     ArrayList<check> otherIngre=new ArrayList<>();
@@ -71,6 +91,9 @@ public class productm extends AppCompatActivity {
     ArrayList<productCar> productCars = new ArrayList<>();
     productCar actualProduct;
     int rN;
+    ArrayList<ingredients> temporal ;
+    LinearLayout showCom;
+    WhorlView progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +102,13 @@ public class productm extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         sethomeToolbar(toolbar);
         context = this;
+        progress = (WhorlView) this.findViewById(R.id.progressBar2);
+        progress.start();
+        Integer click = settings.product.clickId;
+        query(settings.product.products.get(click).drinkType,
+                settings.product.products.get(click).id,
+                settings.product.products.get(click).drinkEdit);
+        showCom = (LinearLayout) findViewById(R.id.showCom);
         showDrin= (LinearLayout) findViewById(R.id.showDrin);
         showIngredient = (LinearLayout) findViewById(R.id.showIngredient);
         showAddition = (LinearLayout) findViewById(R.id.showAddition);
@@ -108,13 +138,13 @@ public class productm extends AppCompatActivity {
         productName.setText(settings.subtotal.getName());
         description.setText(settings.subtotal.getDescription());
         priceProduct.setText("$" +settings.subtotal.getPrice());
-        test = settings.optionalIngredients.optionalIngredientses.size();
+
         showadditions = (LinearLayout) findViewById(R.id.showAdditions);
         showDrink = (LinearLayout) findViewById(R.id.showDrink);
-        showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
-        showObservations = (LinearLayout) findViewById(R.id.showObservation);
+
         less.setEnabled(false);
         settings.allChecks.allCheckses = new ArrayList<>();
+
         rN= new Integer(0);
 
         if(settings.shoppingCar.carFinal==null){
@@ -124,12 +154,14 @@ public class productm extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Integer tempTotal = settings.productCar.productCars.get(daa).getTotal();
                 settings.productCar.productCars.set(daa,new productCar(
                                 settings.productCar.productCars.get(daa).getIdProduct(),
                                 settings.productCar.productCars.get(daa).getName(),
                                 settings.productCar.productCars.get(daa).getPrice(),
                                 settings.productCar.productCars.get(daa).getPicture(),
-                                text.getText().toString(),0,
+                                text.getText().toString(),tempTotal
+                                ,
                                 settings.productCar.productCars.get(daa).getAdditionCars(),
                                 settings.productCar.productCars.get(daa).getIngredientsCars(),
                                 settings.productCar.productCars.get(daa).getDrinkCar()
@@ -144,8 +176,9 @@ public class productm extends AppCompatActivity {
 
                         if (firstOption==secondOption
                                 ){
+                            Integer sd=0 ;
                             for (int i = 0;i<productCars.size();i++){
-                                Integer sd = settings.productCar.getProductCars().size();
+                                sd = sd+productCars.get(i).getTotal();
 
                                 settings.shoppingCar.carFinal.get(bb).productCars.add(
                                         new productCar(
@@ -153,7 +186,8 @@ public class productm extends AppCompatActivity {
                                                 productCars.get(i).getName(),
                                                 productCars.get(i).getPrice(),
                                                 productCars.get(i).getPicture(),
-                                                productCars.get(i).getObser(),0,
+                                                productCars.get(i).getObser(),
+                                                productCars.get(i).getTotal(),
                                                 productCars.get(i).getAdditionCars(),
                                                 productCars.get(i).getIngredientsCars(),
                                                 productCars.get(i).getDrinkCar()
@@ -162,11 +196,13 @@ public class productm extends AppCompatActivity {
 
                                 break;
                             }
-
-
                         }
 
                         else{
+                            Integer subtotalN=0;
+                            for (int j =0;j<settings.productCar.productCars.size();j++){
+                                subtotalN = settings.productCar.productCars.get(j).getTotal();
+                            }
                             if(bb==settings.shoppingCar.carFinal.size()-1){
                                 settings.shoppingCar.carFinal.add(
                                         new StablishmentCar(
@@ -179,16 +215,18 @@ public class productm extends AppCompatActivity {
                                                 settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getDurattion(),
                                                 settings.stablishment.stablishments.get(settings.stablishment.getNumber()).price,
                                                 settings.stablishment.stablishments.get(settings.stablishment.getNumber()).minimum,
-                                                Integer.parseInt(subtotal.getText().toString()),0,
+                                                Integer.parseInt(subtotal.getText().toString()),subtotalN,
                                                 productCars
                                         ));
                                 break;
                             }
-
-
                         }
                     }}
                 else {
+                    Integer subtotalN =0;
+                    for (int j =0;j<settings.productCar.productCars.size();j++){
+                        subtotalN = settings.productCar.productCars.get(j).getTotal();
+                    }
                     settings.shoppingCar.carFinal.add(
                             new StablishmentCar(
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getId_Company(),
@@ -200,7 +238,7 @@ public class productm extends AppCompatActivity {
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).getDurattion(),
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).price,
                                     settings.stablishment.stablishments.get(settings.stablishment.getNumber()).minimum,
-                                    0,0,
+                                    subtotalN,0,
                                     productCars
                             ));
                 }
@@ -364,27 +402,30 @@ public class productm extends AppCompatActivity {
                 next(showAddition,showObservatio);
                 for(int h =0; h<settings.productCar.productCars.size();h++){
                     ArrayList<additionCar> realAddition = new ArrayList<additionCar>();
-                    Integer intAdditions = settings.productCar.productCars.get(h).getAdditionCars().size();
+                    Integer intAdditions = settings.addition.additions.size();
+                    Integer totalPrice = settings.productCar.productCars.get(h).getPrice();
                     for(int j=0;j<intAdditions;j++){
-                        Boolean boole = settings.allChecks.allCheckses.get(h).getCheckAddition()[j].isChecked();
-                        if (boole==true){
+                        Integer priceAdd = settings.addition.additions.get(j).getPrice();
+                        Integer cantAdd = settings.addition.additions.get(j).getCantss();
+                        Integer idAdd = settings.addition.additions.get(j).getId();
+                        String nameAdd = settings.addition.additions.get(j).getName();
+                        if (cantAdd>0){
+                            Integer totalAdditionsP = cantAdd*priceAdd;
+                            totalPrice = totalPrice+totalAdditionsP;
                             realAddition.add(new additionCar(
-                                            settings.productCar.productCars.get(h).getAdditionCars().get(j).id,
-                                            settings.productCar.productCars.get(h).getAdditionCars().get(j).cant,
-                                            settings.productCar.productCars.get(h).getAdditionCars().get(j).name,
-                                            settings.productCar.productCars.get(h).getAdditionCars().get(j).price
+                                            idAdd, cantAdd, nameAdd, priceAdd
                                     )
                             );
                         }
                     }
+
                     settings.productCar.productCars.set(h, new productCar(
                             settings.productCar.productCars.get(h).getIdProduct(),
                             settings.productCar.productCars.get(h).getName(),
                             settings.productCar.productCars.get(h).getPrice(),
                             settings.productCar.productCars.get(h).getPicture(),
                             settings.productCar.productCars.get(h).getObser(),
-                            settings.productCar.productCars.get(h).getTotal(),
-                            realAddition,
+                            totalPrice, realAddition,
                             settings.productCar.productCars.get(h).getIngredientsCars(),
                             settings.productCar.productCars.get(h).getDrinkCar()
                     ));
@@ -394,8 +435,7 @@ public class productm extends AppCompatActivity {
                             settings.productCar.productCars.get(h).getPrice(),
                             settings.productCar.productCars.get(h).getPicture(),
                             settings.productCar.productCars.get(h).getObser(),
-                            settings.productCar.productCars.get(h).getTotal(),
-                            realAddition,
+                            totalPrice, realAddition,
                             settings.productCar.productCars.get(h).getIngredientsCars(),
                             settings.productCar.productCars.get(h).getDrinkCar()
                     ));
@@ -477,15 +517,7 @@ public class productm extends AppCompatActivity {
                 settings.subtotal.getPicture(),
                 "",0, ad, ic, settings.drinkCar
         ));
-        confirmeFirstImage(settings.stablishment.getId());
-        daa=settings.productCar.productCars.size()-1;
-        putDrink();
-        putIngredients();
-        showAdditions();
-        showExists();
 
-
-        move();
         //clicksDetails();
 
         imageViewAddition.setOnClickListener(new View.OnClickListener() {
@@ -597,7 +629,7 @@ public class productm extends AppCompatActivity {
         productName = (TextView) findViewById(R.id.productName);
         more = (ImageView) findViewById(R.id.more);
         less = (ImageView) findViewById(R.id.less);
-        li = (LinearLayout) findViewById(R.id.li);
+        recicler = (LinearLayout) findViewById(R.id.recicler);
         priceMinimum =(TextView) findViewById(R.id.priceMinimum);
         ones= (ImageView) findViewById(R.id.one);
         twos= (ImageView) findViewById(R.id.two);
@@ -876,7 +908,7 @@ public class productm extends AppCompatActivity {
                     //deleteView();
                 }
                *//* for(int i=0; i<removeCount;i++){
-                    li.removeView(childs[0]);
+                    recicler.removeView(childs[0]);
                 }
 
 
@@ -911,7 +943,7 @@ public class productm extends AppCompatActivity {
                 {
 
                     childs[i] = View.inflate(productm.this, R.layout.components, null);
-                    li.addView(childs[i]);
+                    recicler.addView(childs[i]);
 
                 }
 
@@ -937,7 +969,7 @@ public class productm extends AppCompatActivity {
         //Product
 
         *//*for(int i =0; i<settings.subtotal.subtotals.size();i++){
-            li.addView(child);
+            recicler.addView(child);
         }*//*
 
 
@@ -970,7 +1002,7 @@ public class productm extends AppCompatActivity {
                 click.setBackgroundColor(Color.WHITE);
 
             }
-            li.addView(child);
+            recicler.addView(child);
 
         }*//*
 
@@ -2664,11 +2696,11 @@ public class productm extends AppCompatActivity {
 
 
         ColorDialog dialog = new ColorDialog(context);
-        dialog.setTitle("Alerta!");
+        dialog.setTitle("Deseas volver sin completar el pedido?");
         dialog.setTitleTextColor(ContextCompat.getColor(context, R.color.black));
         dialog.setColor(ContextCompat.getColor(context, R.color.white));
         dialog.setContentImage(ContextCompat.getDrawable(context, R.drawable.alert));
-        dialog.setContentText("Deseas volver sin completar el pedido?");
+        dialog.setContentText("");
         dialog.setPositiveListener(getString(R.string.back), new ColorDialog.OnPositiveListener() {
             @Override
             public void onClick(ColorDialog dialog) {
@@ -2950,5 +2982,471 @@ public class productm extends AppCompatActivity {
                 }
             }
     }
+
+    public void query (Integer complement, Integer productId, Integer edi){
+        settings.addition.additions= new ArrayList<>();
+        settings.ingredients.ingredientses= new ArrayList<>();
+
+        //drinks
+
+        final ProgressDialog dialog = ProgressDialog.show(productm.this, "",
+                "Loading. Please wait...", true);
+
+        if(settings.stablishment.getId()==1){
+
+            try {
+                firstDrink("https://godomicilios.co/webService/servicios.php?svice=BEBIDAS&metodo=json&tipo_bebida="+ complement, complement, edi , productId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            dialog.dismiss();
+
+        }
+        else{
+            //Cerrar loadding
+            test = settings.optionalIngredients.optionalIngredientses.size();
+            showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
+            showObservations = (LinearLayout) findViewById(R.id.showObservation);
+            ingredientSize=settings.ingredients.ingredientses.size();
+            additionSize = settings.addition.additions.size();
+            drinkSize = settings.drink.drinks.size();
+            checksDrink2 = new me.omidh.liquidradiobutton.LiquidRadioButton[drinkSize];
+            checkAddition2 = new android.support.v7.widget.AppCompatCheckBox[additionSize];
+            checks2 = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
+            confirmeFirstImage(settings.stablishment.getId());
+            daa=settings.productCar.productCars.size()-1;
+            putDrink();
+            putIngredients();
+            showAdditions();
+            showExists();
+
+
+            move();
+            progress.setVisibility(View.GONE);
+            showCom.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void firstDrink (final String url, final Integer drinkE, final Integer edi, final Integer productId) throws Exception{
+
+        if (drinkE!=0) {
+
+
+            final RequestQueue queue = Volley.newRequestQueue(this, new HurlStack(
+                    null, CustomSSLSocketFactory.getSSLSocketFactory(productm.this)));
+
+            JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
+                    new Response.Listener<JSONArray>() {
+                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                        @Override
+                        public void onResponse(final JSONArray response) {
+                            try {
+
+                                if (response.length() > 0) {
+                                    for (int i = 0; i < response.length(); i++) {
+                                        settings.drink.drinks = new ArrayList<>();
+
+                                        final JSONObject drink = response.getJSONObject(i);
+
+                                        settings.drink.drinks.add(new drink(drink.getInt("id_bebida"),
+                                                drink.getInt("valor"),
+                                                drink.getInt("empresa_id"),
+                                                drink.getString("nombre_bebida"),
+                                                drink.getString("imagen"),
+                                                drink.getString("tamano")));
+
+
+                                        if (edi > 0) {
+                                            secondDrink("https://godomicilios.co/webService/servicios.php?" +
+                                                    "svice=BEBIDAS_X_PRECIO&metodo=json&valor_bebida=" +
+                                                    drink.getString("valor") + "&empId=" +
+                                                    drink.getString("empresa_id"), productId);
+
+                                        } else {
+                                            try {
+                                                settings.ingredients.ingredientses= new ArrayList<>();
+                                                ingredients("https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId="+ productId, productId);
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+
+
+                                        }
+                                    }
+                                } else {
+                                    try {
+                                        settings.ingredients.ingredientses= new ArrayList<>();
+                                        ingredients("https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId="+ productId, productId);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (Exception e) {
+
+
+                                String mensajee = "No hay productos disponibles";
+
+                                Toast toast1 =
+                                        Toast.makeText(getApplicationContext(),
+                                                mensajee, Toast.LENGTH_SHORT);
+
+                                toast1.show();
+
+
+                            }
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    try {
+                        firstDrink("https://godomicilios.co/webService/servicios.php?svice=BEBIDAS&metodo=json&tipo_bebida="+ drinkE, drinkE, edi , productId);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            );
+            jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            queue.add(jsonArrayRequest);
+        }
+        else {
+            try {
+                settings.ingredients.ingredientses= new ArrayList<>();
+                ingredients("https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId="+ productId, productId);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+    public void secondDrink (final String url, final Integer productId) throws Exception{
+
+
+        final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
+                null, CustomSSLSocketFactory.getSSLSocketFactory(productm.this)));
+
+        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    @Override
+                    public void onResponse(final JSONArray response) {
+                        try{
+
+                            settings.drink.drinks= new ArrayList<>();
+
+                            settings.elementsToProducts.elementsToProductses = new ArrayList<>();
+
+                            for(int i =0;i<response.length();i++){
+                                final JSONObject drink = response.getJSONObject(i);
+
+                                settings.drink.drinks.add( new drink(drink.getInt("id_bebida"),
+                                        drink.getInt("valor"),
+                                        drink.getInt("empresa_id"),
+                                        drink.getString("nombre_bebida"),
+                                        drink.getString("imagen"),
+                                        drink.getString("tamano")));
+                            }
+                            try {
+                                settings.ingredients.ingredientses= new ArrayList<>();
+                                ingredients("https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId="+ productId, productId);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        catch (Exception e){
+
+                            String mensajee ="No hay productos disponibles";
+
+                            Toast toast1 =
+                                    Toast.makeText(getApplicationContext(),
+                                            mensajee, Toast.LENGTH_SHORT);
+                            toast1.show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                try {
+                    secondDrink(url, productId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        );
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonArrayRequest);
+
+
+    }
+    public void ingredients (final String url, final  Integer productId) throws Exception{
+
+
+        final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
+                null, CustomSSLSocketFactory.getSSLSocketFactory(productm.this)));
+
+        JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(JsonObjectRequest.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    @Override
+                    public void onResponse(final JSONObject response) {
+                        try{
+
+                            if(response.length()>0){
+                                settings.ingredients.ingredientses= new ArrayList<>();
+                                JSONArray obligatory = response.getJSONArray("OBLIGATORIO");
+                                for (int o=0;o<obligatory.length();o++){
+                                    final JSONObject obligator = obligatory.getJSONObject(o);
+                                    settings.ingredients.ingredientses.add(new ingredients(
+                                            obligator.getInt("id"),obligator.getString("nombre"),obligator.getString("tipo_txt"),1,obligator.getInt("ingrediente_id"),0,"none"
+                                    ));
+                                }
+
+                                JSONArray normal = response.getJSONArray("NORMAL");
+
+                                for (int n=0;n<normal.length();n++){
+                                    final JSONObject norma = normal.getJSONObject(n);
+                                    settings.ingredients.ingredientses.add(new ingredients(
+                                            norma.getInt("id"),norma.getString("nombre"),norma.getString("tipo_txt"),2,norma.getInt("ingrediente_id"),0,"none"
+                                    ));
+                                }
+                                if(!response.isNull("OPCIONAL")){
+                                    JSONObject optional = response.getJSONObject("OPCIONAL");
+                                    Iterator<String> iterator;
+                                    optional.keys();
+                                    ArrayList<JSONObject> objectArray=new ArrayList<>();
+                                    int i = 0;
+                                    for (iterator= optional.keys(); iterator.hasNext(); i++) {
+                                        String s = iterator.next();
+                                        JSONObject j =optional.getJSONObject(s);
+                                        JSONArray array = j.getJSONArray("opciones");
+                                        Integer maxi = j.getInt("cantidad_max");
+                                        for(int cou =0;cou<array.length();cou++){
+                                            final JSONObject opti = array.getJSONObject(cou);
+                                            settings.ingredients.ingredientses.add(new ingredients(
+                                                    opti.getInt("id"), opti.getString("nombre"), opti.getString("tipo_txt"),3, opti.getInt("ingrediente_id"),maxi,s
+                                            ));
+                                        }
+                                        objectArray.add(j);
+                                    }
+
+                                    Integer drink=settings.ingredients.ingredientses.size();
+                                }
+                                else {
+                                    if(settings.ingredients.ingredientses==null){
+                                        settings.ingredients.ingredientses= new ArrayList<>();
+                                    }
+
+                                }
+                                organizeCategor();
+                                try {
+                                    settings.addition.additions= new ArrayList<>();
+                                    aditions("https://godomicilios.co/webService/servicios.php?svice=ADICIONES&metodo=json&proId="+ productId, productId);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        }
+
+                        catch (Exception e){
+
+
+                            String mensajee ="Error vuelve a intentarlo";
+                            Toast toast1 =
+                                    Toast.makeText(getApplicationContext(),
+                                            mensajee, Toast.LENGTH_SHORT);
+                            toast1.show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                try {
+                    settings.ingredients.ingredientses= new ArrayList<>();
+                    ingredients("https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId="+ productId, productId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        );
+        jsonObjectRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonObjectRequest);
+
+
+    }
+    public void aditions (final String url, final Integer productId) throws Exception{
+
+        final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
+                null, CustomSSLSocketFactory.getSSLSocketFactory(productm.this)));
+
+        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    @Override
+                    public void onResponse(final JSONArray response) {
+                        try{
+
+
+                            if(response.length()<1){
+                                settings.addition.additions= new ArrayList<>();
+                            }
+
+                            else{
+                                settings.addition.additions= new ArrayList<>();
+                                for(int i =0;i<response.length();i++){
+                                    final JSONObject addition = response.getJSONObject(i);
+
+                                    settings.addition.additions.add( new addition(
+                                            addition.getInt("id"),
+                                            addition.getString("nombre_adicion"),
+                                            addition.getInt("valor"),
+                                            addition.getString("imagen_adicion"),0
+                                    ));
+
+                                }
+                            }
+                            //cerrar dialog
+
+                            confirmCant();
+
+                            test = settings.optionalIngredients.optionalIngredientses.size();
+                            showIngredients = (LinearLayout) findViewById(R.id.showIngredients);
+                            showObservations = (LinearLayout) findViewById(R.id.showObservation);
+                            ingredientSize=settings.ingredients.ingredientses.size();
+                            additionSize = settings.addition.additions.size();
+                            drinkSize = settings.drink.drinks.size();
+                            checksDrink2 = new me.omidh.liquidradiobutton.LiquidRadioButton[drinkSize];
+                            checkAddition2 = new android.support.v7.widget.AppCompatCheckBox[additionSize];
+                            checks2 = new me.omidh.liquidradiobutton.LiquidRadioButton[ingredientSize];
+                            confirmeFirstImage(settings.stablishment.getId());
+                            daa=settings.productCar.productCars.size()-1;
+                            putDrink();
+                            putIngredients();
+                            showAdditions();
+                            showExists();
+
+
+                            move();
+                            progress.setVisibility(View.GONE);
+                            showCom.setVisibility(View.VISIBLE);
+
+                        }
+
+                        catch (Exception e){
+
+                            String mensajee ="No hay productos disponibles";
+                            Toast toast1 =
+                                    Toast.makeText(getApplicationContext(),
+                                            mensajee, Toast.LENGTH_SHORT);
+                            toast1.show();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    settings.addition.additions= new ArrayList<>();
+                    aditions("https://godomicilios.co/webService/servicios.php?svice=ADICIONES&metodo=json&proId="+ productId, productId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+        );
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonArrayRequest);
+
+
+    }
+    public void confirmCant (){
+        if(settings.ingredients.ingredientses==null){
+            settings.ingredients.ingredientses= new ArrayList<>();
+        }
+        if (settings.addition.additions==null){
+            settings.addition.additions= new ArrayList<>();
+        }
+        if(settings.drink.drinks==null){
+            settings.drink.drinks= new ArrayList<>();
+        }
+
+}
+    public void organizeCategor(){
+        ArrayList<ingredients> ingr= new ArrayList<>();
+        ArrayList<String> names = new ArrayList<>();
+        ArrayList<check> liquidRadioButtons = new ArrayList<>();
+        temporal = new ArrayList<>();
+
+        settings.optionalIngredients.optionalIngredientses = new ArrayList<>();
+        for (int i =0;i<settings.ingredients.ingredientses.size();i++){
+
+            Integer id = settings.ingredients.ingredientses.get(i).id;
+            String category = settings.ingredients.ingredientses.get(i).categor;
+            Integer cant = settings.ingredients.ingredientses.get(i).max;
+            if(!category.equals("none")&&names.size()==0){
+                names.add(category);
+                settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(id,category,cant,0,liquidRadioButtons, ingr));
+            }
+
+            if(names.size()>0){
+                if(!names.get(names.size()-1).equals(category)&&!category.equals("none")){
+                    names.add(category);
+                    settings.optionalIngredients.optionalIngredientses.add(new optionalIngredients(id,category,cant,0,liquidRadioButtons, ingr));
+                }
+            }
+
+
+        }
+        minim();
+
+
+
+    }
+    public void organizeIngredients(){
+        ArrayList<ingredients> finalIngre=new ArrayList<>();
+        ArrayList<check> liquidRadioButtons= new ArrayList<>();
+        for (int j =0; j<settings.optionalIngredients.optionalIngredientses.size();j++){
+            Integer id = settings.optionalIngredients.optionalIngredientses.get(j).id;
+            String name = settings.optionalIngredients.optionalIngredientses.get(j).name;
+            Integer cant = settings.optionalIngredients.optionalIngredientses.get(j).cant;
+            ArrayList<ingredients> temp = new ArrayList<>();
+            for (int i =0;i<temporal.size();i++){
+                String nameTwo=temporal.get(i).categor;
+                if(name.equals(nameTwo)){
+                    ingredients ingredien= new ingredients(temporal.get(i).id, temporal.get(i).name, temporal.get(i).status, temporal.get(i).type,temporal.get(i).ingId,temporal.get(i).max,temporal.get(i).categor);
+                    temp.add(ingredien);
+                }
+            }
+            settings.optionalIngredients.optionalIngredientses.set(j,new optionalIngredients(id,name,cant,0,liquidRadioButtons,temp));
+
+
+        }
+    }
+    public void minim (){
+
+        for (int i =0;i<settings.ingredients.ingredientses.size();i++){
+            ArrayList<ingredients>te=settings.ingredients.ingredientses;
+            ingredients ingredien= new ingredients(te.get(i).id, te.get(i).name, te.get(i).status, te.get(i).type,te.get(i).ingId,te.get(i).max,te.get(i).categor);
+            if(settings.ingredients.ingredientses.get(i).categor!="none"){
+
+                temporal.add(ingredien);
+            }
+        }
+        organizeIngredients();
+    }
+    public void showComponents(){}
 }
 

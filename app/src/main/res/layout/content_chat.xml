@@ -77,18 +77,12 @@
             android:layout_height="match_parent"
             android:layout_weight="0.3"
             android:orientation="vertical">
-
-            <ScrollView
+            <com.github.bassaer.chatmessageview.views.MessageView
+                android:id="@+id/recicler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp">
+                tools:listitem="@layout/chat_out"
+                android:layout_height="match_parent"/>
 
-                <LinearLayout
-                    android:id="@+id/li"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </ScrollView>
         </LinearLayout>
 
 

@@ -1,18 +1,16 @@
 package godomicilios.mdcc.godomiciliosc;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,31 +23,32 @@ import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.Picasso;
+import com.squareup.otto.Subscribe;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import godomicilios.mdcc.godomiciliosc.R;
+import godomicilios.mdcc.godomiciliosc.adapter.chatAdapter;
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
+import godomicilios.mdcc.godomiciliosc.settings.StationBuss;
 import godomicilios.mdcc.godomiciliosc.settings.chats;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
-import godomicilios.mdcc.godomiciliosc.settings.stablishment;
+import godomicilios.mdcc.godomiciliosc.settings.updateChat;
+
 
 public class chat extends AppCompatActivity {
 
-    LinearLayout li;
+    RecyclerView recicler;
     ImageView send;
     EditText searchedTxt;
     private static final String ALLOWED_URI_CHARS = "@#&=*+-_.,:!?()/~'%";
     String temporal="";
-    Integer chatid =17, total =0;
+    Integer chatid =49, total =0;
     final Handler handler = new Handler();
     String urlChat= "https://godomicilios.co/webService/servicios.php?svice=ENVIAR_MSJ&metodo=json&datos=";
-    String urlNew= "https://godomicilios.co/webService/servicios.php?svice=CONVERSACION&metodo=json&datos=";
+    String urlNew= "https://godomicilios.co/webService/servicios.php?svice=CONVERSACION&metodo=json&chat_id=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +56,19 @@ public class chat extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        li = (LinearLayout) findViewById(R.id.li);
+        recicler = (RecyclerView) findViewById(R.id.recicler);
         send = (ImageView) findViewById(R.id.send);
         searchedTxt = (EditText) findViewById(R.id.searchedTxt);
         settings.chats.chatses = new ArrayList<>();
+
+        try {
+            newMess(urlNew+chatid);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
 
  /*       try {
             iniChat();
@@ -68,7 +76,7 @@ public class chat extends AppCompatActivity {
             e.printStackTrace();
         }*/
 
-        handler.postDelayed(new Runnable() {
+        /*handler.postDelayed(new Runnable() {
             public void run() {
                     try {
                         newMess(urlNew+chatid);
@@ -77,23 +85,22 @@ public class chat extends AppCompatActivity {
                     }
                 handler.postDelayed(this, 5000);
             }
-        }, 5000);
+        }, 5000);*/
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!searchedTxt.getText().toString().replace(" ","").equals("")){
+                String text =searchedTxt.getText().toString().trim();
+
+                if (!text.isEmpty()){
                     temporal = searchedTxt.getText().toString();
                     settings.chats.chatses.add(new chats(searchedTxt.getText().toString(),
                             "CLIENTE"));
+                    updateView(settings.chats.chatses);
 
-                    View child = View.inflate(chat.this, R.layout.chat_out, null);
-                    TextView text = (TextView) child.findViewById(R.id.text);
-                    text.setText(temporal);
-                    li.addView(child);
                     String urlEncoded = Uri.encode(temporal, ALLOWED_URI_CHARS);
                     searchedTxt.setText("");
-          /*          JSONObject jsonObject = new JSONObject();
+                   JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("chatId", chatid);
                         jsonObject.put("usrId", 102);
@@ -109,11 +116,35 @@ public class chat extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-*/
+
+
                 }
             }
         });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        StationBuss.getBus().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        StationBuss.getBus().unregister(this);
+    }
+
+    @Subscribe
+    public void updateView (updateChat update){
+        boolean confirm = update.isConfirm();
+        int onClass = update.getOnClass();
+        if(confirm){
+            if(onClass==1){
+                updateView(settings.chats.chatses);
+            }
+        }
     }
 
     public void iniChat () throws Exception{
@@ -163,15 +194,9 @@ public class chat extends AppCompatActivity {
     }
 
     public void sendM (final String url) throws Exception{
-        final LinearLayout linear = (LinearLayout) findViewById(R.id.li);
-        linear.removeAllViews();
-
-        settings.stablishment.stablishments=null;
 
         final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
                 null, CustomSSLSocketFactory.getSSLSocketFactory(chat.this)));
-        final ProgressDialog dialog = ProgressDialog.show(chat.this, "",
-                "Loading. Please wait...", true);
 
         JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(JsonObjectRequest.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -180,12 +205,16 @@ public class chat extends AppCompatActivity {
                     public void onResponse(final JSONObject response) {
                         try{
 
-                            dialog.dismiss();
+                            Integer h =response.getInt("insert");
+
+                            if(h.equals(1)){
+
+                            }
+                            StationBuss.getBus().post(new updateChat(true,1));
 
                         }
                         catch (Exception e){
                         }
-                        dialog.dismiss();
 
                     }
                 }, new Response.ErrorListener() {
@@ -197,7 +226,6 @@ public class chat extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                dialog.dismiss();
             }
         }
         );
@@ -205,7 +233,7 @@ public class chat extends AppCompatActivity {
     }
     public void newMess (String url) throws Exception{
         final LinearLayout linear = (LinearLayout) findViewById(R.id.li);
-        linear.removeAllViews();
+        //linear.removeAllViews();
 
         settings.stablishment.stablishments=null;
 
@@ -221,42 +249,19 @@ public class chat extends AppCompatActivity {
                         try{
                             Integer count=response.length();
                             ArrayList<chats> server = new ArrayList<>();
-                            for (int i = 0;i<count;i++){
+                            for (int i = 0;i<count;i++) {
                                 final JSONObject chat = (JSONObject) response.getJSONObject(i);
                                 settings.chats.chatses.add(new chats(
-                                   chat.getString("mensaje"),
+                                        chat.getString("mensaje"),
                                         chat.getString("quien_envia")
                                 ));
-                                Integer newTotal=0;
-
-                                for (chats countServer:server){
-                                    Integer validator=0;
-                                    for(chats old:settings.chats.chatses){
-                                        String idServer=countServer.getMessage();
-                                        String idOld=countServer.getMessage();
-                                        if(idOld.equals(idServer)){
-                                            validator=1;
-                                            break;
-                                        }
-                                    }
-                                    if(validator==0){
-
-                                        settings.chats.chatses.add(countServer);
-                                        newTotal=1;
-                                    }
-                                    if(newTotal==1){
-                                        Integer cou = settings.chats.chatses.size();
-                                        View childs = View.inflate(chat.this, R.layout.chat_in, null);
-                                        TextView text = (TextView) childs.findViewById(R.id.text);
-                                        text.setText(settings.chats.chatses.get(cou-1).getMessage());
-                                        li.addView(childs);
-                                    }
-                                }
                             }
+                            updateView(settings.chats.chatses);
                         }
                         catch (Exception e){
+                            String error = e.getMessage();
                         }
-                        String errors = "";
+
 
                     }
                 }, new Response.ErrorListener() {
@@ -267,6 +272,20 @@ public class chat extends AppCompatActivity {
         }
         );
         queue.add(jsonArrayRequest);
+
+
+
     }
+
+    public void updateView (ArrayList<chats>  chats){
+        if(!chats.isEmpty()){
+            chatAdapter adapter = new chatAdapter(chat.this,chats);
+            recicler.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+            recicler.setAdapter(adapter);
+            recicler.getItemAnimator().setAddDuration(300);
+            recicler.scrollToPosition(adapter.getItemCount()-1);
+        }
+    }
+
 
 }

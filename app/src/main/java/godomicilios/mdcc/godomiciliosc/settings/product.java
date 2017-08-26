@@ -25,6 +25,7 @@ public class product {
     private Integer confirm;
     public Integer drinkType;
     public Integer drinkEdit;
+    public Integer clickId;
     public ArrayList<product> products;
 
     public product(Integer id, Integer idCompany, Integer idRank, String name,

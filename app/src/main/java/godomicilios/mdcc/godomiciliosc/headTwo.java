@@ -369,8 +369,16 @@ public class headTwo  extends AppCompatActivity
                                 Integer cantt = Math.round(cantStars*2);
 
                                 stars(cantt,one, two, three, four, five);
+                                Integer flag=address.getInt("flag_nombre");
+                                branch.setText(address.getString(""));
+                                if(flag.equals(1)){
+                                    name.setText(address.getString("nombre_sucursal"));
+                                }
+                                else{
+                                    name.setText(address.getString("nombre"));
 
-                                name.setText(address.getString("nombre"));
+                                }
+
                                 one.setImageDrawable(getResources().getDrawable(R.drawable.estrellanegravacia));
                                 two.setImageDrawable(getResources().getDrawable(R.drawable.estrellanegravacia));
                                 three.setImageDrawable(getResources().getDrawable(R.drawable.estrellanegravacia));
@@ -379,7 +387,6 @@ public class headTwo  extends AppCompatActivity
                                 name.setTextColor(getResources().getColor(R.color.blacBeer));
                                 d.setBackgroundColor(getResources().getColor(R.color.blacBeer));
 
-                                branch.setText(address.getString("nombre_sucursal"));
                                 addressbranch.setText(address.getString("direccion_mapa"));
                                 price.setText("Pedido mínimo $" + address.getString("csto_domicilio"));
 
