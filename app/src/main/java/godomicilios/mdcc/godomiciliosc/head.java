@@ -431,15 +431,17 @@ public class head extends AppCompatActivity
                                 branch.setText("");
                                 if(flag.equals(1)){
                                     name.setText(address.getString("nombre_sucursal"));
+                                    branch.setVisibility(View.GONE);
                                 }
                                 else{
                                     name.setText(address.getString("nombre"));
+                                    branch.setText(address.getString("nombre_sucursal"));
                                 }
 
                                 stars(cantt,one1, two1, three1, four1, five1);
 
-                                addressbranch.setText(address.getString("direccion_mapa"));
-                                price.setText("Pedido mínimo $" + address.getString("csto_domicilio"));
+                                addressbranch.setText("Pedido mínimo $" + address.getString("pedido_minimo"));
+                                price.setText("Costo Domicilio $" + address.getString("csto_domicilio"));
 
                                 main.setId(i);
 

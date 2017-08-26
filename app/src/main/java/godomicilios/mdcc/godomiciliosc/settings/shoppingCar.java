@@ -9,6 +9,9 @@ import java.util.ArrayList;
 public class shoppingCar {
 
     public ArrayList<StablishmentCar> carFinal;
+    public String picture;
+    public String name;
+    public Integer idStablish;
 
     public ArrayList<StablishmentCar> getCarFinal() {
         return carFinal;

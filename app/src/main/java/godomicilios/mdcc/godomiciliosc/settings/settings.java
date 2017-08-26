@@ -45,6 +45,7 @@ public class settings {
     public static optionalIngredients optionalIngredients = new optionalIngredients();
     public static check check= new check();
     public static subGlobalChecks subGlobalChecks = new subGlobalChecks();
+    public static arrayChat arrayChat = new arrayChat();
 
     public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
