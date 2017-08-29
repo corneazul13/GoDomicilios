@@ -65,8 +65,6 @@ public class chat extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         recicler = (RecyclerView) findViewById(R.id.recicler);
         send = (ImageView) findViewById(R.id.send);
         searchedTxt = (EditText) findViewById(R.id.searchedTxt);
@@ -85,8 +83,9 @@ public class chat extends AppCompatActivity {
                 }
             }
             if(f.equals(0)){
+                String urlFi= "https://godomicilios.co/webService/servicios.php?svice=INICIAR_CHAT&metodo=json&usrId="+settings.user.getId().toString()+"&sucId="+settings.shoppingCar.idStablish.toString();
                 try {
-                    iniChat("https://godomicilios.co/webService/servicios.php?svice=INICIAR_CHAT&metodo=json&usrId="+settings.user.getId()+"&sucId="+settings.shoppingCar.idStablish, settings.shoppingCar.idStablish );
+                    iniChat(urlFi, settings.shoppingCar.idStablish );
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -98,7 +97,7 @@ public class chat extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String example = settings.shoppingCar.picture ;
+        String example = "http://godomicilios.co/admin/documentosVarios/" + settings.shoppingCar.picture ;
 
         Picasso.with(chat.this)
 
@@ -196,9 +195,6 @@ public class chat extends AppCompatActivity {
     }
 
     public void iniChat (final String url, final Integer hh) throws Exception{
-        final LinearLayout linear = (LinearLayout) findViewById(R.id.li);
-        linear.removeAllViews();
-
 
         settings.stablishment.stablishments=null;
 

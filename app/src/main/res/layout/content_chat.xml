@@ -45,7 +45,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="0.25"
+                android:layout_weight="0.35"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -72,8 +72,10 @@
                     <TextView
                         android:id="@+id/nameStablish"
                         android:layout_width="match_parent"
+                        android:gravity="center_vertical"
                         android:layout_height="match_parent"
-                        android:textColor="@color/black"/>
+                        android:textColor="@color/black"
+                        android:text="hola"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
@@ -83,6 +85,7 @@
                 android:layout_width="match_parent"
                 tools:listitem="@layout/chat_out"
                 android:layout_weight="0.3"
+                android:background="@color/white"
                 android:layout_height="match_parent"/>
 
 

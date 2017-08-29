@@ -52,6 +52,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
+import com.tt.whorlviewlibrary.WhorlView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -93,14 +94,22 @@ public class head extends AppCompatActivity
     public static final String Status = "status";
     SharedPreferences sharedpreferences;
     CoordinatorLayout coordinator;
+    WhorlView progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        try {
+            categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
+                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1",1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_head);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context=this;
+        progressBar = (WhorlView) findViewById(R.id.progressBar2);
         layout = (LinearLayout)findViewById(R.id.li);
         vf = (ViewFlipper) findViewById(R.id.viewFlipper);
         LinearLayout beer = (LinearLayout) findViewById(R.id.beer);
@@ -117,10 +126,9 @@ public class head extends AppCompatActivity
         numberCar.setText(settings.user.getCarCant());
         settings.stablishment.setId(1);
         //DataBaseHelper MDB = new DataBaseHelper(getApplicationContext());
-        addItemsOnSpinner2();
-        addListenerOnButton();
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
+        progressBar.start();
 
 
         user.analytics = GoogleAnalytics.getInstance(this);
@@ -368,7 +376,7 @@ public class head extends AppCompatActivity
         return true;
     }
     public void httpC (String url) throws Exception{
-        LinearLayout linear = (LinearLayout) findViewById(R.id.li);
+        final LinearLayout linear = (LinearLayout) findViewById(R.id.li);
         linear.removeAllViews();
 
         settings.stablishment.stablishments=null;
@@ -378,8 +386,6 @@ public class head extends AppCompatActivity
                 null, CustomSSLSocketFactory.getSSLSocketFactory(head.this)));
 
 
-        final ProgressDialog dialog = ProgressDialog.show(head.this, "",
-                "Loading. Please wait...", true);
         JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -387,7 +393,10 @@ public class head extends AppCompatActivity
                     public void onResponse(JSONArray response) {
                         try{
 
+
                             settings.stablishment.stablishments= new ArrayList<>();
+                            linear.removeAllViews();
+                            progressBar.setVisibility(View.GONE);
 
                             for(int i =0;i<response.length();i++) {
 
@@ -456,31 +465,34 @@ public class head extends AppCompatActivity
                                 buttons.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
-                                        try {
-                                            settings.rank.setIdStablishment(address.getInt("empresa_id"));
-                                            settings.stablishment.setNumber(main.getId());
-                                            if (settings.product.getStablishSelection() == null) {
+                                        if (buttons.getText().equals("ABIERTO")){
+                                            try {
+                                                settings.rank.setIdStablishment(address.getInt("empresa_id"));
+                                                settings.stablishment.setNumber(main.getId());
+                                                if (settings.product.getStablishSelection() == null) {
 
-                                                settings.product.setStablishSelection(main.getId());
-                                                settings.product.setConfirm(0);
-
-                                            } else {
-                                                if (settings.product.getStablishSelection() == main.getId()) {
-                                                    settings.product.setConfirm(1);
-                                                } else {
                                                     settings.product.setStablishSelection(main.getId());
                                                     settings.product.setConfirm(0);
-                                                }
-                                            }
 
-                                            try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
-                                            } catch (Exception e) {
+                                                } else {
+                                                    if (settings.product.getStablishSelection() == main.getId()) {
+                                                        settings.product.setConfirm(1);
+                                                    } else {
+                                                        settings.product.setStablishSelection(main.getId());
+                                                        settings.product.setConfirm(0);
+                                                    }
+                                                }
+
+                                                try {
+                                                    httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+
+                                            } catch(JSONException e){
                                                 e.printStackTrace();
                                             }
 
-                                        } catch(JSONException e){
-                                            e.printStackTrace();
                                         }
 
                                     }
@@ -489,14 +501,7 @@ public class head extends AppCompatActivity
                             main.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    String mensajee ="Un momento\n" +
-                                            "Redirigiendo...";
 
-                                    Toast toast1 =
-                                            Toast.makeText(getApplicationContext(),
-                                                    mensajee, Toast.LENGTH_SHORT);
-
-                                    toast1.show();
                                     coordinator.setEnabled(false);
                                     settings.product.products=null;
                                     settings.product.products= new ArrayList<>();
@@ -567,7 +572,6 @@ public class head extends AppCompatActivity
                                     child.setBackgroundColor(Color.WHITE);
                                 }
                             }
-                            dialog.dismiss();
                         }
                         catch (Exception e){
 
@@ -578,7 +582,6 @@ public class head extends AppCompatActivity
                                             mensajee, Toast.LENGTH_SHORT);
 
                             toast1.show();
-                            dialog.dismiss();
 
 
                         }
@@ -593,7 +596,6 @@ public class head extends AppCompatActivity
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                dialog.dismiss();
 
             }
         }
@@ -672,129 +674,11 @@ public class head extends AppCompatActivity
     }
 
     public void httpRank (final String url, final Integer id) throws Exception{
+        settings.user.setUrlTemp(url);
+        settings.user.setClickId(id);
 
-
-        final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
-                null, CustomSSLSocketFactory.getSSLSocketFactory(head.this)));
-
-        final ProgressDialog dialog = ProgressDialog.show(head.this, "",
-                "Loading. Please wait...", true);
-        settings.user.setProgressDialog(dialog);
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    @Override
-                    public void onResponse(final JSONArray response) {
-                        try{
-
-                            settings.rank.ranks = new ArrayList<>();
-
-//                            in = new ArrayList<>();
-
-                            for(int i =0;i<response.length();i++) {
-
-                                View childaa = View.inflate(head.this, R.layout.rank, null);
-                                LinearLayout clickaa = (LinearLayout) childaa.findViewById(R.id.click);
-                                TextView nameaa = (TextView) childaa.findViewById(R.id.name);
-                                LinearLayout visibilityaa = (LinearLayout) childaa.findViewById(R.id.lii);
-
-                                final JSONObject ranks = response.getJSONObject(i);
-
-                                settings.rank.ranks.add(new rank(ranks.getInt("id_categoria"),
-                                        ranks.getInt("empresa_id"),
-                                        ranks.getString("nombre_categoria"),
-                                        ranks.getInt("estado"),0)
-                                        );
-                            }
-                            settings.product.products = new ArrayList<>();
-                            final JsonArrayRequest jsonArrayRequests= new JsonArrayRequest(JsonArrayRequest.Method.GET, "https://godomicilios.co/webService/servicios.php?svice=PRODUCTOS&metodo=json&sucId="
-                                    +settings.stablishment.stablishments.get(id).idBranch+"&empId="+settings.stablishment.stablishments.get(id).getId_Company(), null,
-                                    new Response.Listener<JSONArray>() {
-                                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-                                        @Override
-                                        public void onResponse(JSONArray response) {
-                                                try{
-                                                for(int i = 0; i<response.length(); i++) {
-
-                                                    final JSONObject product = response.getJSONObject(i);
-
-                                                        settings.product.products.add(new product(
-                                                                product.getInt("id_producto"),
-                                                                product.getInt("empre"),
-                                                                product.getInt("categoria_id"),
-                                                                product.getString("nombre_producto"),
-                                                                product.getString("descripcion_producto"),
-                                                                product.getInt("valor_producto"),
-                                                                pictureValidator(product.getString("foto_producto")),
-                                                                0,0,
-                                                                0, 0,
-                                                                product.getInt("tipo_bebida"),
-                                                                product.getInt("bebida_modificable")
-                                                               ));
-                                                    }
-
-                                                    Intent go = new Intent(head.this, stablishm.class);
-                                                    startActivity(go);
-
-                                            }
-                                            catch (Exception e){
-                                                dialog.dismiss();
-
-                                                String mensajee ="No hay productos disponibles";
-
-                                                Toast toast1 =
-                                                        Toast.makeText(getApplicationContext(),
-                                                                mensajee, Toast.LENGTH_SHORT);
-
-                                                toast1.show();
-                                            }
-
-                                        }
-                                    }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-
-                                    String mensaje = "Oops algo salió mal, intentalo nuevamente";
-                                    Toast toast1 =
-                                            Toast.makeText(getApplicationContext(),
-                                                    mensaje, Toast.LENGTH_SHORT);
-
-                                    toast1.show();
-                                }
-                            }
-                            );
-                            jsonArrayRequests.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                            queue.add(jsonArrayRequests);
-
-                        }
-                        catch (Exception e){
-
-                            String mensajee ="Oops algo salió mal, intentalo nuevamente";
-
-                            Toast toast1 =
-                                    Toast.makeText(getApplicationContext(),
-                                            mensajee, Toast.LENGTH_SHORT);
-
-                            toast1.show();
-
-
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                String err = error.getMessage();
-                try {
-                    httpRank(url, id);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        );
-        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(jsonArrayRequest);
+       Intent go = new Intent (head.this, stablishm.class);
+        startActivity(go);
     }
 
     public String pictureValidator (String url){
@@ -861,55 +745,6 @@ public class head extends AppCompatActivity
         }
     }
 
-    public void categor (final String url, final Integer nu, final Class clas) throws Exception{
-
-        final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
-                null, CustomSSLSocketFactory.getSSLSocketFactory(head.this)));
-
-        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    @Override
-                    public void onResponse(final JSONArray response) {
-                        try{
-                            settings.categories = new ArrayList<>();
-                            settings.categories.add("CATEGORIA");
-                            if(response.length()<1){
-
-                            }
-                            else{
-                                for(int i = 0; i<response.length(); i++) {
-
-                                    final JSONObject product = response.getJSONObject(i);
-
-                                    settings.categories.add(product.getString("nombre_categoria"));
-                                }
-                            }
-
-                            Intent go = new Intent(head.this, clas);
-                            startActivity(go);
-                            head.this.finish();
-                        }
-                        catch (Exception ignored){
-                        }
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                try {
-                    categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa="+ nu.toString()
-                            , nu, clas);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        );
-        queue.add(jsonArrayRequest);
-    }
-
     public void addItemsOnSpinner2() {
 
         catego = (Spinner) findViewById(R.id.catego);
@@ -974,6 +809,8 @@ public class head extends AppCompatActivity
                     public void onResponse(final JSONArray response) {
                         try{
                             settings.stablishment.stablishments= new ArrayList<>();
+                            linear.removeAllViews();
+                            progressBar.setVisibility(View.GONE);
 
                             for(int i =0;i<response.length();i++) {
 
@@ -1183,6 +1020,58 @@ public class head extends AppCompatActivity
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public void categor (final String url, final Integer nu) throws Exception{
+
+        final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
+                null, CustomSSLSocketFactory.getSSLSocketFactory(head.this)));
+
+        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    @Override
+                    public void onResponse(final JSONArray response) {
+                        try{
+                            settings.categories = new ArrayList<String>();
+                            settings.categories.add("CATEGORIA");
+                            if(response.length()<1){
+
+                            }
+                            else{
+                                for(int i = 0; i<response.length(); i++) {
+
+
+                                    final JSONObject product = (JSONObject) response.getJSONObject(i);
+
+                                    settings.categories.add(new String(
+                                            product.getString("nombre_categoria")
+                                    ));
+                                }
+                            }
+                            addItemsOnSpinner2();
+                            addListenerOnButton();
+                            httpC("https://godomicilios.co/webService/servicios.php?svice=EMPRESAS&metodo=json&lat="
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1");
+                        }
+                        catch (Exception e){
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa="+ nu.toString()
+                            , nu);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        );
+        queue.add(jsonArrayRequest);
     }
     }
 

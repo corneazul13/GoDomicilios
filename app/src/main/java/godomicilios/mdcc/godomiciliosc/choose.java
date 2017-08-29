@@ -278,12 +278,14 @@ public class choose extends AppCompatActivity {
                     case 1:
                         ima.setImageDrawable(getResources().getDrawable(R.drawable.arestaurantexdos));
                         settings.stablishment.setId(1);
-                        try {
+                        Intent go = new Intent(choose.this, head.class);
+                        startActivity(go);
+                        /*try {
                             categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
                                     +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1",1, head.class);
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
 
                         break;
                     case 2:

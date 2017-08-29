@@ -7,8 +7,8 @@ android {
         applicationId 'godomicilios.mdcc.godomiciliosc'
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 38
-        versionName '1.0.13'
+        versionCode 39
+        versionName '1.0.14'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

@@ -15,6 +15,7 @@ import java.util.Date;
 public class user {
 
     private Integer id;
+    private String idToken;
     private String name;
     private String surname;
     private String email;
@@ -29,6 +30,8 @@ public class user {
     public static GoogleAnalytics analytics;
     private ProgressDialog progressDialog;
     private String carCant;
+    private String urlTemp;
+    private Integer clickId;
 
     public static Tracker tracker;
 
@@ -168,6 +171,30 @@ public class user {
 
     public void setProgressDialog(ProgressDialog progressDialog) {
         this.progressDialog = progressDialog;
+    }
+
+    public String getIdToken() {
+        return idToken;
+    }
+
+    public void setIdToken(String idToken) {
+        this.idToken = idToken;
+    }
+
+    public String getUrlTemp() {
+        return urlTemp;
+    }
+
+    public void setUrlTemp(String urlTemp) {
+        this.urlTemp = urlTemp;
+    }
+
+    public Integer getClickId() {
+        return clickId;
+    }
+
+    public void setClickId(Integer clickId) {
+        this.clickId = clickId;
     }
 }
 

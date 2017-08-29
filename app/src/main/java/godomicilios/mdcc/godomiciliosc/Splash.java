@@ -21,6 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +38,7 @@ import godomicilios.mdcc.godomiciliosc.settings.spinner;
  * Created by PROGRAMACION5 first 08/03/2017.
  */
 
+
 public class Splash extends AppCompatActivity {
     public static final String MyPREFERENCES= "myPreferences";
     public static final String User = "user";
@@ -46,8 +48,10 @@ public class Splash extends AppCompatActivity {
     public static final String QUALIFY = "qualify";
     public static final String IDUSER= "iduser";
     public static final String REFERID ="referid";
+    public static final String IDTOKEN = "idtoken";
     SharedPreferences sharedpreferences;
     private static final long SPLASH_SCREEN_DELAY = 7000;
+    String idToken;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,7 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.splash_screen);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        idToken = FirebaseInstanceId.getInstance().getToken();
 
         YoYo.with(Techniques.Shake)
                 .duration(500)
@@ -135,6 +140,7 @@ public class Splash extends AppCompatActivity {
                                 String j = sharedpreferences.getString(Password, "");
                                 String k = sharedpreferences.getString(VALIDATOR, "");
                                 String l = sharedpreferences.getString(QUALIFY, "");
+
                                 if (k.equals("trues")){
                                     Intent go = new Intent(Splash.this, status.class);
                                     go.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -154,6 +160,10 @@ public class Splash extends AppCompatActivity {
                                 }
 
                             }
+                            settings.user.setIdToken(idToken);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString(IDTOKEN,idToken);
+                            editor.commit();
 
                         }
                         catch (Exception e){

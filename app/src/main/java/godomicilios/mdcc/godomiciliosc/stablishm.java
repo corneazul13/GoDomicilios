@@ -41,6 +41,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
+import com.tt.whorlviewlibrary.WhorlView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -77,6 +78,7 @@ public class stablishm extends AppCompatActivity
     View include;
     DecimalFormat formatea = new DecimalFormat("###.###");
     ArrayList<ingredients> temporal ;
+    WhorlView progress;
 
 
     @Override
@@ -86,6 +88,8 @@ public class stablishm extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context = this;
+        progress = (WhorlView) findViewById(R.id.progressBar);
+        progress.start();
         image = (ImageView) findViewById(R.id.image);
         name = (TextView) findViewById(R.id.name);
         price = (TextView) findViewById(R.id.price);
@@ -99,7 +103,6 @@ public class stablishm extends AppCompatActivity
         ones= (ImageView) findViewById(R.id.ones);
         twos= (ImageView) findViewById(R.id.twos);
         threes= (ImageView) findViewById(R.id.threess);
-        settings.user.getProgressDialog().dismiss();
         fours= (ImageView) findViewById(R.id.fours);
         fives= (ImageView) findViewById(R.id.fives);
         priceMinimum = (TextView) findViewById(R.id.priceMinimum);
@@ -113,6 +116,11 @@ public class stablishm extends AppCompatActivity
         user.tracker.enableAdvertisingIdCollection(true);
         user.tracker.enableAutoActivityTracking(true);
         include = findViewById(R.id.include);
+        try {
+            httpRank(settings.user.getUrlTemp(),settings.user.getClickId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         settings.ingredients.ingredientses = null;
         settings.addition.additions = null;
@@ -184,7 +192,6 @@ public class stablishm extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-            putView();
         //dialog.dismiss();
 
         if(!settings.user.getaBoolean()){
@@ -318,6 +325,8 @@ public class stablishm extends AppCompatActivity
     }
     public void putView (){
         in = new ArrayList<>();
+        progress.setVisibility(View.GONE);
+        lic.removeAllViews();
 
         for(int k = 0; k< settings.rank.ranks.size(); k++){
 
@@ -916,6 +925,122 @@ public class stablishm extends AppCompatActivity
         Intent intent = new Intent(this, Splash.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+    }
+    public void httpRank (final String url, final Integer id) throws Exception{
+
+        final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
+                null, CustomSSLSocketFactory.getSSLSocketFactory(stablishm.this)));
+
+        JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    @Override
+                    public void onResponse(final JSONArray response) {
+                        try{
+
+                            settings.rank.ranks = new ArrayList<>();
+
+//                            in = new ArrayList<>();
+
+                            for(int i =0;i<response.length();i++) {
+
+                                final JSONObject ranks = response.getJSONObject(i);
+
+                                settings.rank.ranks.add(new rank(ranks.getInt("id_categoria"),
+                                        ranks.getInt("empresa_id"),
+                                        ranks.getString("nombre_categoria"),
+                                        ranks.getInt("estado"),0)
+                                );
+                            }
+                            settings.product.products = new ArrayList<>();
+                            final JsonArrayRequest jsonArrayRequests= new JsonArrayRequest(JsonArrayRequest.Method.GET, "https://godomicilios.co/webService/servicios.php?svice=PRODUCTOS&metodo=json&sucId="
+                                    +settings.stablishment.stablishments.get(id).idBranch+"&empId="+settings.stablishment.stablishments.get(id).getId_Company(), null,
+                                    new Response.Listener<JSONArray>() {
+                                        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+                                        @Override
+                                        public void onResponse(JSONArray response) {
+                                            try{
+                                                for(int i = 0; i<response.length(); i++) {
+
+                                                    final JSONObject product = response.getJSONObject(i);
+
+                                                    settings.product.products.add(new product(
+                                                            product.getInt("id_producto"),
+                                                            product.getInt("empre"),
+                                                            product.getInt("categoria_id"),
+                                                            product.getString("nombre_producto"),
+                                                            product.getString("descripcion_producto"),
+                                                            product.getInt("valor_producto"),
+                                                            pictureValidator(product.getString("foto_producto")),
+                                                            0,0,
+                                                            0, 0,
+                                                            product.getInt("tipo_bebida"),
+                                                            product.getInt("bebida_modificable")
+                                                    ));
+                                                }
+
+                                                    putView();
+
+                                            }
+                                            catch (Exception e){
+
+                                                String mensajee ="No hay productos disponibles";
+
+                                                Toast toast1 =
+                                                        Toast.makeText(getApplicationContext(),
+                                                                mensajee, Toast.LENGTH_SHORT);
+
+                                                toast1.show();
+                                            }
+
+                                        }
+                                    }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    String mensaje = "Oops algo salió mal, intentalo nuevamente";
+                                    Toast toast1 =
+                                            Toast.makeText(getApplicationContext(),
+                                                    mensaje, Toast.LENGTH_SHORT);
+
+                                    toast1.show();
+                                }
+                            }
+                            );
+                            jsonArrayRequests.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                            queue.add(jsonArrayRequests);
+
+
+
+                        }
+                        catch (Exception e){
+
+                            String mensajee ="Oops algo salió mal, intentalo nuevamente";
+
+                            Toast toast1 =
+                                    Toast.makeText(getApplicationContext(),
+                                            mensajee, Toast.LENGTH_SHORT);
+
+                            toast1.show();
+
+
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                String err = error.getMessage();
+                try {
+                    httpRank(url, id);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        );
+        jsonArrayRequest.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonArrayRequest);
     }
 
 

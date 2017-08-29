@@ -16,6 +16,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent"
         tools:showIn="@layout/activity_test">
         <android.support.design.widget.AppBarLayout
@@ -234,12 +235,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.38"
+                android:background="@color/white"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:background="@color/redLast"
                     android:layout_weight="0.99"
                     android:orientation="horizontal">
                     <Button
@@ -297,6 +298,23 @@
                         android:textSize="10sp"
                         android:textStyle="bold" />
                 </LinearLayout>
+                <com.tt.whorlviewlibrary.WhorlView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/progressBar2"
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_margin="30dp"
+                    android:layout_gravity="center"
+                    app:whorlview_circle_colors="#F14336_#ffffff_#5677fc_#F44336_#4CAF50"
+                    app:whorlview_circle_speed="270"
+                    app:whorlview_parallax="fast"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="178dp"
+                    app:whorlview_strokeWidth="6"
+                    app:whorlview_sweepAngle="90">
+                </com.tt.whorlviewlibrary.WhorlView>
+
                 <ScrollView
                     android:id="@+id/scroll"
                     android:layout_width="match_parent"
@@ -305,9 +323,13 @@
                     android:orientation="horizontal">
                     <LinearLayout
                         android:id="@+id/li"
+                        android:background="@color/white"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"/>
+                        android:orientation="vertical">
+
+
+                    </LinearLayout>
                 </ScrollView>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>

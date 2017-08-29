@@ -96,7 +96,7 @@ public class status extends AppCompatActivity {
 
 
 
-        if (sharedpreferences.getAll().size() > 0 && sharedpreferences.getString(VALIDATOR, "").equals("true")) {
+        if (sharedpreferences.getAll().size() > 0 && sharedpreferences.getString(VALIDATOR, "").equals("trues")) {
             String chats =sharedpreferences.getString(CHATS, "");
 
 
@@ -108,11 +108,8 @@ public class status extends AppCompatActivity {
                 for (int g = 0; g < num; g++) {
                     showAll(g, getPictures(pictures));
                 }
-
                 setChatId(getChats(chats));
             }
-
-
 
 
         } else {
@@ -310,6 +307,7 @@ public class status extends AppCompatActivity {
             public void onClick(View v) {
                 settings.shoppingCar.picture=settings.shoppingCar.carFinal.get(goChat.getId()).getImg();
                 settings.shoppingCar.name = settings.shoppingCar.carFinal.get(goChat.getId()).getName();
+                settings.shoppingCar.idStablish = settings.stablishment.stablishments.get(settings.stablishment.getNumber()).idBranch;
                 Intent go = new Intent(status.this, chat.class);
                 startActivity(go);
             }
