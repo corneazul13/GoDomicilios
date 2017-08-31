@@ -5,6 +5,6 @@
         android:id="@+id/car"
         android:orderInCategory="1"
         android:title="Shopping Car"
-        android:icon="@drawable/shoppingcart24"
+        android:icon="@drawable/carritorxtres"
         app:showAsAction="ifRoom" />
 </menu>

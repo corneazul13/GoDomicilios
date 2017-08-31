@@ -1,16 +1,27 @@
 package godomicilios.mdcc.godomiciliosc;
 
+import android.graphics.Color;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -21,6 +32,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.BallPulseFooter;
+import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 import org.joda.time.DateTime;
@@ -33,18 +50,27 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Random;
 
+import godomicilios.mdcc.godomiciliosc.adapter.SmartViewHolder;
+import godomicilios.mdcc.godomiciliosc.adapter.baseAdapter;
 import godomicilios.mdcc.godomiciliosc.settings.CustomSSLSocketFactory;
 import godomicilios.mdcc.godomiciliosc.settings.ingredients;
 import godomicilios.mdcc.godomiciliosc.settings.optionalIngredients;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 import me.omidh.liquidradiobutton.LiquidRadioButton;
 
+import static android.R.layout.simple_list_item_2;
+import static android.widget.GridLayout.VERTICAL;
 
-public class testTwo extends AppCompatActivity
+
+public class testTwo extends AppCompatActivity implements WaveSwipeRefreshLayout.OnRefreshListener
         {
             SeekBar seekBar;
             public float init_x;
@@ -58,11 +84,66 @@ public class testTwo extends AppCompatActivity
             long hourH;
             long minM;
             long segS;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.drink);
+            private ListView mListview;
 
+            private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
+
+            @Override
+            protected void onCreate(Bundle savedInstanceState) {
+                requestWindowFeature(Window.FEATURE_NO_TITLE);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                super.onCreate(savedInstanceState);
+
+                setContentView(R.layout.activity_test_two);
+                initView();
+            }
+
+            private void initView() {
+                mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) findViewById(R.id.main_swipe);
+                mWaveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
+                mWaveSwipeRefreshLayout.setOnRefreshListener(this);
+                mWaveSwipeRefreshLayout.setWaveColor(Color.argb(100,255,0,0));
+
+                //mWaveSwipeRefreshLayout.setMaxDropHeight(1500);
+
+    /*TypedValue tv = new TypedValue();
+    int actionBarHeight = 0;
+    if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+    {
+      actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+    }
+    mWaveSwipeRefreshLayout.setTopOffsetOfWave(actionBarHeight);*/
+
+
+
+            }
+
+
+            private void refresh(){
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // 更新が終了したらインジケータ非表示
+                        mWaveSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 3000);
+            }
+
+            @Override
+            protected void onResume() {
+                //mWaveSwipeRefreshLayout.setRefreshing(true);
+                refresh();
+                super.onResume();
+            }
+
+            @Override
+            public void onRefresh() {
+                refresh();
+            }
+        }
+
+
+/*
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
         Date fechaI = null, fechaF = null;
         Calendar now = Calendar.getInstance();
@@ -94,7 +175,7 @@ public class testTwo extends AppCompatActivity
 
 
 
-        /*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        *//*SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         Calendar calendar = Calendar.getInstance();
         DateTime jodaTime = new DateTime();
         Date fechaI = null;
@@ -107,16 +188,16 @@ public class testTwo extends AppCompatActivity
             e.printStackTrace();
         }
 
-      *//*  DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
-        String h = "jodaTime = " + formatter.print(jodaTime);*//*
+      *//**//*  DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyyMMddHHmmss");
+        String h = "jodaTime = " + formatter.print(jodaTime);*//**//*
 
         System.out.println("Milli "+getTimeInMilliSeconds("Thu Aug 22 18:05:12 CDT 2017"));
 
 
-*/
+*//*
 
 
-        /*String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        *//*String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
 
         String month= String.valueOf(calendar.get(Calendar.MONTH));
 
@@ -131,7 +212,7 @@ public class testTwo extends AppCompatActivity
         String hourComplete =day+"-"+month+"-"+year+"/"+hour+":"+minute+":"+second;
         String hourCompleteTwo = format1;
         String hourCompleteThree = format2;
-        String hourCompleteFour = format3;*/
+        String hourCompleteFour = format3;*//*
 
         final LiquidRadioButton appCompatCheckBox = (LiquidRadioButton) findViewById(R.id.appCompatCheckBox);
 
@@ -148,7 +229,7 @@ public class testTwo extends AppCompatActivity
                 }
             }
         });
-       /* vf=(ViewFlipper) findViewById(R.id.viewFlipper);
+       *//* vf=(ViewFlipper) findViewById(R.id.viewFlipper);
         vf.setOnTouchListener(new testTwo.ListenerTouchViewFlipper());
         DiscreteSeekBar discreteSeekBar1 = (DiscreteSeekBar) findViewById(R.id.seekBar);
         discreteSeekBar1.setNumericTransformer(new DiscreteSeekBar.NumericTransformer() {
@@ -173,9 +254,9 @@ public class testTwo extends AppCompatActivity
             e.printStackTrace();
         }*/
 
-    }
 
-            private class ListenerTouchViewFlipper implements View.OnTouchListener{
+
+ /*           private class ListenerTouchViewFlipper implements View.OnTouchListener{
 
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -254,7 +335,7 @@ public class testTwo extends AppCompatActivity
                 outtoRight.setDuration(100);
                 outtoRight.setInterpolator(new AccelerateInterpolator());
                 return outtoRight;
-            }
+            }*/
 
             /*public void ingredients () throws Exception{
                 String url="https://godomicilios.co/webService/servicios.php?svice=INGREDIENTES&metodo=json&proId=1";
@@ -316,7 +397,8 @@ public class testTwo extends AppCompatActivity
                 queue.add(jsonObjectRequest);
 
 
-            }*/
+            }
+
             public long getTimeInMilliSeconds(String deadline){
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
                 long back_timer = 0;
@@ -369,4 +451,4 @@ public class testTwo extends AppCompatActivity
 
 
             }
-}
+}*/

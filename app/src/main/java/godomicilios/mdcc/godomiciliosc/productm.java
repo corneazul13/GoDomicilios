@@ -154,6 +154,10 @@ public class productm extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (settings.subtotal.getFinalPrice()==0){
+                    settings.subtotal.setFinalPrice(settings.subtotal.getPrice());
+                }
+                settings.subtotal.setFinalPrice(settings.subtotal.getPrice());
                 Integer tempTotal = settings.productCar.productCars.get(daa).getTotal();
                 settings.productCar.productCars.set(daa,new productCar(
                                 settings.productCar.productCars.get(daa).getIdProduct(),
@@ -2710,7 +2714,6 @@ public class productm extends AppCompatActivity {
                 } else {
                     dialog.onBackPressed();
                 }*/
-                dialog.dismiss();
                 finish();
             }
         }).setNegativeListener(getString(R.string.cancel), new ColorDialog.OnNegativeListener() {
@@ -2719,6 +2722,7 @@ public class productm extends AppCompatActivity {
                 dialog.dismiss();
             }
         }).show();
+        settings.drink.drinks = new ArrayList<>();
     }
 
     public void prevous(LinearLayout gone, LinearLayout visible){

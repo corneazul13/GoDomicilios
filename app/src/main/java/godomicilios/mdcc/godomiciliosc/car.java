@@ -1,5 +1,6 @@
 package godomicilios.mdcc.godomiciliosc;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
@@ -204,8 +205,11 @@ public class car extends AppCompatActivity
 
                                 try {
                                     String drink="";
-
+                                    if (settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getDrinkCar().getId()!=null){
                                         drink = settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getDrinkCar().getId().toString();
+                                    }
+
+
 
                                     jsonObject.put("id_producto",
                                             settings.shoppingCar.carFinal.get(p).getProductCars().get(o).getIdProduct());
@@ -334,7 +338,11 @@ public class car extends AppCompatActivity
             });
             Integer subReal=0;
             for (int gg=0;gg<settings.shoppingCar.carFinal.get(i).getProductCars().size();gg++){
+
                 subReal=subReal+settings.shoppingCar.carFinal.get(i).getProductCars().get(gg).getTotal();
+                if (subReal ==0) {
+                subReal = settings.subtotal.getPrice();
+                }
             }
 
             String h = settings.shoppingCar.carFinal.get(i).getPrice().replace("$ ","");
@@ -753,6 +761,8 @@ public class car extends AppCompatActivity
 
         final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
                 null, CustomSSLSocketFactory.getSSLSocketFactory(car.this)));
+        final ProgressDialog dialog = ProgressDialog.show(car.this, "",
+                "Loading. Please wait...", true);
 
         JsonObjectRequest jsonObjectRequest= new JsonObjectRequest(JsonObjectRequest.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -781,12 +791,14 @@ public class car extends AppCompatActivity
                                 Intent go = new Intent(car.this, status.class);
                                 startActivity(go);
                                 settings.couponActivate.setStatus(0);
+                            dialog.dismiss();
 
                         }
 
                         catch (Exception e){
 
                             String i = e.getMessage();
+                            dialog.dismiss();
                         }
 
                     }
@@ -802,6 +814,7 @@ public class car extends AppCompatActivity
                     } catch (Exception es) {
                         es.printStackTrace();
                     }
+                    dialog.dismiss();
                 }
             }
         }

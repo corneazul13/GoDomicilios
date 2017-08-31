@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.CoordinatorLayout;
@@ -35,7 +36,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -73,12 +73,13 @@ import godomicilios.mdcc.godomiciliosc.settings.rank;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 import godomicilios.mdcc.godomiciliosc.settings.stablishment;
 import godomicilios.mdcc.godomiciliosc.settings.user;
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
 public class head extends AppCompatActivity
 
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, WaveSwipeRefreshLayout.OnRefreshListener {
 
-   private Context context;
+    private Context context;
     private LinearLayout layout;
     private ScrollView scrollView;
     public float init_x;
@@ -95,6 +96,7 @@ public class head extends AppCompatActivity
     SharedPreferences sharedpreferences;
     CoordinatorLayout coordinator;
     WhorlView progressBar;
+    private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +131,7 @@ public class head extends AppCompatActivity
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         coordinator = (CoordinatorLayout) findViewById(R.id.coordinator);
         progressBar.start();
+        initView();
 
 
         user.analytics = GoogleAnalytics.getInstance(this);
@@ -236,6 +239,7 @@ public class head extends AppCompatActivity
 
                 Intent go = new Intent(head.this, headFive.class);
                 startActivity(go);
+
             }
         });
 
@@ -249,17 +253,6 @@ public class head extends AppCompatActivity
             }
         });
 
-//        vf.setOnTouchListener(new head.ListenerTouchViewFlipper());
-
-
-       /* try {
-            httpC("https://godomicilios.co/webService/servicios.php?svice=EMPRESAS&metodo=json&lat="
-                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar,  R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -270,8 +263,59 @@ public class head extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         if(!settings.user.getaBoolean()){
             navigationView.getMenu().clear();
-            navigationView.inflateMenu(R.menu.activity_stablishm_drawer);
+            navigationView.inflateMenu(R.menu.activity_head_drawer);
         }
+        initView();
+    }
+
+    private void initView() {
+        mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) findViewById(R.id.main_swipe);
+        mWaveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE,Color.WHITE);
+        mWaveSwipeRefreshLayout.setOnRefreshListener(this);
+        mWaveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context,R.color.redGo));
+
+        //mWaveSwipeRefreshLayout.setMaxDropHeight(1500);
+
+    /*TypedValue tv = new TypedValue();
+    int actionBarHeight = 0;
+    if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+    {
+      actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+    }
+    mWaveSwipeRefreshLayout.setTopOffsetOfWave(actionBarHeight);*/
+
+
+
+    }
+
+    private void refresh(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.start();
+                try {
+                    httpC("https://godomicilios.co/webService/servicios.php?svice=EMPRESAS&metodo=json&lat="
+                            +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mWaveSwipeRefreshLayout.setRefreshing(false);
+
+            }
+        }, 3000);
+    }
+
+    @Override
+    protected void onResume() {
+        //mWaveSwipeRefreshLayout.setRefreshing(true);
+        //refresh();
+        numberCar.setText(settings.user.getCarCant());
+        super.onResume();
+    }
+
+    @Override
+    public void onRefresh() {
+        refresh();
     }
 
     @Override
@@ -285,8 +329,8 @@ public class head extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
 
-            getMenuInflater().inflate(R.menu.head, menu);
-            return true;
+        getMenuInflater().inflate(R.menu.head, menu);
+        return true;
 
     }
     @Override
@@ -294,27 +338,26 @@ public class head extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.car:
 
-                    if(settings.shoppingCar.carFinal.size()>0){
-                        Intent go = new Intent(head.this, car.class);
-                        startActivity(go);
-                    }
-                    else{
-                        String mensajee ="Lo sentimos!\n" +
-                                "Aun no has agregado productos a la canasta";
+                if(settings.shoppingCar.carFinal.size()>0){
+                    Intent go = new Intent(head.this, car.class);
+                    startActivity(go);
+                }
+                else{
+                    String mensajee ="Lo sentimos!\n" +
+                            "Aun no has agregado productos a la canasta";
 
-                        Toast toast1 =
-                                Toast.makeText(getApplicationContext(),
-                                        mensajee, Toast.LENGTH_SHORT);
+                    Toast toast1 =
+                            Toast.makeText(getApplicationContext(),
+                                    mensajee, Toast.LENGTH_SHORT);
 
-                        toast1.show();
-                    }
+                    toast1.show();
+                }
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -380,8 +423,6 @@ public class head extends AppCompatActivity
         linear.removeAllViews();
 
         settings.stablishment.stablishments=null;
-
-
         final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
                 null, CustomSSLSocketFactory.getSSLSocketFactory(head.this)));
 
@@ -392,7 +433,6 @@ public class head extends AppCompatActivity
                     @Override
                     public void onResponse(JSONArray response) {
                         try{
-
 
                             settings.stablishment.stablishments= new ArrayList<>();
                             linear.removeAllViews();
@@ -498,29 +538,29 @@ public class head extends AppCompatActivity
                                     }
                                 });
 
-                            main.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+                                main.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
 
-                                    coordinator.setEnabled(false);
-                                    settings.product.products=null;
-                                    settings.product.products= new ArrayList<>();
-                                    try {
-                                        settings.rank.setIdStablishment(address.getInt("empresa_id"));
-                                        settings.stablishment.setNumber(main.getId());
-                                        if (settings.product.getStablishSelection() == null) {
+                                        coordinator.setEnabled(false);
+                                        settings.product.products=null;
+                                        settings.product.products= new ArrayList<>();
+                                        try {
+                                            settings.rank.setIdStablishment(address.getInt("empresa_id"));
+                                            settings.stablishment.setNumber(main.getId());
+                                            if (settings.product.getStablishSelection() == null) {
 
-                                            settings.product.setStablishSelection(main.getId());
-                                            settings.product.setConfirm(0);
-
-                                        } else {
-                                            if (settings.product.getStablishSelection() == main.getId()) {
-                                                settings.product.setConfirm(1);
-                                            } else {
                                                 settings.product.setStablishSelection(main.getId());
                                                 settings.product.setConfirm(0);
+
+                                            } else {
+                                                if (settings.product.getStablishSelection() == main.getId()) {
+                                                    settings.product.setConfirm(1);
+                                                } else {
+                                                    settings.product.setStablishSelection(main.getId());
+                                                    settings.product.setConfirm(0);
+                                                }
                                             }
-                                        }
 
                                             try {
                                                 String pro = settings.stablishment.stablishments.get(main.getId()).getProductRank();
@@ -533,10 +573,9 @@ public class head extends AppCompatActivity
                                             e.printStackTrace();
                                         }
 
-                                }
-                            });
-
-                                 linear.addView(child); //attach to your item
+                                    }
+                                });
+                                linear.addView(child); //attach to your item
                                 String urlImg="";
 
                                 if(address.getString("img_sucursal").equals("")){
@@ -582,8 +621,6 @@ public class head extends AppCompatActivity
                                             mensajee, Toast.LENGTH_SHORT);
 
                             toast1.show();
-
-
                         }
 
                     }
@@ -600,12 +637,8 @@ public class head extends AppCompatActivity
             }
         }
         );
-            queue.add(jsonArrayRequest);
+        queue.add(jsonArrayRequest);
     }
-
-    /*
-*/
-
     public String CalculationByDistance(double lat1, double lat2, double lon1, double lon2 ) {
         int Radius = 6371;// radio de la tierra en  kilómetros
         double dLat = Math.toRadians(lat2 - lat1);
@@ -624,7 +657,9 @@ public class head extends AppCompatActivity
         Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
                 + " Meter   " + meterInDec);
 
-        double valor = Radius * c;
+        double total= Radius * c;
+
+        double valor = total;
         String val = valor+"";
         BigDecimal big = new BigDecimal(val);
         big = big.setScale(2, RoundingMode.HALF_UP);
@@ -677,7 +712,7 @@ public class head extends AppCompatActivity
         settings.user.setUrlTemp(url);
         settings.user.setClickId(id);
 
-       Intent go = new Intent (head.this, stablishm.class);
+        Intent go = new Intent (head.this, stablishm.class);
         startActivity(go);
     }
 
@@ -755,6 +790,8 @@ public class head extends AppCompatActivity
         catego.setAdapter(dataAdapter);
         catego.setOnItemSelectedListener(new head.addressSpinnerClassOne());
     }
+
+
     private class addressSpinnerClassOne implements AdapterView.OnItemSelectedListener
     {
         public void onItemSelected(AdapterView<?> parent, View v, int position, long id)
@@ -771,7 +808,7 @@ public class head extends AppCompatActivity
             else{
                 try {
                     categorSpinner("https://godomicilios.co/webService/servicios.php?svice=FILTRO_CATEGORIA&metodo=json&lat="
-                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+
+                            +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+
                             "&tipo_empresa=1&categoria="+settings.categories.get(position).replace(" ","%20")
                     );
                 } catch (Exception e) {
@@ -828,7 +865,6 @@ public class head extends AppCompatActivity
                                         CalculationByDistance(address.getDouble("latitud"),
                                                 settings.order.getLatitude(),
                                                 address.getDouble("longitud"),
-
                                                 settings.order.getLongitude()),
                                         duration(),address.getInt("empresa_id"),
                                         Math.round(address.getInt("estrellas_sucursal")*2),
@@ -955,17 +991,15 @@ public class head extends AppCompatActivity
                                     child.setBackgroundColor(Color.WHITE);
                                 }
 
-
                                 LinearLayout lm =(LinearLayout) findViewById(R.id.li);
 
                             }
-
 
                             dialog.dismiss();
                         }
                         catch (Exception ignored){
                         }
-                            dialog.dismiss();
+                        dialog.dismiss();
 
                     }
                 }, new Response.ErrorListener() {
@@ -1044,9 +1078,9 @@ public class head extends AppCompatActivity
 
                                     final JSONObject product = (JSONObject) response.getJSONObject(i);
 
-                                    settings.categories.add(new String(
+                                    settings.categories.add(
                                             product.getString("nombre_categoria")
-                                    ));
+                                    );
                                 }
                             }
                             addItemsOnSpinner2();
@@ -1073,5 +1107,5 @@ public class head extends AppCompatActivity
         );
         queue.add(jsonArrayRequest);
     }
-    }
+}
 

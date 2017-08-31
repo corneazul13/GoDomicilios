@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
@@ -38,6 +39,7 @@ import com.developers.smartytoast.SmartyToast;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.squareup.picasso.Picasso;
@@ -62,24 +64,29 @@ import godomicilios.mdcc.godomiciliosc.settings.product;
 import godomicilios.mdcc.godomiciliosc.settings.rank;
 import godomicilios.mdcc.godomiciliosc.settings.settings;
 import godomicilios.mdcc.godomiciliosc.settings.user;
+import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 import me.omidh.liquidradiobutton.LiquidRadioButton;
 
+import static godomicilios.mdcc.godomiciliosc.R.id.progressBar;
+
 public class stablishm extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,WaveSwipeRefreshLayout.OnRefreshListener {
     Context context;
 
     ImageView image, ones, twos, threes, fours, fives;
+    public static GoogleAnalytics analytics;
     TextView name, address, price, three, priceMinimum;
     ArrayList <Integer >in;
-    LinearLayout one, two, com, lic, far, mas, mer;
+    LinearLayout one, two, com, lic, far, mas, mer, food, beer, pharmacy,pet, market;
     Integer count=0, ing=0, drin=0, addit=0;
     Integer comp =0, proId=0, edii=0 ;
     TextView numberCar;
     View include;
+    LinearLayout linear;
     DecimalFormat formatea = new DecimalFormat("###.###");
     ArrayList<ingredients> temporal ;
     WhorlView progress;
-
+    private WaveSwipeRefreshLayout mWaveSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,8 +94,8 @@ public class stablishm extends AppCompatActivity
         setContentView(R.layout.activity_stablishm);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        context = this;
-        progress = (WhorlView) findViewById(R.id.progressBar);
+        context=this;
+        progress = (WhorlView) findViewById(progressBar);
         progress.start();
         image = (ImageView) findViewById(R.id.image);
         name = (TextView) findViewById(R.id.name);
@@ -105,8 +112,14 @@ public class stablishm extends AppCompatActivity
         threes= (ImageView) findViewById(R.id.threess);
         fours= (ImageView) findViewById(R.id.fours);
         fives= (ImageView) findViewById(R.id.fives);
+        linear = (LinearLayout) findViewById(R.id.li);
         priceMinimum = (TextView) findViewById(R.id.priceMinimum);
         numberCar = (TextView) findViewById(R.id.numberCar);
+        food = (LinearLayout) findViewById(R.id.food);
+        pharmacy = (LinearLayout) findViewById(R.id.pharmacy);
+        pet = (LinearLayout) findViewById(R.id.pet);
+        market = (LinearLayout) findViewById(R.id.market);
+        beer = (LinearLayout) findViewById(R.id.beer);
         Integer car= settings.shoppingCar.carFinal.size();
         numberCar.setText(settings.user.getCarCant());
         user.analytics = GoogleAnalytics.getInstance(this);
@@ -116,11 +129,75 @@ public class stablishm extends AppCompatActivity
         user.tracker.enableAdvertisingIdCollection(true);
         user.tracker.enableAutoActivityTracking(true);
         include = findViewById(R.id.include);
+        initView();
         try {
             httpRank(settings.user.getUrlTemp(),settings.user.getClickId());
         } catch (Exception e) {
             e.printStackTrace();
         }
+        food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!settings.stablishment.getId().equals(1)){
+                    Intent go = new Intent(stablishm.this, head.class);
+                    startActivity(go);
+                    stablishm.this.finish();
+                }
+            }
+        });
+
+
+        pharmacy.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if(!settings.stablishment.getId().equals(3)){
+                    Intent go = new Intent(stablishm.this, headThree.class);
+                    startActivity(go);
+                    stablishm.this.finish();
+                }
+
+            }
+        });
+
+        pet.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if(!settings.stablishment.getId().equals(4)){
+                    Intent go = new Intent(stablishm.this, headFour.class);
+                    startActivity(go);
+                    stablishm.this.finish();
+                }
+            }
+        });
+
+        market.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if(!settings.stablishment.getId().equals(5)){
+                    Intent go = new Intent(stablishm.this, headFive.class);
+                    startActivity(go);
+                    stablishm.this.finish();
+                }
+            }
+        });
+
+        beer.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                if(!settings.stablishment.getId().equals(2)){
+                    Intent go = new Intent(stablishm.this, headTwo.class);
+                    startActivity(go);
+                    stablishm.this.finish();
+                }
+            }
+        });
 
         settings.ingredients.ingredientses = null;
         settings.addition.additions = null;
@@ -199,7 +276,57 @@ public class stablishm extends AppCompatActivity
             navigationView.inflateMenu(R.menu.activity_stablishm_drawer);
         }
 
+        initView();
     }
+
+    private void initView() {
+        mWaveSwipeRefreshLayout = (WaveSwipeRefreshLayout) findViewById(R.id.main_swipe);
+        mWaveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE,Color.WHITE);
+        mWaveSwipeRefreshLayout.setOnRefreshListener(this);
+        mWaveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context,R.color.redGo));
+
+        //mWaveSwipeRefreshLayout.setMaxDropHeight(1500);
+
+    /*TypedValue tv = new TypedValue();
+    int actionBarHeight = 0;
+    if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+    {
+      actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data,getResources().getDisplayMetrics());
+    }
+    mWaveSwipeRefreshLayout.setTopOffsetOfWave(actionBarHeight);*/
+
+
+
+    }
+
+    private void refresh(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    httpRank(settings.user.getUrlTemp(),settings.user.getClickId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                mWaveSwipeRefreshLayout.setRefreshing(false);
+
+            }
+        }, 3000);
+    }
+
+    @Override
+    protected void onResume() {
+        //mWaveSwipeRefreshLayout.setRefreshing(true);
+        //refresh();
+        numberCar.setText(settings.user.getCarCant());
+        super.onResume();
+    }
+
+    @Override
+    public void onRefresh() {
+        refresh();
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -327,12 +454,12 @@ public class stablishm extends AppCompatActivity
         in = new ArrayList<>();
         progress.setVisibility(View.GONE);
         lic.removeAllViews();
-
+        linear.removeAllViews();
         for(int k = 0; k< settings.rank.ranks.size(); k++){
 
             in.add(0);
 
-            final LinearLayout linear = (LinearLayout) findViewById(R.id.li);
+
             final View child = View.inflate(stablishm.this, R.layout.rank, null);
             final TextView nameshowd = (TextView) child.findViewById(R.id.name);
             final LinearLayout lll = (LinearLayout) child.findViewById(R.id.lii);
@@ -937,7 +1064,6 @@ public class stablishm extends AppCompatActivity
                     @Override
                     public void onResponse(final JSONArray response) {
                         try{
-
                             settings.rank.ranks = new ArrayList<>();
 
 //                            in = new ArrayList<>();

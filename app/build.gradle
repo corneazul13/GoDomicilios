@@ -7,8 +7,8 @@ android {
         applicationId 'godomicilios.mdcc.godomiciliosc'
         minSdkVersion 19
         targetSdkVersion 25
-        versionCode 39
-        versionName '1.0.14'
+        versionCode 41
+        versionName '1.0.16'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -66,5 +66,10 @@ dependencies {
     compile 'com.tt:whorlviewlibrary:1.0.3'
     compile 'com.squareup:otto:1.3.8'
     compile 'com.github.bassaer:chatmessageview:1.3.3'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.3'
+    compile 'com.github.recruit-lifestyle:WaveSwipeRefreshLayout:1.6'
+    compile 'com.github.Gavras:GIFView:v1.1'
 }
 apply plugin: 'com.google.gms.google-services'

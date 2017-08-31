@@ -7,6 +7,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
+    <jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/main_swipe"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_below="@+id/toolbar"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
 
     <include
         layout="@layout/app_bar_stablishm"
@@ -23,5 +31,6 @@
         app:headerLayout="@layout/nav_header_head"
         app:itemTextColor="@color/textlateralmenu"
         app:menu="@menu/activity_porfile_drawer" />
+    </jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout>
 
 </android.support.v4.widget.DrawerLayout>

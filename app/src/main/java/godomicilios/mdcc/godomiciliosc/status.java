@@ -314,7 +314,7 @@ public class status extends AppCompatActivity {
         });
         cancel.setId(h);
         settings.answerOrder.answerOrders.add(new answerOrder(
-                h, new CountDownTimer(3000 * 1000 + 1000, 1000) {
+                h, new CountDownTimer(300 * 1000 + 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -365,7 +365,7 @@ public class status extends AppCompatActivity {
                         //do smth when there is picture loading error
                     }
                 });
-        CountDownTimer count = new CountDownTimer(30 * 1000 + 1000, 1000) {
+        CountDownTimer count = new CountDownTimer(300    * 1000 + 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 

@@ -68,31 +68,32 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
-                    android:orientation="horizontal">
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/nameStablish"
                         android:layout_width="match_parent"
-                        android:gravity="center_vertical"
                         android:layout_height="match_parent"
-                        android:textColor="@color/black"
-                        android:text="hola"/>
+                        android:gravity="center_vertical"
+                        android:text="hola"
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_weight="0.35"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recicler"
                 android:layout_width="match_parent"
                 tools:listitem="@layout/chat_out"
-                android:layout_weight="0.3"
                 android:background="@color/white"
                 android:layout_height="match_parent"/>
 
-
-
-
-
-    <LinearLayout
+        </LinearLayout>
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.75"

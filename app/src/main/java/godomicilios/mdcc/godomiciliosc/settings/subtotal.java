@@ -18,7 +18,7 @@ public class subtotal {
     private Integer productId;
     private Integer drinkType;
     private Integer drinkEdit;
-    private Integer finalPrice;
+    private Integer finalPrice=0;
     private ArrayList<LinearLayout> components;
     public ArrayList<subtotal> subtotals;
 

@@ -74,7 +74,8 @@ public class choose extends AppCompatActivity {
             coupon("https://godomicilios.co/webService/servicios.php?svice=CUPONES_USR&metodo=json&usr_id="+ settings.user.getId());
         } catch (Exception e) {
             e.printStackTrace();
-        }        restaurant.setOnClickListener(new View.OnClickListener() {
+        }
+        restaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 YoYo.with(Techniques.Swing)
@@ -291,43 +292,50 @@ public class choose extends AppCompatActivity {
                     case 2:
                         ima.setImageDrawable(getResources().getDrawable(R.drawable.alicorxdos));
                         settings.stablishment.setId(2);
-                        try {
+                        Intent go2 = new Intent(choose.this, headTwo.class);
+                        startActivity(go2);
+                        /*try {
                             categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=2",2, headTwo.class);
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1",1, head.class);
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
                         break;
                     case 3:
                         ima.setImageDrawable(getResources().getDrawable(R.drawable.amedicinaxdos));
                         settings.stablishment.setId(3);
-
-                        try {
+                        Intent go3 = new Intent(choose.this, headThree.class);
+                        startActivity(go3);
+                        /*try {
                             categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=3",3, headThree.class);
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1",1, head.class);
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
                         break;
                     case 4:
                         ima.setImageDrawable(getResources().getDrawable(R.drawable.amascotaxdos));
                         settings.stablishment.setId(4);
-                        try {
+                        Intent go4 = new Intent(choose.this, headFour.class);
+                        startActivity(go4);
+                        /*try {
                             categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=4",4, headFour.class);
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1",1, head.class);
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
                         break;
                     case 5:
                         ima.setImageDrawable(getResources().getDrawable(R.drawable.amercadoxdos));
                         settings.stablishment.setId(5);
-                        try {
+                        Intent go5 = new Intent(choose.this, headFive.class);
+                        startActivity(go5);
+                        /*try {
                             categor("https://godomicilios.co/webService/servicios.php?svice=CATALOGOS&metodo=json&lat="
-                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=5",5, headFive.class);
+                                    +settings.order.getLatitude()+"&long="+settings.order.getLongitude()+"&tipo_empresa=1",1, head.class);
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
+                        }*/
                         break;
                 }
 
