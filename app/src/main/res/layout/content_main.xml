@@ -46,8 +46,9 @@
                 android:id="@+id/imageView3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="14pt"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/logogo" />
+                app:srcCompat="@drawable/logogo1" />
         </LinearLayout>
 
         <LinearLayout
@@ -64,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="DOMICILIOS"
+                android:text="PULP APP"
                 android:textColor="@android:color/white"
                 android:textSize="30sp"
                 android:textStyle="bold" />

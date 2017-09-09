@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Go Domicilios</string>
+    <string name="app_name">Pulp App</string>
     <string name="action_settings">Settings</string>
-    <string name="facebook_app_id">646209828882688</string>
-    <string name="fb_login_protocol_scheme">fb646209828882688</string>
+    <string name="facebook_app_id">115168632525549</string>
+    <string name="fb_login_protocol_scheme">fb115168632525549</string>
 
     <string name="error_facebook">Error al loguease</string>
     <string name="title_activity_show_address">showAddress</string>

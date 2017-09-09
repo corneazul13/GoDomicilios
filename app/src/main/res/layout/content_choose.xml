@@ -25,7 +25,7 @@
         android:layout_centerInParent="true"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        app:srcCompat="@drawable/gologohome" />
+        app:srcCompat="@drawable/logogo1" />
     <LinearLayout
         android:gravity="center"
         android:orientation="horizontal"

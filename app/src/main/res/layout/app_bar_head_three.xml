@@ -40,7 +40,8 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginEnd="19dp"
                             android:layout_marginRight="19dp"
-                            app:srcCompat="@drawable/gologohome" />
+                            android:paddingRight="35dp"
+                            app:srcCompat="@drawable/gologohome1" />
                     </RelativeLayout>
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
