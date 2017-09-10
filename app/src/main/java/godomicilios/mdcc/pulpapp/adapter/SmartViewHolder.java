@@ -22,10 +22,6 @@ public class SmartViewHolder extends RecyclerView.ViewHolder implements View.OnC
         super(itemView);
         this.mListener = mListener;
         itemView.setOnClickListener(this);
-
-        /**
-         * 设置水波纹背景
-         */
         if (itemView.getBackground() == null) {
             TypedValue typedValue = new TypedValue();
             Resources.Theme theme = itemView.getContext().getTheme();

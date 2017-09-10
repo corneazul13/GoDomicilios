@@ -95,6 +95,7 @@ public class stablishm extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context=this;
+        imprimirEstablecimiento();
         progress = (WhorlView) findViewById(progressBar);
         progress.start();
         image = (ImageView) findViewById(R.id.image);
@@ -277,6 +278,10 @@ public class stablishm extends AppCompatActivity
         }
 
         initView();
+    }
+
+    public void imprimirEstablecimiento() {
+        System.out.println(settings.stablishment.stablishments.get(settings.stablishment.getNumber()).toString());
     }
 
     private void initView() {

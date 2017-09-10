@@ -25,10 +25,11 @@ public class stablishment {
     private String productRank;
     public ArrayList<stablishment> stablishments;
 
-    public stablishment(Integer id, Integer idBranch, String name, String address, String price,
+    public stablishment(Integer id, int number, Integer idBranch, String name, String address, String price,
                         String status, String image, String nameBranch, String minimum, String distance,
                         String duration, Integer id_Company, Integer stars, String productRank){
         this.setId(id);
+        this.number = number;
         this.idBranch = idBranch;
         this.name = name;
         this.address = address;
@@ -111,5 +112,27 @@ public class stablishment {
 
     public void setProductRank(String productRank) {
         this.productRank = productRank;
+    }
+
+    @Override
+    public String toString() {
+        return "stablishment{" +
+                "id=" + id +
+                ", number=" + number +
+                ", idBranch=" + idBranch +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", price='" + price + '\'' +
+                ", status='" + status + '\'' +
+                ", image='" + image + '\'' +
+                ", nameBranch='" + nameBranch + '\'' +
+                ", minimum='" + minimum + '\'' +
+                ", distance='" + distance + '\'' +
+                ", durattion='" + durattion + '\'' +
+                ", id_Company=" + id_Company +
+                ", stars=" + stars +
+                ", productRank='" + productRank + '\'' +
+                ", stablishments=" + stablishments +
+                '}';
     }
 }

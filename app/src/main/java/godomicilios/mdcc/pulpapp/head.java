@@ -75,9 +75,8 @@ import godomicilios.mdcc.pulpapp.settings.stablishment;
 import godomicilios.mdcc.pulpapp.settings.user;
 import jp.co.recruit_lifestyle.android.widget.WaveSwipeRefreshLayout;
 
-public class head extends AppCompatActivity
-
-        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener, WaveSwipeRefreshLayout.OnRefreshListener {
+public class head extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+        GoogleApiClient.OnConnectionFailedListener, WaveSwipeRefreshLayout.OnRefreshListener {
 
     private Context context;
     private LinearLayout layout;
@@ -418,6 +417,7 @@ public class head extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     public void httpC (String url) throws Exception{
         final LinearLayout linear = (LinearLayout) findViewById(R.id.li);
         linear.removeAllViews();
@@ -426,7 +426,7 @@ public class head extends AppCompatActivity
         final RequestQueue queue = Volley.newRequestQueue(this,new HurlStack(
                 null, CustomSSLSocketFactory.getSSLSocketFactory(head.this)));
 
-
+        System.out.println("url: " + url);
         JsonArrayRequest jsonArrayRequest= new JsonArrayRequest(JsonArrayRequest.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -441,8 +441,11 @@ public class head extends AppCompatActivity
                             for(int i =0;i<response.length();i++) {
 
                                 final JSONObject address = response.getJSONObject(i);
+                                final int index = i;
 
-                                settings.stablishment.stablishments.add(new stablishment(1,
+                                settings.stablishment.stablishments.add(new stablishment(
+                                        1,
+                                        index,
                                         address.getInt("id_sucursal"),
                                         address.getString("nombre"),
                                         address.getString("direccion_mapa"),
@@ -462,6 +465,8 @@ public class head extends AppCompatActivity
                                 LinearLayout linear = (LinearLayout) findViewById(R.id.li);
                                 View child = View.inflate(head.this, R.layout.li, null);
 
+                                System.out.println(settings.stablishment.stablishments.get(i).toString());
+
                                 ImageView im = (ImageView) child.findViewById(R.id.imageRestaurant);
                                 TextView name = (TextView) child.findViewById(R.id.name);
                                 TextView branch = (TextView) child.findViewById(R.id.branch);
@@ -472,20 +477,13 @@ public class head extends AppCompatActivity
                                 ImageView three1 = (ImageView) child.findViewById(R.id.three);
                                 ImageView four1 = (ImageView) child.findViewById(R.id.four);
                                 ImageView five1 = (ImageView) child.findViewById(R.id.five);
-                                final Button buttons = (Button) child.findViewById(R.id.buttons);
-                                final LinearLayout main = (LinearLayout)child.findViewById(R.id.main);
+                                final TextView buttons = (TextView) child.findViewById(R.id.buttons);
+                                final LinearLayout main = (LinearLayout) child.findViewById(R.id.main);
                                 Integer cantStars=address.getInt("estrellas_sucursal") ;
                                 Integer cantt = Math.round(cantStars*2);
-                                Integer flag=address.getInt("flag_nombre");
                                 branch.setText("");
-                                if(flag.equals(1)){
-                                    name.setText(address.getString("nombre_sucursal"));
-                                    branch.setVisibility(View.GONE);
-                                }
-                                else{
-                                    name.setText(address.getString("nombre"));
-                                    branch.setText(address.getString("nombre_sucursal"));
-                                }
+                                name.setText(address.getString("nombre"));
+                                branch.setText(address.getString("nombre_sucursal"));
 
                                 stars(cantt,one1, two1, three1, four1, five1);
 
@@ -502,41 +500,7 @@ public class head extends AppCompatActivity
                                     buttons.setText("CERRADO");
                                     main.setEnabled(false);
                                 }
-                                buttons.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        if (buttons.getText().equals("ABIERTO")){
-                                            try {
-                                                settings.rank.setIdStablishment(address.getInt("empresa_id"));
-                                                settings.stablishment.setNumber(main.getId());
-                                                if (settings.product.getStablishSelection() == null) {
 
-                                                    settings.product.setStablishSelection(main.getId());
-                                                    settings.product.setConfirm(0);
-
-                                                } else {
-                                                    if (settings.product.getStablishSelection() == main.getId()) {
-                                                        settings.product.setConfirm(1);
-                                                    } else {
-                                                        settings.product.setStablishSelection(main.getId());
-                                                        settings.product.setConfirm(0);
-                                                    }
-                                                }
-
-                                                try {
-                                                    httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-
-                                            } catch(JSONException e){
-                                                e.printStackTrace();
-                                            }
-
-                                        }
-
-                                    }
-                                });
 
                                 main.setOnClickListener(new View.OnClickListener() {
                                     @Override
@@ -547,7 +511,7 @@ public class head extends AppCompatActivity
                                         settings.product.products= new ArrayList<>();
                                         try {
                                             settings.rank.setIdStablishment(address.getInt("empresa_id"));
-                                            settings.stablishment.setNumber(main.getId());
+                                            settings.stablishment.setNumber(index);
                                             if (settings.product.getStablishSelection() == null) {
 
                                                 settings.product.setStablishSelection(main.getId());
@@ -564,7 +528,7 @@ public class head extends AppCompatActivity
 
                                             try {
                                                 String pro = settings.stablishment.stablishments.get(main.getId()).getProductRank();
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+pro, index);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
@@ -578,13 +542,7 @@ public class head extends AppCompatActivity
                                 linear.addView(child); //attach to your item
                                 String urlImg="";
 
-                                if(address.getString("img_sucursal").equals("")){
-                                    urlImg ="http://godomicilios.co/admin/documentosVarios/"+address.getString("imagen_corporativa");
-
-                                }
-                                else{
-                                    urlImg  ="http://godomicilios.co/admin/img/logosSucursal/"+address.getString("img_sucursal");
-                                }
+                                urlImg ="http://godomicilios.co/admin/documentosVarios/"+address.getString("imagen_corporativa");
 
                                 Picasso.with(head.this)
                                         .load(urlImg)
@@ -852,8 +810,11 @@ public class head extends AppCompatActivity
                             for(int i =0;i<response.length();i++) {
 
                                 final JSONObject address = response.getJSONObject(i);
+                                final int index = i+1;
 
-                                settings.stablishment.stablishments.add(new stablishment(1,
+                                settings.stablishment.stablishments.add(new stablishment(
+                                        1,
+                                        index,
                                         address.getInt("id_sucursal"),
                                         address.getString("nombre"),
                                         address.getString("direccion_mapa"),
@@ -882,7 +843,7 @@ public class head extends AppCompatActivity
                                 ImageView three1 = (ImageView) child.findViewById(R.id.three);
                                 ImageView four1 = (ImageView) child.findViewById(R.id.four);
                                 ImageView five1 = (ImageView) child.findViewById(R.id.five);
-                                final Button buttons = (Button) child.findViewById(R.id.buttons);
+                                final TextView buttons = (TextView) child.findViewById(R.id.buttons);
                                 final LinearLayout main = (LinearLayout)child.findViewById(R.id.main);
                                 Integer cantStars=address.getInt("estrellas_sucursal") ;
                                 Integer cantt = Math.round(cantStars*2);
@@ -895,53 +856,19 @@ public class head extends AppCompatActivity
 
                                 main.setId(i);
 
-                                if (address.getString("estadoEstablecimiento").equals("ABIERTO")) {
-
-                                } else{
+                                if (!address.getString("estadoEstablecimiento").equals("ABIERTO")) {
                                     buttons.setBackgroundColor(ContextCompat.getColor(context,R.color.redGo));
                                     buttons.setText("CERRADO");
                                     main.setEnabled(false);
 
                                 }
-                                buttons.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        try {
-                                            settings.rank.setIdStablishment(address.getInt("empresa_id"));
-                                            settings.stablishment.setNumber(main.getId());
-                                            if (settings.product.getStablishSelection() == null) {
-
-                                                settings.product.setStablishSelection(main.getId());
-                                                settings.product.setConfirm(0);
-
-                                            } else {
-                                                if (settings.product.getStablishSelection() == main.getId()) {
-                                                    settings.product.setConfirm(1);
-                                                } else {
-                                                    settings.product.setStablishSelection(main.getId());
-                                                    settings.product.setConfirm(0);
-                                                }
-                                            }
-
-                                            try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
-                                            } catch (Exception e) {
-                                                e.printStackTrace();
-                                            }
-
-                                        } catch(JSONException e){
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                });
 
                                 main.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
                                         try {
                                             settings.rank.setIdStablishment(address.getInt("empresa_id"));
-                                            settings.stablishment.setNumber(main.getId());
+                                            settings.stablishment.setNumber(index);
                                             if (settings.product.getStablishSelection() == null) {
 
                                                 settings.product.setStablishSelection(main.getId());
@@ -957,7 +884,7 @@ public class head extends AppCompatActivity
                                             }
 
                                             try {
-                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), main.getId());
+                                                httpRank("https://godomicilios.co/webService/servicios.php?svice=CATALOGO&metodo=json&categorias="+settings.stablishment.stablishments.get(main.getId()).getProductRank(), index);
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
